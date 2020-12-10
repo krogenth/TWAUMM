@@ -23,4 +23,4 @@ To properly set up, first you will want to get the dependencies listed above. Th
 
 To-Do
 ====
-There are several features that still need to be added, specifically: auto-updating(ironic), and the K Dominance Maps.
+There are several features that still need to be added, specifically: auto-updating(ironic), include some multithreading, and the K Dominance Maps.
