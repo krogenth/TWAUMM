@@ -21,6 +21,8 @@ To properly use, ensure "Arena Condensed Bold.ttf", "Arena.ttf", "colors.txt", a
 
 To properly set up, first you will want to get the dependencies listed above. These can be obtained through the individual projects themselves, or through this repository. Next, add or comment out worlds you wish to create maps for within "worlds.txt". To comment out a world, simply add a semicolon(';') before the world entry. If you are unsure how to add a specific world, consult the URL listed when viewing the "World Info" section of the TribalWars website(i.e. - viewing World 117 of the internation server will give "en117.tribalwars.net").
 
+All maps created will be located within the "/maps/" folder, based on server and world.
+
 To-Do
 ====
 There are several features that still need to be added, specifically: auto-updating(ironic), include some multithreading, and the K Dominance Maps.
