@@ -176,41 +176,44 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 
 		data = converter.to_bytes(topTribes[i]->getTag());
 		//wdata = topTribes.at(i)->getTag();
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
-		//gdImageStringFTEx(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
+		//gdImageStringFTEx(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
 
 		data = FormatWithCommas(topTribes.at(i)->getPoints());
 		data += " points";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 15, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
 
 		data = FormatWithCommas(topTribes.at(i)->getVillageCount());
 		data += " villages";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 30, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
 
 		//included for testing purposes
 		//data = "zoom: " + std::to_string(zoom);
-		//gdImageStringFT(image, &rect[0], white, fontPath1.c_str(), 14, 0, 500, 20, &data[0]);
+		//gdImageStringFT(image, &rect[0], white, &fontPath1[0], 14, 0, 500, 20, &data[0]);
 
 	}
 
 	time_t rawTime;
-	struct tm timeInfo;
-	char buffer[26];
+	struct tm *timeInfo;
+	char *buffer = new char[26];
 
 	std::time(&rawTime);
-	localtime_s(&timeInfo, &rawTime);
-	asctime_s(buffer, 26, &timeInfo);
+	timeInfo = localtime(&rawTime);
+	buffer = asctime(timeInfo);
 
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 15, 20, &world[0]);
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 200, 20, "Top Tribes Map");
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 1000, 20, buffer);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 200, 20, "Top Tribes Map");
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 1000, 20, buffer);
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topTribeOut);
+
+	delete timeInfo;
+	delete[] buffer;
 
 	fclose(topTribeOut);
 	gdImageDestroy(image);
@@ -364,41 +367,44 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 
 		data = converter.to_bytes(topPlayers[i]->getName());
 		//wdata = topTribes.at(i)->getTag();
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
-		//gdImageStringFTEx(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
+		//gdImageStringFTEx(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
 
 		data = FormatWithCommas(topPlayers.at(i)->getPoints());
 		data += " points";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 15, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
 
 		data = FormatWithCommas(topPlayers.at(i)->getVillageCount());
 		data += " villages";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 30, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
 
 		//included for testing purposes
 		//data = "zoom: " + std::to_string(zoom);
-		//gdImageStringFT(image, &rect[0], white, fontPath1.c_str(), 14, 0, 500, 20, &data[0]);
+		//gdImageStringFT(image, &rect[0], white, &fontPath1[0], 14, 0, 500, 20, &data[0]);
 
 	}
 
 	time_t rawTime;
-	struct tm timeInfo;
-	char buffer[26];
+	struct tm* timeInfo;
+	char* buffer = new char[26];
 
 	std::time(&rawTime);
-	localtime_s(&timeInfo, &rawTime);
-	asctime_s(buffer, 26, &timeInfo);
+	timeInfo = localtime(&rawTime);
+	buffer = asctime(timeInfo);
 
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 15, 20, &world[0]);
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 200, 20, "Top Players Map");
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 1000, 20, buffer);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 200, 20, "Top Players Map");
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 1000, 20, buffer);
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topPlayerOut);
+
+	delete timeInfo;
+	delete[] buffer;
 
 	fclose(topPlayerOut);
 	gdImageDestroy(image);
@@ -560,41 +566,44 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 
 		data = converter.to_bytes(topODATribes[i]->getTag());
 		//wdata = topTribes.at(i)->getTag();
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
-		//gdImageStringFTEx(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
+		//gdImageStringFTEx(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
 
 		data = FormatWithCommas(topODATribes.at(i)->getODA());
 		data += " points";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 15, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
 
 		data = FormatWithCommas(topODATribes.at(i)->getVillageCount());
 		data += " villages";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 30, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
 
 		//included for testing purposes
 		//data = "zoom: " + std::to_string(zoom);
-		//gdImageStringFT(image, &rect[0], white, fontPath1.c_str(), 14, 0, 500, 20, &data[0]);
+		//gdImageStringFT(image, &rect[0], white, &fontPath1[0], 14, 0, 500, 20, &data[0]);
 
 	}
 
 	time_t rawTime;
-	struct tm timeInfo;
-	char buffer[26];
+	struct tm* timeInfo;
+	char* buffer = new char[26];
 
 	std::time(&rawTime);
-	localtime_s(&timeInfo, &rawTime);
-	asctime_s(buffer, 26, &timeInfo);
+	timeInfo = localtime(&rawTime);
+	buffer = asctime(timeInfo);
 
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 15, 20, &world[0]);
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 200, 20, "Top ODA Tribes Map");
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 1000, 20, buffer);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 200, 20, "Top ODA Tribes Map");
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 1000, 20, buffer);
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topTribeOdaOut);
+
+	delete timeInfo;
+	delete[] buffer;
 
 	fclose(topTribeOdaOut);
 	gdImageDestroy(image);
@@ -756,41 +765,44 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 
 		data = converter.to_bytes(topODDTribes[i]->getTag());
 		//wdata = topTribes.at(i)->getTag();
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
-		//gdImageStringFTEx(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
+		//gdImageStringFTEx(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
 
 		data = FormatWithCommas(topODDTribes.at(i)->getODD());
 		data += " points";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 15, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
 
 		data = FormatWithCommas(topODDTribes.at(i)->getVillageCount());
 		data += " villages";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 30, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
 
 		//included for testing purposes
 		//data = "zoom: " + std::to_string(zoom);
-		//gdImageStringFT(image, &rect[0], white, fontPath1.c_str(), 14, 0, 500, 20, &data[0]);
+		//gdImageStringFT(image, &rect[0], white, &fontPath1[0], 14, 0, 500, 20, &data[0]);
 
 	}
 
 	time_t rawTime;
-	struct tm timeInfo;
-	char buffer[26];
+	struct tm* timeInfo;
+	char* buffer = new char[26];
 
 	std::time(&rawTime);
-	localtime_s(&timeInfo, &rawTime);
-	asctime_s(buffer, 26, &timeInfo);
+	timeInfo = localtime(&rawTime);
+	buffer = asctime(timeInfo);
 
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 15, 20, &world[0]);
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 200, 20, "Top ODD Tribes Map");
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 1000, 20, buffer);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 200, 20, "Top ODD Tribes Map");
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 1000, 20, buffer);
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topTribeOddOut);
+
+	delete timeInfo;
+	delete[] buffer;
 
 	fclose(topTribeOddOut);
 	gdImageDestroy(image);
@@ -944,41 +956,44 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 
 		data = converter.to_bytes(topODAPlayers[i]->getName());
 		//wdata = topTribes.at(i)->getTag();
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
-		//gdImageStringFTEx(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
+		//gdImageStringFTEx(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
 
 		data = FormatWithCommas(topODAPlayers.at(i)->getODA());
 		data += " points";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 15, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
 
 		data = FormatWithCommas(topODAPlayers.at(i)->getVillageCount());
 		data += " villages";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 30, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
 
 		//included for testing purposes
 		//data = "zoom: " + std::to_string(zoom);
-		//gdImageStringFT(image, &rect[0], white, fontPath1.c_str(), 14, 0, 500, 20, &data[0]);
+		//gdImageStringFT(image, &rect[0], white, &fontPath1[0], 14, 0, 500, 20, &data[0]);
 
 	}
 
 	time_t rawTime;
-	struct tm timeInfo;
-	char buffer[26];
+	struct tm* timeInfo;
+	char* buffer = new char[26];
 
 	std::time(&rawTime);
-	localtime_s(&timeInfo, &rawTime);
-	asctime_s(buffer, 26, &timeInfo);
+	timeInfo = localtime(&rawTime);
+	buffer = asctime(timeInfo);
 
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 15, 20, &world[0]);
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 200, 20, "Top ODA Players Map");
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 1000, 20, buffer);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 200, 20, "Top ODA Players Map");
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 1000, 20, buffer);
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topPlayerOdaOut);
+
+	delete timeInfo;
+	delete[] buffer;
 
 	fclose(topPlayerOdaOut);
 	gdImageDestroy(image);
@@ -1132,41 +1147,44 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 
 		data = converter.to_bytes(topODDPlayers[i]->getName());
 		//wdata = topTribes.at(i)->getTag();
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
-		//gdImageStringFTEx(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
+		//gdImageStringFTEx(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
 
 		data = FormatWithCommas(topODDPlayers.at(i)->getODD());
 		data += " points";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 15, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
 
 		data = FormatWithCommas(topODDPlayers.at(i)->getVillageCount());
 		data += " villages";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 30, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
 
 		//included for testing purposes
 		//data = "zoom: " + std::to_string(zoom);
-		//gdImageStringFT(image, &rect[0], white, fontPath1.c_str(), 14, 0, 500, 20, &data[0]);
+		//gdImageStringFT(image, &rect[0], white, &fontPath1[0], 14, 0, 500, 20, &data[0]);
 
 	}
 
 	time_t rawTime;
-	struct tm timeInfo;
-	char buffer[26];
+	struct tm* timeInfo;
+	char* buffer = new char[26];
 
 	std::time(&rawTime);
-	localtime_s(&timeInfo, &rawTime);
-	asctime_s(buffer, 26, &timeInfo);
+	timeInfo = localtime(&rawTime);
+	buffer = asctime(timeInfo);
 
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 15, 20, &world[0]);
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 200, 20, "Top ODD Players Map");
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 1000, 20, buffer);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 200, 20, "Top ODD Players Map");
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 1000, 20, buffer);
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topPlayerOddOut);
+
+	delete timeInfo;
+	delete[] buffer;
 
 	fclose(topPlayerOddOut);
 	gdImageDestroy(image);
@@ -1381,41 +1399,44 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 
 		data = converter.to_bytes(topConqTribes[i]->getTag());
 		//wdata = topTribes.at(i)->getTag();
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
-		//gdImageStringFTEx(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
+		//gdImageStringFTEx(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
 
 		data = FormatWithCommas(topConqTribes.at(i)->getConqPoints());
 		data += " points";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 15, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
 
 		data = FormatWithCommas(topConqTribes.at(i)->getConqCount());
 		data += " villages";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 30, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
 
 		//included for testing purposes
 		//data = "zoom: " + std::to_string(zoom);
-		//gdImageStringFT(image, &rect[0], white, fontPath1.c_str(), 14, 0, 500, 20, &data[0]);
+		//gdImageStringFT(image, &rect[0], white, &fontPath1[0], 14, 0, 500, 20, &data[0]);
 
 	}
 
 	time_t rawTime;
-	struct tm timeInfo;
-	char buffer[26];
+	struct tm* timeInfo;
+	char* buffer = new char[26];
 
 	std::time(&rawTime);
-	localtime_s(&timeInfo, &rawTime);
-	asctime_s(buffer, 26, &timeInfo);
+	timeInfo = localtime(&rawTime);
+	buffer = asctime(timeInfo);
 
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 15, 20, &world[0]);
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 200, 20, "Top Nobling Tribes Map");
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 1000, 20, buffer);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 200, 20, "Top Nobling Tribes Map");
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 1000, 20, buffer);
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topTribeConqOut);
+
+	delete timeInfo;
+	delete[] buffer;
 
 	fclose(topTribeConqOut);
 	gdImageDestroy(image);
@@ -1630,41 +1651,44 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 
 		data = converter.to_bytes(topLossTribes[i]->getTag());
 		//wdata = topTribes.at(i)->getTag();
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
-		//gdImageStringFTEx(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
+		//gdImageStringFTEx(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
 
 		data = FormatWithCommas(topLossTribes.at(i)->getLossPoints());
 		data += " points";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 15, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
 
 		data = FormatWithCommas(topLossTribes.at(i)->getLossCount());
 		data += " villages";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 30, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
 
 		//included for testing purposes
 		//data = "zoom: " + std::to_string(zoom);
-		//gdImageStringFT(image, &rect[0], white, fontPath1.c_str(), 14, 0, 500, 20, &data[0]);
+		//gdImageStringFT(image, &rect[0], white, &fontPath1[0], 14, 0, 500, 20, &data[0]);
 
 	}
 
 	time_t rawTime;
-	struct tm timeInfo;
-	char buffer[26];
+	struct tm* timeInfo;
+	char* buffer = new char[26];
 
 	std::time(&rawTime);
-	localtime_s(&timeInfo, &rawTime);
-	asctime_s(buffer, 26, &timeInfo);
+	timeInfo = localtime(&rawTime);
+	buffer = asctime(timeInfo);
 
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 15, 20, &world[0]);
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 200, 20, "Top Nobled Tribes Map");
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 1000, 20, buffer);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 200, 20, "Top Nobled Tribes Map");
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 1000, 20, buffer);
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topTribeLossOut);
+
+	delete timeInfo;
+	delete[] buffer;
 
 	fclose(topTribeLossOut);
 	gdImageDestroy(image);
@@ -1871,41 +1895,44 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 
 		data = converter.to_bytes(topConqPlayers[i]->getName());
 		//wdata = topTribes.at(i)->getTag();
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
-		//gdImageStringFTEx(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
+		//gdImageStringFTEx(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
 
 		data = FormatWithCommas(topConqPlayers.at(i)->getConqPoints());
 		data += " points";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 15, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
 
 		data = FormatWithCommas(topConqPlayers.at(i)->getConqCount());
 		data += " villages";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 30, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
 
 		//included for testing purposes
 		//data = "zoom: " + std::to_string(zoom);
-		//gdImageStringFT(image, &rect[0], white, fontPath1.c_str(), 14, 0, 500, 20, &data[0]);
+		//gdImageStringFT(image, &rect[0], white, &fontPath1[0], 14, 0, 500, 20, &data[0]);
 
 	}
 
 	time_t rawTime;
-	struct tm timeInfo;
-	char buffer[26];
+	struct tm* timeInfo;
+	char* buffer = new char[26];
 
 	std::time(&rawTime);
-	localtime_s(&timeInfo, &rawTime);
-	asctime_s(buffer, 26, &timeInfo);
+	timeInfo = localtime(&rawTime);
+	buffer = asctime(timeInfo);
 
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 15, 20, &world[0]);
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 200, 20, "Top Nobling Players Map");
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 1000, 20, buffer);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 200, 20, "Top Nobling Players Map");
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 1000, 20, buffer);
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topPlayerConqOut);
+
+	delete timeInfo;
+	delete[] buffer;
 
 	fclose(topPlayerConqOut);
 	gdImageDestroy(image);
@@ -2112,41 +2139,44 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 
 		data = converter.to_bytes(topLossPlayers[i]->getName());
 		//wdata = topTribes.at(i)->getTag();
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
-		//gdImageStringFTEx(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
+		//gdImageStringFTEx(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
 
 		data = FormatWithCommas(topLossPlayers.at(i)->getLossPoints());
 		data += " points";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 15, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
 
 		data = FormatWithCommas(topLossPlayers.at(i)->getLossCount());
 		data += " villages";
-		gdImageStringFT(image, &rect[0], black, fontPath1.c_str(), 10, 0, xWord, yWord + 30, (char*)&data[0]);
+		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
 
 		//included for testing purposes
 		//data = "zoom: " + std::to_string(zoom);
-		//gdImageStringFT(image, &rect[0], white, fontPath1.c_str(), 14, 0, 500, 20, &data[0]);
+		//gdImageStringFT(image, &rect[0], white, &fontPath1[0], 14, 0, 500, 20, &data[0]);
 
 	}
 
 	time_t rawTime;
-	struct tm timeInfo;
-	char buffer[26];
+	struct tm* timeInfo;
+	char* buffer = new char[26];
 
 	std::time(&rawTime);
-	localtime_s(&timeInfo, &rawTime);
-	asctime_s(buffer, 26, &timeInfo);
+	timeInfo = localtime(&rawTime);
+	buffer = asctime(timeInfo);
 
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 15, 20, &world[0]);
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 200, 20, "Top Nobled Players Map");
-	gdImageStringFT(image, &rect[0], white, fontPath2.c_str(), 14, 0, 1000, 20, buffer);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 200, 20, "Top Nobled Players Map");
+	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 1000, 20, buffer);
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topPlayerLossOut);
+
+	delete timeInfo;
+	delete[] buffer;
 
 	fclose(topPlayerLossOut);
 	gdImageDestroy(image);
