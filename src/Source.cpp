@@ -6,7 +6,7 @@
 #ifdef _WIN64
 #include <experimental/filesystem>
 #endif
-#ifdef unix | __unix | __unix__
+#if defined (unix) || defined (__unix) || defined (__unix__)
 #include <filesystem>
 #endif
 
@@ -138,7 +138,7 @@ int main(int argc, char* argv[]) {
 			std::experimental::filesystem::create_directory("maps");
 			std::experimental::filesystem::create_directory("maps/" + data);
 #endif
-#ifdef unix | __unix | __unix__
+#if defined (unix) || defined (__unix) || defined (__unix__)
 			std::filesystem::create_directory("maps");
 			std::filesystem::create_directory("maps/" + data);
 #endif

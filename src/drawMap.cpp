@@ -9,7 +9,7 @@
 #ifdef _WIN64
 #include <experimental/filesystem>
 #endif
-#ifdef unix | __unix | __unix__
+#if defined (unix) || defined (__unix) || defined (__unix__)
 #include <filesystem>
 #endif
 
@@ -33,7 +33,7 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 #ifdef _WIN64
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
 #endif
-#ifdef unix | __unix | __unix__
+#if defined (unix) || defined (__unix) || defined (__unix__)
 	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
 #endif
 	fontPath1 += "\\Arena Condensed Bold.ttf";
@@ -41,7 +41,7 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 #ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
 #endif
-#ifdef unix | __unix | __unix__
+#if defined (unix) || defined (__unix) || defined (__unix__)
 	std::string fontPath2 = std::filesystem::current_path().u8string().c_str();
 #endif
 	fontPath2 += "\\Arena.ttf";
@@ -226,9 +226,20 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 	gdImagePtr image;
 	FILE* topPlayerOut;
 	std::string filePath = "";
+#ifdef _WIN64
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath1 += "\\Arena Condensed Bold.ttf";
+
+#ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath2 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath2 += "\\Arena.ttf";
 
 	filePath += "maps\\" + world + "\\topPlayer.png";
@@ -403,9 +414,20 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 	gdImagePtr image;
 	FILE* topTribeOdaOut;
 	std::string filePath = "";
+#ifdef _WIN64
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath1 += "\\Arena Condensed Bold.ttf";
+
+#ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath2 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath2 += "\\Arena.ttf";
 
 	filePath += "maps\\" + world + "\\topTribeODA.png";
@@ -588,9 +610,20 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 	gdImagePtr image;
 	FILE* topTribeOddOut;
 	std::string filePath = "";
+#ifdef _WIN64
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath1 += "\\Arena Condensed Bold.ttf";
+
+#ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath2 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath2 += "\\Arena.ttf";
 
 	filePath += "maps\\" + world + "\\topTribeODD.png";
@@ -773,9 +806,20 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 	gdImagePtr image;
 	FILE* topPlayerOdaOut;
 	std::string filePath = "";
+#ifdef _WIN64
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath1 += "\\Arena Condensed Bold.ttf";
+
+#ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath2 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath2 += "\\Arena.ttf";
 
 	filePath += "maps\\" + world + "\\topPlayerODA.png";
@@ -950,9 +994,20 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 	gdImagePtr image;
 	FILE* topPlayerOddOut;
 	std::string filePath = "";
+#ifdef _WIN64
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath1 += "\\Arena Condensed Bold.ttf";
+
+#ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath2 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath2 += "\\Arena.ttf";
 
 	filePath += "maps\\" + world + "\\topPlayerODD.png";
@@ -1127,9 +1182,20 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 	gdImagePtr image;
 	FILE* topTribeConqOut;
 	std::string filePath = "";
+#ifdef _WIN64
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath1 += "\\Arena Condensed Bold.ttf";
+
+#ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath2 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath2 += "\\Arena.ttf";
 
 	filePath += "maps\\" + world + "\\topTribeConq.png";
@@ -1365,9 +1431,20 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 	gdImagePtr image;
 	FILE* topTribeLossOut;
 	std::string filePath = "";
+#ifdef _WIN64
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath1 += "\\Arena Condensed Bold.ttf";
+
+#ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath2 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath2 += "\\Arena.ttf";
 
 	filePath += "maps\\" + world + "\\topTribeLoss.png";
@@ -1603,9 +1680,20 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 	gdImagePtr image;
 	FILE* topPlayerConqOut;
 	std::string filePath = "";
+#ifdef _WIN64
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath1 += "\\Arena Condensed Bold.ttf";
+
+#ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath2 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath2 += "\\Arena.ttf";
 
 	filePath += "maps\\" + world + "\\topPlayerConq.png";
@@ -1833,9 +1921,20 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 	gdImagePtr image;
 	FILE* topPlayerLossOut;
 	std::string filePath = "";
+#ifdef _WIN64
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath1 += "\\Arena Condensed Bold.ttf";
+
+#ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	std::string fontPath2 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath2 += "\\Arena.ttf";
 
 	filePath += "maps\\" + world + "\\topPlayerLoss.png";
