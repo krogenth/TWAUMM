@@ -4,6 +4,9 @@
 #include <deque>
 #include <ctime>
 #include <experimental/filesystem>
+#include <thread>
+
+#include <iostream>
 
 #include "cURLread.h"
 
@@ -24,6 +27,9 @@
 #endif
 
 int main(int argc, char* argv[]) {
+
+	uint64_t currTime = 0;
+	std::chrono::milliseconds timespan(30000);		//	30 seconds
 
 	CURL* cURL;
 
@@ -60,72 +66,89 @@ int main(int argc, char* argv[]) {
 
 	}
 
-	while (std::getline(worldsFile, data)) {
+	while (1) {
 
-		if (data[0] == ';')
-			continue;
+		currTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock().now().time_since_epoch()).count();
 
-		time = std::time(NULL);
+		while ((currTime % 86400000) > 60) {
 
-		std::deque<tribe*> topTribes(15, nullptr);
-		std::deque<player*> topPlayers(15, nullptr);
+			std::cout << "current epoch in seconds is: " << currTime << '\n';
+			std::flush(std::cout);
+			std::this_thread::sleep_for(timespan);
+			currTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock().now().time_since_epoch()).count();
 
-		std::deque<tribe*> topODt(15, nullptr);
-		std::deque<tribe*> topODAt(15, nullptr);
-		std::deque<tribe*> topODDt(15, nullptr);
+		}
 
-		std::deque<player*> topOD(15, nullptr);
-		std::deque<player*> topODA(15, nullptr);
-		std::deque<player*> topODD(15, nullptr);
-
-		std::deque<tribe*> topTribeConqs(15, nullptr);
-		std::deque<tribe*> topTribeLosses(15, nullptr);
+		worldsFile.seekg(std::ios::beg);
 		
-		std::deque<player*> topConqs(15, nullptr);
-		std::deque<player*> topLosses(15, nullptr);
+		while (std::getline(worldsFile, data)) {
 
-		size_t zoom = 500;
+			if (data[0] == ';')
+				continue;
 
-		url = "https://" + data + "/map/";
+			time = std::time(NULL);
 
-		std::deque<tribe> tribes;
-		readTribes(url, tribes, topTribes);
+			std::deque<tribe*> topTribes(15, nullptr);
+			std::deque<player*> topPlayers(15, nullptr);
 
-		std::deque<player> players;
-		readPlayers(url, players, tribes, topPlayers);
+			std::deque<tribe*> topPlayerODt(15, nullptr);
+			std::deque<tribe*> topPlayerODAt(15, nullptr);
+			std::deque<tribe*> topPlayerODDt(15, nullptr);
 
-		std::deque<village> villages;
-		readVillages(url, villages, players, zoom);
+			std::deque<player*> topPlayerOD(15, nullptr);
+			std::deque<player*> topPlayerODA(15, nullptr);
+			std::deque<player*> topPlayerODD(15, nullptr);
 
-		readODt(url, tribes, topODt);
-		readODAt(url, tribes, topODAt);
-		readODDt(url, tribes, topODDt);
+			std::deque<tribe*> topTribeConqs(15, nullptr);
+			std::deque<tribe*> topTribeLosses(15, nullptr);
 
-		readOD(url, players, topOD);
-		readODA(url, players, topODA);
-		readODD(url, players, topODD);
+			std::deque<player*> topPlayerConqs(15, nullptr);
+			std::deque<player*> topPlayerLosses(15, nullptr);
 
-		readConq(url, villages, players, tribes, time, topTribeConqs, topTribeLosses, topConqs, topLosses);
+			size_t zoom = 500;
 
-		data = data.substr(0, data.find('.'));
+			url = "https://" + data + "/map/";
 
-		std::experimental::filesystem::create_directory("maps");
-		std::experimental::filesystem::create_directory("maps/" + data);
+			std::deque<tribe> tribes;
+			readTribes(url, tribes, topTribes);
 
-		drawTopTribes(data, colors, zoom, topTribes);
-		drawTopPlayers(data, colors, zoom, topPlayers);
+			std::deque<player> players;
+			readPlayers(url, players, tribes, topPlayers);
 
-		drawTopTribeODA(data, colors, zoom, topODAt);
-		drawTopTribeODD(data, colors, zoom, topODDt);
+			std::deque<village> villages;
+			readVillages(url, villages, players, zoom);
 
-		drawTopPlayerODA(data, colors, zoom, topODA);
-		drawTopPlayerODD(data, colors, zoom, topODD);
+			readODt(url, tribes, topPlayerODt);
+			readODAt(url, tribes, topPlayerODAt);
+			readODDt(url, tribes, topPlayerODDt);
 
-		drawTopTribeConqs(data, colors, zoom, topTribes, topTribeConqs);
-		drawTopTribeLosses(data, colors, zoom, topTribes, topTribeLosses);
+			readOD(url, players, topPlayerOD);
+			readODA(url, players, topPlayerODA);
+			readODD(url, players, topPlayerODD);
 
-		drawTopPlayerConqs(data, colors, zoom, topPlayers, topConqs);
-		drawTopPlayerLosses(data, colors, zoom, topPlayers, topLosses);
+			readConq(url, villages, players, tribes, time, topTribeConqs, topTribeLosses, topPlayerConqs, topPlayerLosses);
+
+			data = data.substr(0, data.find('.'));
+
+			std::experimental::filesystem::create_directory("maps");
+			std::experimental::filesystem::create_directory("maps/" + data);
+
+			drawTopTribes(data, colors, zoom, topTribes);
+			drawTopPlayers(data, colors, zoom, topPlayers);
+
+			drawTopTribeODA(data, colors, zoom, topPlayerODAt);
+			drawTopTribeODD(data, colors, zoom, topPlayerODDt);
+
+			drawTopPlayerODA(data, colors, zoom, topPlayerODA);
+			drawTopPlayerODD(data, colors, zoom, topPlayerODD);
+
+			drawTopTribeConqs(data, colors, zoom, topTribes, topTribeConqs);
+			drawTopTribeLosses(data, colors, zoom, topTribes, topTribeLosses);
+
+			drawTopPlayerConqs(data, colors, zoom, topPlayers, topPlayerConqs);
+			drawTopPlayerLosses(data, colors, zoom, topPlayers, topPlayerLosses);
+
+		}
 
 	}
 
