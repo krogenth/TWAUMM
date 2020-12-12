@@ -86,7 +86,7 @@ village* player::getVillage(size_t index) const {
 	if (index < this->villages.size())
 		return this->villages[index];
 	else
-		throw std::exception("player.getVillage index out of bounds!");
+		throw std::exception();
 
 }
 
@@ -134,7 +134,7 @@ village* player::getConq(size_t index) const {
 	if (index < this->conqs.size())
 		return this->conqs[index];
 	else
-		throw std::exception("Player.getConq index out of bounds!");
+		throw std::exception();
 
 }
 size_t player::getConqPoints() const {
@@ -159,7 +159,7 @@ village* player::getLoss(size_t index) const {
 	if (index < this->losses.size())
 		return this->losses[index];
 	else
-		throw std::exception("Player.getLoss index out of bounds!");
+		throw std::exception();
 
 }
 size_t player::getLossPoints() const {

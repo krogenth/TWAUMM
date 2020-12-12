@@ -74,7 +74,7 @@ void readTribes(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& 
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
-		throw std::exception("cURL handle failed on ally.txt!");
+		throw std::exception();
 
 	char buffer[256];
 	std::string bufferString = "";
@@ -161,7 +161,7 @@ void readPlayers(std::string url, std::deque<player>& players, std::deque<tribe>
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
-		throw std::exception("cURL handle failed on tribe.txt!");
+		throw std::exception();
 
 	char buffer[256];
 	std::string bufferString = "";
@@ -241,7 +241,7 @@ void readVillages(std::string url, std::deque<village>& villages, std::deque<pla
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
-		throw std::exception("cURL handle failed on village.txt!");
+		throw std::exception();
 
 	char buffer[256];
 	std::string bufferString = "";
@@ -311,7 +311,7 @@ void readOD(std::string url, std::deque<player>& players, std::deque<player*>& t
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
-		throw std::exception("cURL handle failed on kill_all.txt!");
+		throw std::exception();
 
 	char buffer[256];
 	std::string bufferString = "";
@@ -356,7 +356,7 @@ void readODA(std::string url, std::deque<player>& players, std::deque<player*>& 
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
-		throw std::exception("cURL handle failed on kill_att.txt!");
+		throw std::exception();
 
 	char buffer[256];
 	std::string bufferString = "";
@@ -401,7 +401,7 @@ void readODD(std::string url, std::deque<player>& players, std::deque<player*>& 
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
-		throw std::exception("cURL handle failed on kill_def.txt!");
+		throw std::exception();
 
 	char buffer[256];
 	std::string bufferString = "";
@@ -446,7 +446,7 @@ void readODt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& top
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
-		throw std::exception("cURL handle failed on kill_all_tribe.txt!");
+		throw std::exception();
 
 	char buffer[256];
 	std::string bufferString = "";
@@ -491,7 +491,7 @@ void readODAt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& to
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
-		throw std::exception("cURL handle failed on kill_att_tribe.txt!");
+		throw std::exception();
 
 	char buffer[256];
 	std::string bufferString = "";
@@ -536,7 +536,7 @@ void readODDt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& to
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
-		throw std::exception("cURL handle failed on kill_att_tribe.txt!");
+		throw std::exception();
 
 	char buffer[256];
 	std::string bufferString = "";
@@ -581,7 +581,7 @@ void readConq(std::string url, std::deque<village>& villages, std::deque<player>
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
-		throw std::exception("cURL handle failed on kill_all.txt!");
+		throw std::exception();
 
 	char buffer[256];
 	std::string bufferString = "";

@@ -4,7 +4,6 @@
 #include <ctime>
 #include <time.h>
 #include <stdio.h>
-#include <windows.h>
 #include <cinttypes>
 #include <experimental\filesystem>
 

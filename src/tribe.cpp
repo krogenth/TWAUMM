@@ -114,7 +114,7 @@ player* tribe::getMemberID(size_t index) const {
 	if (index < memberIDs.size())
 		return this->memberIDs[index];
 	else
-		throw std::exception("tribe.getMemberID index out of bounds!");
+		throw std::exception();
 
 }
 
@@ -162,7 +162,7 @@ village* tribe::getConq(size_t index) const {
 	if (index < conqs.size())
 		return this->conqs[index];
 	else
-		throw std::exception("tribe.getConq index out of bounds!");
+		throw std::exception();
 
 }
 size_t tribe::getConqPoints() const {
@@ -187,7 +187,7 @@ village* tribe::getLoss(size_t index) const {
 	if (index < losses.size())
 		return this->losses[index];
 	else
-		throw std::exception("tribe.getLoss index out of bounds!");
+		throw std::exception();
 
 }
 size_t tribe::getLossPoints() const {
