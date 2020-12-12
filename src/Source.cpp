@@ -24,7 +24,7 @@
 
 #include "drawMap.h"
 
-#include "curl\curl.h"
+#include "curl/curl.h"
 
 #if defined(_DEBUG) && defined(_WIN64)
 #pragma comment(lib, "libcurl_debug.lib")
