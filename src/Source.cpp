@@ -3,10 +3,16 @@
 #include <fstream>
 #include <deque>
 #include <ctime>
+#ifdef _WIN64
 #include <experimental/filesystem>
+#endif
+#ifdef unix | __unix | __unix__
+#include <filesystem>
+#endif
+
 #include <thread>
 
-#include <iostream>
+//#include <iostream>
 
 #include "cURLread.h"
 
@@ -72,8 +78,6 @@ int main(int argc, char* argv[]) {
 
 		while ((currTime % 86400000) > 60) {
 
-			std::cout << "current epoch in seconds is: " << currTime << '\n';
-			std::flush(std::cout);
 			std::this_thread::sleep_for(timespan);
 			currTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock().now().time_since_epoch()).count();
 
@@ -130,8 +134,14 @@ int main(int argc, char* argv[]) {
 
 			data = data.substr(0, data.find('.'));
 
+#ifdef _WIN64
 			std::experimental::filesystem::create_directory("maps");
 			std::experimental::filesystem::create_directory("maps/" + data);
+#endif
+#ifdef unix | __unix | __unix__
+			std::filesystem::create_directory("maps");
+			std::filesystem::create_directory("maps/" + data);
+#endif
 
 			drawTopTribes(data, colors, zoom, topTribes);
 			drawTopPlayers(data, colors, zoom, topPlayers);

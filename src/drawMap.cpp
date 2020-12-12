@@ -1,11 +1,17 @@
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+#define _CRT_SECURE_NO_WARNINGS
 
 #include <fstream>
 #include <ctime>
 #include <time.h>
 #include <stdio.h>
 #include <cinttypes>
-#include <experimental\filesystem>
+#ifdef _WIN64
+#include <experimental/filesystem>
+#endif
+#ifdef unix | __unix | __unix__
+#include <filesystem>
+#endif
 
 #include <codecvt>
 #include <locale>
@@ -23,14 +29,27 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 	gdImagePtr image;
 	FILE* topTribeOut;
 	std::string filePath = "";
+
+#ifdef _WIN64
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#ifdef unix | __unix | __unix__
+	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath1 += "\\Arena Condensed Bold.ttf";
+
+#ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
+#endif
+#ifdef unix | __unix | __unix__
+	std::string fontPath2 = std::filesystem::current_path().u8string().c_str();
+#endif
 	fontPath2 += "\\Arena.ttf";
 
 	filePath += "maps\\" + world + "\\topTribe.png";
 
-	errno_t err = fopen_s(&topTribeOut, filePath.c_str(), "wb");
+	//errno_t err = fopen_s(&topTribeOut, filePath.c_str(), "wb");
+	topTribeOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
 	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
@@ -205,7 +224,7 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<player*>& topPlayers) {
 
 	gdImagePtr image;
-	FILE* topTribeOut;
+	FILE* topPlayerOut;
 	std::string filePath = "";
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
 	fontPath1 += "\\Arena Condensed Bold.ttf";
@@ -214,7 +233,8 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 
 	filePath += "maps\\" + world + "\\topPlayer.png";
 
-	errno_t err = fopen_s(&topTribeOut, filePath.c_str(), "wb");
+	//errno_t err = fopen_s(&topPlayerOut, filePath.c_str(), "wb");
+	topPlayerOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
 	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
@@ -367,9 +387,9 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
-	fwrite(data, sizeof(char), size, topTribeOut);
+	fwrite(data, sizeof(char), size, topPlayerOut);
 
-	fclose(topTribeOut);
+	fclose(topPlayerOut);
 	gdImageDestroy(image);
 
 }
@@ -381,7 +401,7 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<tribe*>& topODATribes) {
 
 	gdImagePtr image;
-	FILE* topTribeOut;
+	FILE* topTribeOdaOut;
 	std::string filePath = "";
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
 	fontPath1 += "\\Arena Condensed Bold.ttf";
@@ -390,7 +410,8 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 
 	filePath += "maps\\" + world + "\\topTribeODA.png";
 
-	errno_t err = fopen_s(&topTribeOut, filePath.c_str(), "wb");
+	//errno_t err = fopen_s(&topTribeOdaOut, filePath.c_str(), "wb");
+	topTribeOdaOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
 	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
@@ -551,9 +572,9 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
-	fwrite(data, sizeof(char), size, topTribeOut);
+	fwrite(data, sizeof(char), size, topTribeOdaOut);
 
-	fclose(topTribeOut);
+	fclose(topTribeOdaOut);
 	gdImageDestroy(image);
 
 }
@@ -565,7 +586,7 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<tribe*>& topODDTribes) {
 
 	gdImagePtr image;
-	FILE* topTribeOut;
+	FILE* topTribeOddOut;
 	std::string filePath = "";
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
 	fontPath1 += "\\Arena Condensed Bold.ttf";
@@ -574,7 +595,8 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 
 	filePath += "maps\\" + world + "\\topTribeODD.png";
 
-	errno_t err = fopen_s(&topTribeOut, filePath.c_str(), "wb");
+	//errno_t err = fopen_s(&topTribeOddOut, filePath.c_str(), "wb");
+	topTribeOddOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
 	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
@@ -735,9 +757,9 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
-	fwrite(data, sizeof(char), size, topTribeOut);
+	fwrite(data, sizeof(char), size, topTribeOddOut);
 
-	fclose(topTribeOut);
+	fclose(topTribeOddOut);
 	gdImageDestroy(image);
 
 }
@@ -749,7 +771,7 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque<player*>& topODAPlayers) {
 
 	gdImagePtr image;
-	FILE* topTribeOut;
+	FILE* topPlayerOdaOut;
 	std::string filePath = "";
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
 	fontPath1 += "\\Arena Condensed Bold.ttf";
@@ -758,7 +780,8 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 
 	filePath += "maps\\" + world + "\\topPlayerODA.png";
 
-	errno_t err = fopen_s(&topTribeOut, filePath.c_str(), "wb");
+	//errno_t err = fopen_s(&topPlayerOdaOut, filePath.c_str(), "wb");
+	topPlayerOdaOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
 	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
@@ -911,9 +934,9 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
-	fwrite(data, sizeof(char), size, topTribeOut);
+	fwrite(data, sizeof(char), size, topPlayerOdaOut);
 
-	fclose(topTribeOut);
+	fclose(topPlayerOdaOut);
 	gdImageDestroy(image);
 
 }
@@ -925,7 +948,7 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque<player*>& topODDPlayers) {
 
 	gdImagePtr image;
-	FILE* topTribeOut;
+	FILE* topPlayerOddOut;
 	std::string filePath = "";
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
 	fontPath1 += "\\Arena Condensed Bold.ttf";
@@ -934,7 +957,8 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 
 	filePath += "maps\\" + world + "\\topPlayerODD.png";
 
-	errno_t err = fopen_s(&topTribeOut, filePath.c_str(), "wb");
+	//errno_t err = fopen_s(&topPlayerOddOut, filePath.c_str(), "wb");
+	topPlayerOddOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
 	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
@@ -1087,9 +1111,9 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
-	fwrite(data, sizeof(char), size, topTribeOut);
+	fwrite(data, sizeof(char), size, topPlayerOddOut);
 
-	fclose(topTribeOut);
+	fclose(topPlayerOddOut);
 	gdImageDestroy(image);
 
 }
@@ -1101,7 +1125,7 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::deque<tribe*>& topTribes, std::deque<tribe*>& topConqTribes) {
 
 	gdImagePtr image;
-	FILE* topTribeOut;
+	FILE* topTribeConqOut;
 	std::string filePath = "";
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
 	fontPath1 += "\\Arena Condensed Bold.ttf";
@@ -1110,7 +1134,8 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 
 	filePath += "maps\\" + world + "\\topTribeConq.png";
 
-	errno_t err = fopen_s(&topTribeOut, filePath.c_str(), "wb");
+	//errno_t err = fopen_s(&topTribeConqOut, filePath.c_str(), "wb");
+	topTribeConqOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
 	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
@@ -1324,9 +1349,9 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
-	fwrite(data, sizeof(char), size, topTribeOut);
+	fwrite(data, sizeof(char), size, topTribeConqOut);
 
-	fclose(topTribeOut);
+	fclose(topTribeConqOut);
 	gdImageDestroy(image);
 
 }
@@ -1338,7 +1363,7 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deque<tribe*>& topTribes, std::deque<tribe*>& topLossTribes) {
 
 	gdImagePtr image;
-	FILE* topTribeOut;
+	FILE* topTribeLossOut;
 	std::string filePath = "";
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
 	fontPath1 += "\\Arena Condensed Bold.ttf";
@@ -1347,7 +1372,8 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 
 	filePath += "maps\\" + world + "\\topTribeLoss.png";
 
-	errno_t err = fopen_s(&topTribeOut, filePath.c_str(), "wb");
+	//errno_t err = fopen_s(&topTribeLossOut, filePath.c_str(), "wb");
+	topTribeLossOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
 	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
@@ -1561,9 +1587,9 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
-	fwrite(data, sizeof(char), size, topTribeOut);
+	fwrite(data, sizeof(char), size, topTribeLossOut);
 
-	fclose(topTribeOut);
+	fclose(topTribeLossOut);
 	gdImageDestroy(image);
 
 }
@@ -1575,7 +1601,7 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deque<player*>& topPlayers, std::deque<player*>& topConqPlayers) {
 
 	gdImagePtr image;
-	FILE* topTribeOut;
+	FILE* topPlayerConqOut;
 	std::string filePath = "";
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
 	fontPath1 += "\\Arena Condensed Bold.ttf";
@@ -1584,7 +1610,8 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 
 	filePath += "maps\\" + world + "\\topPlayerConq.png";
 
-	errno_t err = fopen_s(&topTribeOut, filePath.c_str(), "wb");
+	//errno_t err = fopen_s(&topPlayerConqOut, filePath.c_str(), "wb");
+	topPlayerConqOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
 	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
@@ -1790,9 +1817,9 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
-	fwrite(data, sizeof(char), size, topTribeOut);
+	fwrite(data, sizeof(char), size, topPlayerConqOut);
 
-	fclose(topTribeOut);
+	fclose(topPlayerConqOut);
 	gdImageDestroy(image);
 
 }
@@ -1804,7 +1831,7 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::deque<player*>& topPlayers, std::deque<player*>& topLossPlayers) {
 
 	gdImagePtr image;
-	FILE* topTribeOut;
+	FILE* topPlayerLossOut;
 	std::string filePath = "";
 	std::string fontPath1 = std::experimental::filesystem::current_path().u8string().c_str();
 	fontPath1 += "\\Arena Condensed Bold.ttf";
@@ -1813,7 +1840,8 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 
 	filePath += "maps\\" + world + "\\topPlayerLoss.png";
 
-	errno_t err = fopen_s(&topTribeOut, filePath.c_str(), "wb");
+	//errno_t err = fopen_s(&topPlayerLossOut, filePath.c_str(), "wb");
+	topPlayerLossOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
 	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
@@ -2019,9 +2047,9 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
-	fwrite(data, sizeof(char), size, topTribeOut);
+	fwrite(data, sizeof(char), size, topPlayerLossOut);
 
-	fclose(topTribeOut);
+	fclose(topPlayerLossOut);
 	gdImageDestroy(image);
 
 }
