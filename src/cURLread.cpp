@@ -163,7 +163,6 @@ URL_FILE *url_fopen(const char *url, const char *operation)
 	if (!file)
 		return NULL;
 
-	//fopen_s(&file->handle.file, url, operation);
 	file->handle.file = fopen(url, operation);
 
 	if (file->handle.file)

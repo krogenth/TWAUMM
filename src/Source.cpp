@@ -26,9 +26,9 @@
 
 #include "curl\curl.h"
 
-#ifdef _DEBUG
+#if defined(_DEBUG) && defined(_WIN64)
 #pragma comment(lib, "libcurl_debug.lib")
-#else
+#elif defined(_WIN64)
 #pragma comment(lib, "libcurl.lib")
 #endif
 
@@ -59,6 +59,8 @@ int main(int argc, char* argv[]) {
 
 	std::ifstream colorsFile;
 	colorsFile.open("colors.txt");
+	if (!colorsFile.is_open())
+		return EXIT_FAILURE;
 
 	for (size_t i = 0; std::getline(colorsFile, temp); i++) {
 
@@ -71,6 +73,8 @@ int main(int argc, char* argv[]) {
 		colors[i * 3 + 2] = atoi(temp.substr(0, temp.find(' ')).c_str());
 
 	}
+
+	colorsFile.close();
 
 	while (1) {
 
