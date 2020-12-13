@@ -55,29 +55,22 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 	topTribeOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
-	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
-	int bgcolor = gdImageColorAllocate(image, 0, 120, 0);
-	int white = gdImageColorAllocate(image, 255, 255, 255);
-	int black = gdImageColorAllocate(image, 0, 0, 0);
-	int charcoal = gdImageColorAllocate(image, 51, 51, 51);
+	int32_t kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95),
+			bgcolor = gdImageColorAllocate(image, 0, 120, 0),
+			white = gdImageColorAllocate(image, 255, 255, 255),
+			black = gdImageColorAllocate(image, 0, 0, 0),
+			charcoal = gdImageColorAllocate(image, 51, 51, 51);
 
-	unsigned int gdColors[15] = { 0 };
+	uint32_t gdColors[15] = { 0 };
 
 	for (int count = 0; count < 15; count++)
 		gdColors[count] = gdImageColorAllocate(image, colors[count * 3], colors[count * 3 + 1], colors[count * 3 + 2]);
 
-	unsigned int worldLength = 10 / zoom;
-	unsigned int kLength = 100 * zoom;
-
-	unsigned int remain = worldLength % 2;
-
-	unsigned int wholeK;
-	if (remain == 1)
-		wholeK = (worldLength)-1;
-	else
-		wholeK = worldLength;
-
-	float partialK = ((worldLength - wholeK) * 100 * zoom) / 2;
+	float worldLength = 10.0f / (float)zoom;
+	uint32_t worldLengthFloor = std::floor(worldLength);
+	uint32_t kLength = 100 * zoom;
+	uint32_t wholeK = worldLengthFloor - (worldLengthFloor % 2);
+	float partialK = (worldLength - (float)wholeK) / 2.0f;
 
 	gdImageFilledRectangle(image, 0, 30, 1000, 1030, bgcolor);
 	gdImageFilledRectangle(image, 1000, 30, 1250, 1030, white);
@@ -139,10 +132,12 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 
 	}
 
-	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
+	for (uint32_t i = 0; i < (uint32_t)((float)kLength * worldLength); i += kLength) {
 
-		gdImageLine(image, partialK + i, 30, partialK + i, 1030, kNumColor);
-		gdImageLine(image, 0, partialK + i + 30, kLength * worldLength, partialK + i + 30, kNumColor);
+		uint32_t check = (uint32_t)((float)kLength * partialK) + i;
+
+		gdImageLine(image, check, 30, check, 1030, kNumColor);
+		gdImageLine(image, 0, check + 30, 1000, check + 30, kNumColor);
 
 	}
 
@@ -158,6 +153,20 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 	gdStringExtras.fontpath = &fontPath1[0];
 	*/
 
+	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
+
+		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
+
+			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
+			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			gdImageStringFT(image, &rect[0], kNumColor, &fontPath1[0], 10, 0, x, y, &kNum[0]);
+
+		}
+
+
+	}
+
 	for (uint32_t i = 0; i < 15; i++) {
 
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
@@ -165,10 +174,10 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 		std::wstring wdata;
 		std::string data;
 
-		xWord = (kLength * worldLength) + 90;
+		xWord = 1090;
 		yWord = 62 + (i * 60);
 
-		xColor = (kLength * worldLength) + 15;
+		xColor = 1015;
 		yColor = 55 + (i * 60);
 
 		colorHeight = yColor + 30;
@@ -194,8 +203,8 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
 
 		//included for testing purposes
-		//data = "zoom: " + std::to_string(zoom);
-		//gdImageStringFT(image, &rect[0], white, &fontPath1[0], 14, 0, 500, 20, &data[0]);
+		data = "zoom: " + std::to_string(zoom);
+		gdImageStringFT(image, &rect[0], white, &fontPath1[0], 14, 0, 500, 20, &data[0]);
 
 	}
 
@@ -215,8 +224,8 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topTribeOut);
 
-	delete timeInfo;
-	delete[] buffer;
+	//delete timeInfo;
+	//delete[] buffer;
 
 	fclose(topTribeOut);
 	gdImageDestroy(image);
@@ -258,29 +267,22 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 	topPlayerOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
-	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
-	int bgcolor = gdImageColorAllocate(image, 0, 120, 0);
-	int white = gdImageColorAllocate(image, 255, 255, 255);
-	int black = gdImageColorAllocate(image, 0, 0, 0);
-	int charcoal = gdImageColorAllocate(image, 51, 51, 51);
+	int32_t kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95),
+			bgcolor = gdImageColorAllocate(image, 0, 120, 0),
+			white = gdImageColorAllocate(image, 255, 255, 255),
+			black = gdImageColorAllocate(image, 0, 0, 0),
+			charcoal = gdImageColorAllocate(image, 51, 51, 51);
 
-	unsigned int gdColors[15] = { 0 };
+	uint32_t gdColors[15] = { 0 };
 
 	for (int count = 0; count < 15; count++)
 		gdColors[count] = gdImageColorAllocate(image, colors[count * 3], colors[count * 3 + 1], colors[count * 3 + 2]);
 
-	unsigned int worldLength = 10 / zoom;
-	unsigned int kLength = 100 * zoom;
-
-	unsigned int remain = worldLength % 2;
-
-	unsigned int wholeK;
-	if (remain == 1)
-		wholeK = (worldLength)-1;
-	else
-		wholeK = worldLength;
-
-	float partialK = ((worldLength - wholeK) * 100 * zoom) / 2;
+	float worldLength = 10.0f / (float)zoom;
+	uint32_t worldLengthFloor = std::floor(worldLength);
+	uint32_t kLength = 100 * zoom;
+	uint32_t wholeK = worldLengthFloor - (worldLengthFloor % 2);
+	float partialK = (worldLength - (float)wholeK) / 2.0f;
 
 	gdImageFilledRectangle(image, 0, 30, 1000, 1030, bgcolor);
 	gdImageFilledRectangle(image, 1000, 30, 1250, 1030, white);
@@ -336,8 +338,8 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 
 	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
 
-		gdImageLine(image, partialK + i, 30, partialK + i, 1030, kNumColor);
-		gdImageLine(image, 0, partialK + i + 30, kLength * worldLength, partialK + i + 30, kNumColor);
+		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
+		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
 
 	}
 
@@ -353,6 +355,20 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 	gdStringExtras.fontpath = &fontPath1[0];
 	*/
 
+	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
+
+		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
+
+			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
+			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			gdImageStringFT(image, &rect[0], kNumColor, &fontPath1[0], 10, 0, x, y, &kNum[0]);
+
+		}
+
+
+	}
+
 	for (uint32_t i = 0; i < 15; i++) {
 
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
@@ -360,10 +376,10 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 		std::wstring wdata;
 		std::string data;
 
-		xWord = (kLength * worldLength) + 90;
+		xWord = 1090;
 		yWord = 62 + (i * 60);
 
-		xColor = (kLength * worldLength) + 15;
+		xColor = 1015;
 		yColor = 55 + (i * 60);
 
 		colorHeight = yColor + 30;
@@ -410,8 +426,8 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topPlayerOut);
 
-	delete timeInfo;
-	delete[] buffer;
+	////delete timeInfo;
+	//delete[] buffer;
 
 	fclose(topPlayerOut);
 	gdImageDestroy(image);
@@ -452,29 +468,22 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 	topTribeOdaOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
-	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
-	int bgcolor = gdImageColorAllocate(image, 0, 120, 0);
-	int white = gdImageColorAllocate(image, 255, 255, 255);
-	int black = gdImageColorAllocate(image, 0, 0, 0);
-	int charcoal = gdImageColorAllocate(image, 51, 51, 51);
+	int32_t kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95),
+			bgcolor = gdImageColorAllocate(image, 0, 120, 0),
+			white = gdImageColorAllocate(image, 255, 255, 255),
+			black = gdImageColorAllocate(image, 0, 0, 0),
+			charcoal = gdImageColorAllocate(image, 51, 51, 51);
 
-	unsigned int gdColors[15] = { 0 };
+	uint32_t gdColors[15] = { 0 };
 
 	for (int count = 0; count < 15; count++)
 		gdColors[count] = gdImageColorAllocate(image, colors[count * 3], colors[count * 3 + 1], colors[count * 3 + 2]);
 
-	unsigned int worldLength = 10 / zoom;
-	unsigned int kLength = 100 * zoom;
-
-	unsigned int remain = worldLength % 2;
-
-	unsigned int wholeK;
-	if (remain == 1)
-		wholeK = (worldLength)-1;
-	else
-		wholeK = worldLength;
-
-	float partialK = ((worldLength - wholeK) * 100 * zoom) / 2;
+	float worldLength = 10.0f / (float)zoom;
+	uint32_t worldLengthFloor = std::floor(worldLength);
+	uint32_t kLength = 100 * zoom;
+	uint32_t wholeK = worldLengthFloor - (worldLengthFloor % 2);
+	float partialK = (worldLength - (float)wholeK) / 2.0f;
 
 	gdImageFilledRectangle(image, 0, 30, 1000, 1030, bgcolor);
 	gdImageFilledRectangle(image, 1000, 30, 1250, 1030, white);
@@ -538,8 +547,8 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 
 	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
 
-		gdImageLine(image, partialK + i, 30, partialK + i, 1030, kNumColor);
-		gdImageLine(image, 0, partialK + i + 30, kLength * worldLength, partialK + i + 30, kNumColor);
+		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
+		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
 
 	}
 
@@ -555,6 +564,20 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 	gdStringExtras.fontpath = &fontPath1[0];
 	*/
 
+	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
+
+		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
+
+			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
+			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			gdImageStringFT(image, &rect[0], kNumColor, &fontPath1[0], 10, 0, x, y, &kNum[0]);
+
+		}
+
+
+	}
+
 	for (uint32_t i = 0; i < 15; i++) {
 
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
@@ -562,10 +585,10 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 		std::wstring wdata;
 		std::string data;
 
-		xWord = (kLength * worldLength) + 90;
+		xWord = 1090;
 		yWord = 62 + (i * 60);
 
-		xColor = (kLength * worldLength) + 15;
+		xColor = 1015;
 		yColor = 55 + (i * 60);
 
 		colorHeight = yColor + 30;
@@ -612,8 +635,8 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topTribeOdaOut);
 
-	delete timeInfo;
-	delete[] buffer;
+	//delete timeInfo;
+	//delete[] buffer;
 
 	fclose(topTribeOdaOut);
 	gdImageDestroy(image);
@@ -654,29 +677,22 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 	topTribeOddOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
-	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
-	int bgcolor = gdImageColorAllocate(image, 0, 120, 0);
-	int white = gdImageColorAllocate(image, 255, 255, 255);
-	int black = gdImageColorAllocate(image, 0, 0, 0);
-	int charcoal = gdImageColorAllocate(image, 51, 51, 51);
+	int32_t kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95),
+			bgcolor = gdImageColorAllocate(image, 0, 120, 0),
+			white = gdImageColorAllocate(image, 255, 255, 255),
+			black = gdImageColorAllocate(image, 0, 0, 0),
+			charcoal = gdImageColorAllocate(image, 51, 51, 51);
 
-	unsigned int gdColors[15] = { 0 };
+	uint32_t gdColors[15] = { 0 };
 
 	for (int count = 0; count < 15; count++)
 		gdColors[count] = gdImageColorAllocate(image, colors[count * 3], colors[count * 3 + 1], colors[count * 3 + 2]);
 
-	unsigned int worldLength = 10 / zoom;
-	unsigned int kLength = 100 * zoom;
-
-	unsigned int remain = worldLength % 2;
-
-	unsigned int wholeK;
-	if (remain == 1)
-		wholeK = (worldLength)-1;
-	else
-		wholeK = worldLength;
-
-	float partialK = ((worldLength - wholeK) * 100 * zoom) / 2;
+	float worldLength = 10.0f / (float)zoom;
+	uint32_t worldLengthFloor = std::floor(worldLength);
+	uint32_t kLength = 100 * zoom;
+	uint32_t wholeK = worldLengthFloor - (worldLengthFloor % 2);
+	float partialK = (worldLength - (float)wholeK) / 2.0f;
 
 	gdImageFilledRectangle(image, 0, 30, 1000, 1030, bgcolor);
 	gdImageFilledRectangle(image, 1000, 30, 1250, 1030, white);
@@ -740,8 +756,8 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 
 	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
 
-		gdImageLine(image, partialK + i, 30, partialK + i, 1030, kNumColor);
-		gdImageLine(image, 0, partialK + i + 30, kLength * worldLength, partialK + i + 30, kNumColor);
+		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
+		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
 
 	}
 
@@ -757,6 +773,20 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 	gdStringExtras.fontpath = &fontPath1[0];
 	*/
 
+	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
+
+		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
+
+			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
+			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			gdImageStringFT(image, &rect[0], kNumColor, &fontPath1[0], 10, 0, x, y, &kNum[0]);
+
+		}
+
+
+	}
+
 	for (uint32_t i = 0; i < 15; i++) {
 
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
@@ -764,10 +794,10 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 		std::wstring wdata;
 		std::string data;
 
-		xWord = (kLength * worldLength) + 90;
+		xWord = 1090;
 		yWord = 62 + (i * 60);
 
-		xColor = (kLength * worldLength) + 15;
+		xColor = 1015;
 		yColor = 55 + (i * 60);
 
 		colorHeight = yColor + 30;
@@ -814,8 +844,8 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topTribeOddOut);
 
-	delete timeInfo;
-	delete[] buffer;
+	//delete timeInfo;
+	//delete[] buffer;
 
 	fclose(topTribeOddOut);
 	gdImageDestroy(image);
@@ -856,29 +886,22 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 	topPlayerOdaOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
-	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
-	int bgcolor = gdImageColorAllocate(image, 0, 120, 0);
-	int white = gdImageColorAllocate(image, 255, 255, 255);
-	int black = gdImageColorAllocate(image, 0, 0, 0);
-	int charcoal = gdImageColorAllocate(image, 51, 51, 51);
+	int32_t kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95),
+			bgcolor = gdImageColorAllocate(image, 0, 120, 0),
+			white = gdImageColorAllocate(image, 255, 255, 255),
+			black = gdImageColorAllocate(image, 0, 0, 0),
+			charcoal = gdImageColorAllocate(image, 51, 51, 51);
 
-	unsigned int gdColors[15] = { 0 };
+	uint32_t gdColors[15] = { 0 };
 
 	for (int count = 0; count < 15; count++)
 		gdColors[count] = gdImageColorAllocate(image, colors[count * 3], colors[count * 3 + 1], colors[count * 3 + 2]);
 
-	unsigned int worldLength = 10 / zoom;
-	unsigned int kLength = 100 * zoom;
-
-	unsigned int remain = worldLength % 2;
-
-	unsigned int wholeK;
-	if (remain == 1)
-		wholeK = (worldLength)-1;
-	else
-		wholeK = worldLength;
-
-	float partialK = ((worldLength - wholeK) * 100 * zoom) / 2;
+	float worldLength = 10.0f / (float)zoom;
+	uint32_t worldLengthFloor = std::floor(worldLength);
+	uint32_t kLength = 100 * zoom;
+	uint32_t wholeK = worldLengthFloor - (worldLengthFloor % 2);
+	float partialK = (worldLength - (float)wholeK) / 2.0f;
 
 	gdImageFilledRectangle(image, 0, 30, 1000, 1030, bgcolor);
 	gdImageFilledRectangle(image, 1000, 30, 1250, 1030, white);
@@ -934,8 +957,8 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 
 	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
 
-		gdImageLine(image, partialK + i, 30, partialK + i, 1030, kNumColor);
-		gdImageLine(image, 0, partialK + i + 30, kLength * worldLength, partialK + i + 30, kNumColor);
+		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
+		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
 
 	}
 
@@ -951,6 +974,20 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 	gdStringExtras.fontpath = &fontPath1[0];
 	*/
 
+	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
+
+		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
+
+			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
+			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			gdImageStringFT(image, &rect[0], kNumColor, &fontPath1[0], 10, 0, x, y, &kNum[0]);
+
+		}
+
+
+	}
+
 	for (uint32_t i = 0; i < 15; i++) {
 
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
@@ -958,10 +995,10 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 		std::wstring wdata;
 		std::string data;
 
-		xWord = (kLength * worldLength) + 90;
+		xWord = 1090;
 		yWord = 62 + (i * 60);
 
-		xColor = (kLength * worldLength) + 15;
+		xColor = 1015;
 		yColor = 55 + (i * 60);
 
 		colorHeight = yColor + 30;
@@ -1008,8 +1045,8 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topPlayerOdaOut);
 
-	delete timeInfo;
-	delete[] buffer;
+	//delete timeInfo;
+	//delete[] buffer;
 
 	fclose(topPlayerOdaOut);
 	gdImageDestroy(image);
@@ -1050,29 +1087,22 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 	topPlayerOddOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
-	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
-	int bgcolor = gdImageColorAllocate(image, 0, 120, 0);
-	int white = gdImageColorAllocate(image, 255, 255, 255);
-	int black = gdImageColorAllocate(image, 0, 0, 0);
-	int charcoal = gdImageColorAllocate(image, 51, 51, 51);
+	int32_t kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95),
+			bgcolor = gdImageColorAllocate(image, 0, 120, 0),
+			white = gdImageColorAllocate(image, 255, 255, 255),
+			black = gdImageColorAllocate(image, 0, 0, 0),
+			charcoal = gdImageColorAllocate(image, 51, 51, 51);
 
-	unsigned int gdColors[15] = { 0 };
+	uint32_t gdColors[15] = { 0 };
 
 	for (int count = 0; count < 15; count++)
 		gdColors[count] = gdImageColorAllocate(image, colors[count * 3], colors[count * 3 + 1], colors[count * 3 + 2]);
 
-	unsigned int worldLength = 10 / zoom;
-	unsigned int kLength = 100 * zoom;
-
-	unsigned int remain = worldLength % 2;
-
-	unsigned int wholeK;
-	if (remain == 1)
-		wholeK = (worldLength)-1;
-	else
-		wholeK = worldLength;
-
-	float partialK = ((worldLength - wholeK) * 100 * zoom) / 2;
+	float worldLength = 10.0f / (float)zoom;
+	uint32_t worldLengthFloor = std::floor(worldLength);
+	uint32_t kLength = 100 * zoom;
+	uint32_t wholeK = worldLengthFloor - (worldLengthFloor % 2);
+	float partialK = (worldLength - (float)wholeK) / 2.0f;
 
 	gdImageFilledRectangle(image, 0, 30, 1000, 1030, bgcolor);
 	gdImageFilledRectangle(image, 1000, 30, 1250, 1030, white);
@@ -1128,8 +1158,8 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 
 	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
 
-		gdImageLine(image, partialK + i, 30, partialK + i, 1030, kNumColor);
-		gdImageLine(image, 0, partialK + i + 30, kLength * worldLength, partialK + i + 30, kNumColor);
+		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
+		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
 
 	}
 
@@ -1145,6 +1175,20 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 	gdStringExtras.fontpath = &fontPath1[0];
 	*/
 
+	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
+
+		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
+
+			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
+			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			gdImageStringFT(image, &rect[0], kNumColor, &fontPath1[0], 10, 0, x, y, &kNum[0]);
+
+		}
+
+
+	}
+
 	for (uint32_t i = 0; i < 15; i++) {
 
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
@@ -1152,10 +1196,10 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 		std::wstring wdata;
 		std::string data;
 
-		xWord = (kLength * worldLength) + 90;
+		xWord = 1090;
 		yWord = 62 + (i * 60);
 
-		xColor = (kLength * worldLength) + 15;
+		xColor = 1015;
 		yColor = 55 + (i * 60);
 
 		colorHeight = yColor + 30;
@@ -1202,8 +1246,8 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topPlayerOddOut);
 
-	delete timeInfo;
-	delete[] buffer;
+	//delete timeInfo;
+	//delete[] buffer;
 
 	fclose(topPlayerOddOut);
 	gdImageDestroy(image);
@@ -1244,15 +1288,15 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 	topTribeConqOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
-	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
-	int bgcolor = gdImageColorAllocate(image, 0, 120, 0);
-	int white = gdImageColorAllocate(image, 255, 255, 255);
-	int black = gdImageColorAllocate(image, 0, 0, 0);
-	int charcoal = gdImageColorAllocate(image, 51, 51, 51);
-	int charcoalAlpha = gdImageColorAllocateAlpha(image, 51, 51, 51, 50);
+	int32_t kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95),
+			bgcolor = gdImageColorAllocate(image, 0, 120, 0),
+			white = gdImageColorAllocate(image, 255, 255, 255),
+			black = gdImageColorAllocate(image, 0, 0, 0),
+			charcoal = gdImageColorAllocate(image, 51, 51, 51),
+			charcoalAlpha = gdImageColorAllocateAlpha(image, 51, 51, 51, 50);
 
-	unsigned int gdColors[15] = { 0 };
-	unsigned int gdAlphaColors[15] = { 0 };
+	uint32_t gdColors[15] = { 0 },
+			 gdAlphaColors[15] = { 0 };
 
 	for (int count = 0; count < 15; count++) {
 
@@ -1261,18 +1305,11 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 
 	}
 
-	unsigned int worldLength = 10 / zoom;
-	unsigned int kLength = 100 * zoom;
-
-	unsigned int remain = worldLength % 2;
-
-	unsigned int wholeK;
-	if (remain == 1)
-		wholeK = (worldLength)-1;
-	else
-		wholeK = worldLength;
-
-	float partialK = ((worldLength - wholeK) * 100 * zoom) / 2;
+	float worldLength = 10.0f / (float)zoom;
+	uint32_t worldLengthFloor = std::floor(worldLength);
+	uint32_t kLength = 100 * zoom;
+	uint32_t wholeK = worldLengthFloor - (worldLengthFloor % 2);
+	float partialK = (worldLength - (float)wholeK) / 2.0f;
 
 	gdImageFilledRectangle(image, 0, 30, 1000, 1030, bgcolor);
 	gdImageFilledRectangle(image, 1000, 30, 1250, 1030, white);
@@ -1383,8 +1420,8 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 
 	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
 
-		gdImageLine(image, partialK + i, 30, partialK + i, 1030, kNumColor);
-		gdImageLine(image, 0, partialK + i + 30, kLength * worldLength, partialK + i + 30, kNumColor);
+		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
+		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
 
 	}
 
@@ -1400,6 +1437,20 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 	gdStringExtras.fontpath = &fontPath1[0];
 	*/
 
+	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
+
+		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
+
+			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
+			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			gdImageStringFT(image, &rect[0], kNumColor, &fontPath1[0], 10, 0, x, y, &kNum[0]);
+
+		}
+
+
+	}
+
 	for (uint32_t i = 0; i < 15; i++) {
 
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
@@ -1407,10 +1458,10 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 		std::wstring wdata;
 		std::string data;
 
-		xWord = (kLength * worldLength) + 90;
+		xWord = 1090;
 		yWord = 62 + (i * 60);
 
-		xColor = (kLength * worldLength) + 15;
+		xColor = 1015;
 		yColor = 55 + (i * 60);
 
 		colorHeight = yColor + 30;
@@ -1457,8 +1508,8 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topTribeConqOut);
 
-	delete timeInfo;
-	delete[] buffer;
+	//delete timeInfo;
+	//delete[] buffer;
 
 	fclose(topTribeConqOut);
 	gdImageDestroy(image);
@@ -1499,15 +1550,15 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 	topTribeLossOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
-	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
-	int bgcolor = gdImageColorAllocate(image, 0, 120, 0);
-	int white = gdImageColorAllocate(image, 255, 255, 255);
-	int black = gdImageColorAllocate(image, 0, 0, 0);
-	int charcoal = gdImageColorAllocate(image, 51, 51, 51);
-	int charcoalAlpha = gdImageColorAllocateAlpha(image, 51, 51, 51, 50);
+	int32_t kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95),
+			bgcolor = gdImageColorAllocate(image, 0, 120, 0),
+			white = gdImageColorAllocate(image, 255, 255, 255),
+			black = gdImageColorAllocate(image, 0, 0, 0),
+			charcoal = gdImageColorAllocate(image, 51, 51, 51),
+			charcoalAlpha = gdImageColorAllocateAlpha(image, 51, 51, 51, 50);
 
-	unsigned int gdColors[15] = { 0 };
-	unsigned int gdAlphaColors[15] = { 0 };
+	uint32_t gdColors[15] = { 0 },
+		gdAlphaColors[15] = { 0 };
 
 	for (int count = 0; count < 15; count++) {
 
@@ -1516,18 +1567,11 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 
 	}
 
-	unsigned int worldLength = 10 / zoom;
-	unsigned int kLength = 100 * zoom;
-
-	unsigned int remain = worldLength % 2;
-
-	unsigned int wholeK;
-	if (remain == 1)
-		wholeK = (worldLength)-1;
-	else
-		wholeK = worldLength;
-
-	float partialK = ((worldLength - wholeK) * 100 * zoom) / 2;
+	float worldLength = 10.0f / (float)zoom;
+	uint32_t worldLengthFloor = std::floor(worldLength);
+	uint32_t kLength = 100 * zoom;
+	uint32_t wholeK = worldLengthFloor - (worldLengthFloor % 2);
+	float partialK = (worldLength - (float)wholeK) / 2.0f;
 
 	gdImageFilledRectangle(image, 0, 30, 1000, 1030, bgcolor);
 	gdImageFilledRectangle(image, 1000, 30, 1250, 1030, white);
@@ -1638,8 +1682,8 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 
 	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
 
-		gdImageLine(image, partialK + i, 30, partialK + i, 1030, kNumColor);
-		gdImageLine(image, 0, partialK + i + 30, kLength * worldLength, partialK + i + 30, kNumColor);
+		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
+		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
 
 	}
 
@@ -1655,6 +1699,20 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 	gdStringExtras.fontpath = &fontPath1[0];
 	*/
 
+	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
+
+		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
+
+			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
+			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			gdImageStringFT(image, &rect[0], kNumColor, &fontPath1[0], 10, 0, x, y, &kNum[0]);
+
+		}
+
+
+	}
+
 	for (uint32_t i = 0; i < 15; i++) {
 
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
@@ -1662,10 +1720,10 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 		std::wstring wdata;
 		std::string data;
 
-		xWord = (kLength * worldLength) + 90;
+		xWord = 1090;
 		yWord = 62 + (i * 60);
 
-		xColor = (kLength * worldLength) + 15;
+		xColor = 1015;
 		yColor = 55 + (i * 60);
 
 		colorHeight = yColor + 30;
@@ -1712,8 +1770,8 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topTribeLossOut);
 
-	delete timeInfo;
-	delete[] buffer;
+	//delete timeInfo;
+	//delete[] buffer;
 
 	fclose(topTribeLossOut);
 	gdImageDestroy(image);
@@ -1754,15 +1812,15 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 	topPlayerConqOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
-	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
-	int bgcolor = gdImageColorAllocate(image, 0, 120, 0);
-	int white = gdImageColorAllocate(image, 255, 255, 255);
-	int black = gdImageColorAllocate(image, 0, 0, 0);
-	int charcoal = gdImageColorAllocate(image, 51, 51, 51);
-	int charcoalAlpha = gdImageColorAllocateAlpha(image, 51, 51, 51, 50);
+	int32_t kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95),
+		bgcolor = gdImageColorAllocate(image, 0, 120, 0),
+		white = gdImageColorAllocate(image, 255, 255, 255),
+		black = gdImageColorAllocate(image, 0, 0, 0),
+		charcoal = gdImageColorAllocate(image, 51, 51, 51),
+		charcoalAlpha = gdImageColorAllocateAlpha(image, 51, 51, 51, 50);
 
-	unsigned int gdColors[15] = { 0 };
-	unsigned int gdAlphaColors[15] = { 0 };
+	uint32_t gdColors[15] = { 0 },
+		gdAlphaColors[15] = { 0 };
 
 	for (int count = 0; count < 15; count++) {
 
@@ -1771,18 +1829,11 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 
 	}
 
-	unsigned int worldLength = 10 / zoom;
-	unsigned int kLength = 100 * zoom;
-
-	unsigned int remain = worldLength % 2;
-
-	unsigned int wholeK;
-	if (remain == 1)
-		wholeK = (worldLength)-1;
-	else
-		wholeK = worldLength;
-
-	float partialK = ((worldLength - wholeK) * 100 * zoom) / 2;
+	float worldLength = 10.0f / (float)zoom;
+	uint32_t worldLengthFloor = std::floor(worldLength);
+	uint32_t kLength = 100 * zoom;
+	uint32_t wholeK = worldLengthFloor - (worldLengthFloor % 2);
+	float partialK = (worldLength - (float)wholeK) / 2.0f;
 
 	gdImageFilledRectangle(image, 0, 30, 1000, 1030, bgcolor);
 	gdImageFilledRectangle(image, 1000, 30, 1250, 1030, white);
@@ -1885,8 +1936,8 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 
 	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
 
-		gdImageLine(image, partialK + i, 30, partialK + i, 1030, kNumColor);
-		gdImageLine(image, 0, partialK + i + 30, kLength * worldLength, partialK + i + 30, kNumColor);
+		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
+		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
 
 	}
 
@@ -1902,6 +1953,20 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 	gdStringExtras.fontpath = &fontPath1[0];
 	*/
 
+	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
+
+		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
+
+			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
+			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			gdImageStringFT(image, &rect[0], kNumColor, &fontPath1[0], 10, 0, x, y, &kNum[0]);
+
+		}
+
+
+	}
+
 	for (uint32_t i = 0; i < 15; i++) {
 
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
@@ -1909,10 +1974,10 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 		std::wstring wdata;
 		std::string data;
 
-		xWord = (kLength * worldLength) + 90;
+		xWord = 1090;
 		yWord = 62 + (i * 60);
 
-		xColor = (kLength * worldLength) + 15;
+		xColor = 1015;
 		yColor = 55 + (i * 60);
 
 		colorHeight = yColor + 30;
@@ -1959,8 +2024,8 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topPlayerConqOut);
 
-	delete timeInfo;
-	delete[] buffer;
+	//delete timeInfo;
+	//delete[] buffer;
 
 	fclose(topPlayerConqOut);
 	gdImageDestroy(image);
@@ -2001,15 +2066,15 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 	topPlayerLossOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
-	int kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95);
-	int bgcolor = gdImageColorAllocate(image, 0, 120, 0);
-	int white = gdImageColorAllocate(image, 255, 255, 255);
-	int black = gdImageColorAllocate(image, 0, 0, 0);
-	int charcoal = gdImageColorAllocate(image, 51, 51, 51);
-	int charcoalAlpha = gdImageColorAllocateAlpha(image, 51, 51, 51, 50);
+	int32_t kNumColor = gdImageColorAllocateAlpha(image, 255, 255, 255, 95),
+		bgcolor = gdImageColorAllocate(image, 0, 120, 0),
+		white = gdImageColorAllocate(image, 255, 255, 255),
+		black = gdImageColorAllocate(image, 0, 0, 0),
+		charcoal = gdImageColorAllocate(image, 51, 51, 51),
+		charcoalAlpha = gdImageColorAllocateAlpha(image, 51, 51, 51, 50);
 
-	unsigned int gdColors[15] = { 0 };
-	unsigned int gdAlphaColors[15] = { 0 };
+	uint32_t gdColors[15] = { 0 },
+		gdAlphaColors[15] = { 0 };
 
 	for (int count = 0; count < 15; count++) {
 
@@ -2018,18 +2083,11 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 
 	}
 
-	unsigned int worldLength = 10 / zoom;
-	unsigned int kLength = 100 * zoom;
-
-	unsigned int remain = worldLength % 2;
-
-	unsigned int wholeK;
-	if (remain == 1)
-		wholeK = (worldLength)-1;
-	else
-		wholeK = worldLength;
-
-	float partialK = ((worldLength - wholeK) * 100 * zoom) / 2;
+	float worldLength = 10.0f / (float)zoom;
+	uint32_t worldLengthFloor = std::floor(worldLength);
+	uint32_t kLength = 100 * zoom;
+	uint32_t wholeK = worldLengthFloor - (worldLengthFloor % 2);
+	float partialK = (worldLength - (float)wholeK) / 2.0f;
 
 	gdImageFilledRectangle(image, 0, 30, 1000, 1030, bgcolor);
 	gdImageFilledRectangle(image, 1000, 30, 1250, 1030, white);
@@ -2133,7 +2191,7 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
 
 		gdImageLine(image, partialK + i, 30, partialK + i, 1030, kNumColor);
-		gdImageLine(image, 0, partialK + i + 30, kLength * worldLength, partialK + i + 30, kNumColor);
+		gdImageLine(image, 0, partialK + i + 30, 1000, partialK + i + 30, kNumColor);
 
 	}
 
@@ -2149,6 +2207,20 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 	gdStringExtras.fontpath = &fontPath1[0];
 	*/
 
+	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
+
+		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
+
+			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
+			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			gdImageStringFT(image, &rect[0], kNumColor, &fontPath1[0], 10, 0, x, y, &kNum[0]);
+
+		}
+
+
+	}
+
 	for (uint32_t i = 0; i < 15; i++) {
 
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
@@ -2156,10 +2228,10 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 		std::wstring wdata;
 		std::string data;
 
-		xWord = (kLength * worldLength) + 90;
+		xWord = 1090;
 		yWord = 62 + (i * 60);
 
-		xColor = (kLength * worldLength) + 15;
+		xColor = 1015;
 		yColor = 55 + (i * 60);
 
 		colorHeight = yColor + 30;
@@ -2206,8 +2278,8 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topPlayerLossOut);
 
-	delete timeInfo;
-	delete[] buffer;
+	//delete timeInfo;
+	//delete[] buffer;
 
 	fclose(topPlayerLossOut);
 	gdImageDestroy(image);
