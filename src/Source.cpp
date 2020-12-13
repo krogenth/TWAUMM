@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
 	std::string temp = "";
 	size_t colors[45] = { 0 };
 
-	std::ifstream worldsFile("worlds.txt");
+	std::ifstream worldsFile("./worlds.txt");
 	if (!worldsFile.is_open())
 		return EXIT_FAILURE;
 
@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
 	cURL = curl_easy_init();
 
 	std::ifstream colorsFile;
-	colorsFile.open("colors.txt");
+	colorsFile.open("./colors.txt");
 	if (!colorsFile.is_open())
 		return EXIT_FAILURE;
 

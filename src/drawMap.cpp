@@ -46,7 +46,12 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 #endif
 	fontPath2 += "\\Arena.ttf";
 
+#ifdef _WIN64
 	filePath += "maps\\" + world + "\\topTribe.png";
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	filePath += "/var/www/TWAUMM/maps" + world + "/topTribe.png";
+#endif
 	topTribeOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
@@ -243,7 +248,13 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 #endif
 	fontPath2 += "\\Arena.ttf";
 
+#ifdef _WIN64
 	filePath += "maps\\" + world + "\\topPlayer.png";
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	filePath += "/var/www/TWAUMM/maps" + world + "/topPlayer.png";
+#endif
+
 	topPlayerOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
@@ -432,7 +443,12 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 #endif
 	fontPath2 += "\\Arena.ttf";
 
+#ifdef _WIN64
 	filePath += "maps\\" + world + "\\topTribeODA.png";
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	filePath += "/var/www/TWAUMM/maps" + world + "/topTribeODA.png";
+#endif
 	topTribeOdaOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
@@ -629,7 +645,12 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 #endif
 	fontPath2 += "\\Arena.ttf";
 
+#ifdef _WIN64
 	filePath += "maps\\" + world + "\\topTribeODD.png";
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	filePath += "/var/www/TWAUMM/maps" + world + "/topTribeODD.png";
+#endif
 	topTribeOddOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
@@ -826,7 +847,12 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 #endif
 	fontPath2 += "\\Arena.ttf";
 
+#ifdef _WIN64
 	filePath += "maps\\" + world + "\\topPlayerODA.png";
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	filePath += "/var/www/TWAUMM/maps" + world + "/topPlayerODA.png";
+#endif
 	topPlayerOdaOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
@@ -1015,7 +1041,12 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 #endif
 	fontPath2 += "\\Arena.ttf";
 
+#ifdef _WIN64
 	filePath += "maps\\" + world + "\\topPlayerODD.png";
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	filePath += "/var/www/TWAUMM/maps" + world + "/topPlayerODD.png";
+#endif
 	topPlayerOddOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
@@ -1204,7 +1235,12 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 #endif
 	fontPath2 += "\\Arena.ttf";
 
+#ifdef _WIN64
 	filePath += "maps\\" + world + "\\topTribeConq.png";
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	filePath += "/var/www/TWAUMM/maps" + world + "/topTribeConq.png";
+#endif
 	topTribeConqOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
@@ -1454,7 +1490,12 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 #endif
 	fontPath2 += "\\Arena.ttf";
 
+#ifdef _WIN64
 	filePath += "maps\\" + world + "\\topTribeLoss.png";
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	filePath += "/var/www/TWAUMM/maps" + world + "/topTribeLoss.png";
+#endif
 	topTribeLossOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
@@ -1704,7 +1745,12 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 #endif
 	fontPath2 += "\\Arena.ttf";
 
+#ifdef _WIN64
 	filePath += "maps\\" + world + "\\topPlayerConq.png";
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	filePath += "/var/www/TWAUMM/maps" + world + "/topPlayerConq.png";
+#endif
 	topPlayerConqOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
@@ -1946,7 +1992,12 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 #endif
 	fontPath2 += "\\Arena.ttf";
 
+#ifdef _WIN64
 	filePath += "maps\\" + world + "\\topPlayerLoss.png";
+#endif
+#if defined (unix) || defined (__unix) || defined (__unix__)
+	filePath += "/var/www/TWAUMM/maps" + world + "/topPlayerLoss.png";
+#endif
 	topPlayerLossOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
