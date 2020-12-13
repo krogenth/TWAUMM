@@ -1,5 +1,6 @@
 #include <codecvt>
 #include <locale>
+#include <iostream>
 
 #include "cURLread.h"
 
@@ -72,9 +73,13 @@ void readTribes(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& 
 
 	url += "ally.txt";
 
+	std::cout << url << '\n';
+
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
+
+	std::cout << url << '\n';
 
 	char buffer[256];
 	std::string bufferString = "";
@@ -159,6 +164,8 @@ void readPlayers(std::string url, std::deque<player>& players, std::deque<tribe>
 
 	url += "tribe.txt";
 
+	std::cout << url << '\n';
+
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
@@ -239,6 +246,8 @@ void readVillages(std::string url, std::deque<village>& villages, std::deque<pla
 
 	url += "village.txt";
 
+	std::cout << url << '\n';
+
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
@@ -307,6 +316,8 @@ void readOD(std::string url, std::deque<player>& players, std::deque<player*>& t
 
 	url += "kill_all.txt";
 
+	std::cout << url << '\n';
+
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
@@ -354,6 +365,8 @@ void readODA(std::string url, std::deque<player>& players, std::deque<player*>& 
 	//	$rank, $id, $score
 
 	url += "kill_att.txt";
+
+	std::cout << url << '\n';
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
@@ -403,6 +416,8 @@ void readODD(std::string url, std::deque<player>& players, std::deque<player*>& 
 
 	url += "kill_def.txt";
 
+	std::cout << url << '\n';
+
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
@@ -450,6 +465,8 @@ void readODt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& top
 	//	$rank, $id, $score
 
 	url += "kill_all_tribe.txt";
+
+	std::cout << url << '\n';
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
@@ -499,6 +516,8 @@ void readODAt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& to
 
 	url += "kill_att_tribe.txt";
 
+	std::cout << url << '\n';
+
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
@@ -547,6 +566,8 @@ void readODDt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& to
 
 	url += "kill_def_tribe.txt";
 
+	std::cout << url << '\n';
+
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
@@ -594,6 +615,8 @@ void readConq(std::string url, std::deque<village>& villages, std::deque<player>
 	//	$village_id, $unix_timestamp, $new_owner, $old_owner
 
 	url += "conquer.txt";
+
+	std::cout << url << '\n';
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
