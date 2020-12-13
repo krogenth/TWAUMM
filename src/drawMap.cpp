@@ -39,7 +39,7 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 #if defined (unix) || defined (__unix) || defined (__unix__)
 	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
 #endif
-	fontPath1 += "\\Arena Condensed Bold.ttf";
+	fontPath1 += "\\Arena-Condensed-Bold.ttf";
 
 #ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
@@ -192,18 +192,18 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 		data = converter.to_bytes(topTribes[i]->getTag());
 		//wdata = topTribes.at(i)->getTag();
 		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)&data[0]);
-		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
+		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena-Condensed-Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
 		//gdImageStringFTEx(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
 
 		data = FormatWithCommas(topTribes.at(i)->getPoints());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
-		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
+		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena-Condensed-Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
 
 		data = FormatWithCommas(topTribes.at(i)->getVillageCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
-		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
+		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena-Condensed-Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
 
 		//included for testing purposes
 		data = "zoom: " + std::to_string(zoom);
@@ -256,7 +256,7 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 #if defined (unix) || defined (__unix) || defined (__unix__)
 	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
 #endif
-	fontPath1 += "\\Arena Condensed Bold.ttf";
+	fontPath1 += "\\Arena-Condensed-Bold.ttf";
 
 #ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
@@ -400,18 +400,18 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 		data = converter.to_bytes(topPlayers[i]->getName());
 		//wdata = topTribes.at(i)->getTag();
 		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)&data[0]);
-		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
+		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena-Condensed-Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
 		//gdImageStringFTEx(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)wdata.c_str(), &gdStringExtras);
 
 		data = FormatWithCommas(topPlayers.at(i)->getPoints());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
-		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
+		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena-Condensed-Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
 
 		data = FormatWithCommas(topPlayers.at(i)->getVillageCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
-		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena Condensed Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
+		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena-Condensed-Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
 
 		//included for testing purposes
 		//data = "zoom: " + std::to_string(zoom);
@@ -464,7 +464,7 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 #if defined (unix) || defined (__unix) || defined (__unix__)
 	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
 #endif
-	fontPath1 += "\\Arena Condensed Bold.ttf";
+	fontPath1 += "\\Arena-Condensed-Bold.ttf";
 
 #ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
@@ -660,7 +660,7 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 #if defined (unix) || defined (__unix) || defined (__unix__)
 	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
 #endif
-	fontPath1 += "\\Arena Condensed Bold.ttf";
+	fontPath1 += "\\Arena-Condensed-Bold.ttf";
 
 #ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
@@ -856,7 +856,7 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 #if defined (unix) || defined (__unix) || defined (__unix__)
 	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
 #endif
-	fontPath1 += "\\Arena Condensed Bold.ttf";
+	fontPath1 += "\\Arena-Condensed-Bold.ttf";
 
 #ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
@@ -1044,7 +1044,7 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 #if defined (unix) || defined (__unix) || defined (__unix__)
 	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
 #endif
-	fontPath1 += "\\Arena Condensed Bold.ttf";
+	fontPath1 += "\\Arena-Condensed-Bold.ttf";
 
 #ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
@@ -1232,7 +1232,7 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 #if defined (unix) || defined (__unix) || defined (__unix__)
 	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
 #endif
-	fontPath1 += "\\Arena Condensed Bold.ttf";
+	fontPath1 += "\\Arena-Condensed-Bold.ttf";
 
 #ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
@@ -1481,7 +1481,7 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 #if defined (unix) || defined (__unix) || defined (__unix__)
 	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
 #endif
-	fontPath1 += "\\Arena Condensed Bold.ttf";
+	fontPath1 += "\\Arena-Condensed-Bold.ttf";
 
 #ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
@@ -1730,7 +1730,7 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 #if defined (unix) || defined (__unix) || defined (__unix__)
 	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
 #endif
-	fontPath1 += "\\Arena Condensed Bold.ttf";
+	fontPath1 += "\\Arena-Condensed-Bold.ttf";
 
 #ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
@@ -1971,7 +1971,7 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 #if defined (unix) || defined (__unix) || defined (__unix__)
 	std::string fontPath1 = std::filesystem::current_path().u8string().c_str();
 #endif
-	fontPath1 += "\\Arena Condensed Bold.ttf";
+	fontPath1 += "\\Arena-Condensed-Bold.ttf";
 
 #ifdef _WIN64
 	std::string fontPath2 = std::experimental::filesystem::current_path().u8string().c_str();
