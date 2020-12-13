@@ -12,7 +12,7 @@
 
 #include <thread>
 
-//#include <iostream>
+#include <iostream>
 
 #include "cURLread.h"
 
@@ -99,13 +99,13 @@ int main(int argc, char* argv[]) {
 			std::deque<tribe*> topTribes(15, nullptr);
 			std::deque<player*> topPlayers(15, nullptr);
 
-			std::deque<tribe*> topPlayerODt(15, nullptr);
-			std::deque<tribe*> topPlayerODAt(15, nullptr);
-			std::deque<tribe*> topPlayerODDt(15, nullptr);
+			std::deque<tribe*> topODt(15, nullptr);
+			std::deque<tribe*> topODAt(15, nullptr);
+			std::deque<tribe*> topODDt(15, nullptr);
 
-			std::deque<player*> topPlayerOD(15, nullptr);
-			std::deque<player*> topPlayerODA(15, nullptr);
-			std::deque<player*> topPlayerODD(15, nullptr);
+			std::deque<player*> topOD(15, nullptr);
+			std::deque<player*> topODA(15, nullptr);
+			std::deque<player*> topODD(15, nullptr);
 
 			std::deque<tribe*> topTribeConqs(15, nullptr);
 			std::deque<tribe*> topTribeLosses(15, nullptr);
@@ -118,23 +118,117 @@ int main(int argc, char* argv[]) {
 			url = "https://" + data + "/map/";
 
 			std::deque<tribe> tribes;
-			readTribes(url, tribes, topTribes);
+			try {
+
+				readTribes(url, tribes, topTribes);
+
+			}
+			catch (std::exception& e) {
+
+				std::cout << "Failed to read tribes!\n";
+
+			}
 
 			std::deque<player> players;
+			try {
+
 			readPlayers(url, players, tribes, topPlayers);
 
+			}
+			catch (std::exception& e) {
+
+				std::cout << "Failed to read players!\n";
+
+			}
+
 			std::deque<village> villages;
+			try {
+
 			readVillages(url, villages, players, zoom);
 
-			readODt(url, tribes, topPlayerODt);
-			readODAt(url, tribes, topPlayerODAt);
-			readODDt(url, tribes, topPlayerODDt);
+			}
+			catch (std::exception& e) {
 
-			readOD(url, players, topPlayerOD);
-			readODA(url, players, topPlayerODA);
-			readODD(url, players, topPlayerODD);
+				std::cout << "Failed to read villages!\n";
+
+			}
+
+			try {
+
+			readODt(url, tribes, topODt);
+
+			}
+			catch (std::exception& e) {
+
+				std::cout << "Failed to read tribe OD!\n";
+
+			}
+
+			try {
+
+			readODAt(url, tribes, topODAt);
+
+			}
+			catch (std::exception& e) {
+
+				std::cout << "Failed to read tribe ODA!\n";
+
+			}
+
+			try {
+
+			readODDt(url, tribes, topODDt);
+
+			}
+			catch (std::exception& e) {
+
+				std::cout << "Failed to read tribe ODD!\n";
+
+			}
+
+			try {
+
+			readOD(url, players, topOD);
+
+			}
+			catch (std::exception& e) {
+
+				std::cout << "Failed to read player OD!\n";
+
+			}
+
+			try {
+
+			readODA(url, players, topODA);
+
+			}
+			catch (std::exception& e) {
+
+				std::cout << "Failed to read player ODA!\n";
+
+			}
+
+			try {
+
+			readODD(url, players, topODD);
+
+			}
+			catch (std::exception& e) {
+
+				std::cout << "Failed to read player ODD!\n";
+
+			}
+
+			try {
 
 			readConq(url, villages, players, tribes, time, topTribeConqs, topTribeLosses, topPlayerConqs, topPlayerLosses);
+
+			}
+			catch (std::exception& e) {
+
+				std::cout << "Failed to read conquers!\n";
+
+			}
 
 			data = data.substr(0, data.find('.'));
 
@@ -150,11 +244,11 @@ int main(int argc, char* argv[]) {
 			drawTopTribes(data, colors, zoom, topTribes);
 			drawTopPlayers(data, colors, zoom, topPlayers);
 
-			drawTopTribeODA(data, colors, zoom, topPlayerODAt);
-			drawTopTribeODD(data, colors, zoom, topPlayerODDt);
+			drawTopTribeODA(data, colors, zoom, topODAt);
+			drawTopTribeODD(data, colors, zoom, topODDt);
 
-			drawTopPlayerODA(data, colors, zoom, topPlayerODA);
-			drawTopPlayerODD(data, colors, zoom, topPlayerODD);
+			drawTopPlayerODA(data, colors, zoom, topODA);
+			drawTopPlayerODD(data, colors, zoom, topODD);
 
 			drawTopTribeConqs(data, colors, zoom, topTribes, topTribeConqs);
 			drawTopTribeLosses(data, colors, zoom, topTribes, topTribeLosses);
