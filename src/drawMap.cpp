@@ -224,7 +224,8 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 	asctime_s(&buffer[0], sizeof(buffer), &timeInfo);
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	asctime_s(buffer, sizeof(buffer), localtime_s(&rawTime, &timeInfo));
+	localtime_r(&rawTime, &timeInfo);
+	asctime_r(&timeInfo, &buffer[0]);
 #endif
 
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
@@ -431,7 +432,8 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 	asctime_s(&buffer[0], sizeof(buffer), &timeInfo);
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	asctime_s(buffer, sizeof(buffer), localtime_s(&rawTime, &timeInfo));
+	localtime_r(&rawTime, &timeInfo);
+	asctime_r(&timeInfo, &buffer[0]);
 #endif
 
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
@@ -626,7 +628,8 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 	asctime_s(&buffer[0], sizeof(buffer), &timeInfo);
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	asctime_s(buffer, sizeof(buffer), localtime_s(&rawTime, &timeInfo));
+	localtime_r(&rawTime, &timeInfo);
+	asctime_r(&timeInfo, &buffer[0]);
 #endif
 
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
@@ -821,7 +824,8 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 	asctime_s(&buffer[0], sizeof(buffer), &timeInfo);
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	asctime_s(buffer, sizeof(buffer), localtime_s(&rawTime, &timeInfo));
+	localtime_r(&rawTime, &timeInfo);
+	asctime_r(&timeInfo, &buffer[0]);
 #endif
 
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
@@ -1008,7 +1012,8 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 	asctime_s(&buffer[0], sizeof(buffer), &timeInfo);
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	asctime_s(buffer, sizeof(buffer), localtime_s(&rawTime, &timeInfo));
+	localtime_r(&rawTime, &timeInfo);
+	asctime_r(&timeInfo, &buffer[0]);
 #endif
 
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
@@ -1195,7 +1200,8 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 	asctime_s(&buffer[0], sizeof(buffer), &timeInfo);
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	asctime_s(buffer, sizeof(buffer), localtime_s(&rawTime, &timeInfo));
+	localtime_r(&rawTime, &timeInfo);
+	asctime_r(&timeInfo, &buffer[0]);
 #endif
 
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
@@ -1443,7 +1449,8 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 	asctime_s(&buffer[0], sizeof(buffer), &timeInfo);
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	asctime_s(buffer, sizeof(buffer), localtime_s(&rawTime, &timeInfo));
+	localtime_r(&rawTime, &timeInfo);
+	asctime_r(&timeInfo, &buffer[0]);
 #endif
 
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
@@ -1691,7 +1698,8 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 	asctime_s(&buffer[0], sizeof(buffer), &timeInfo);
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	asctime_s(buffer, sizeof(buffer), localtime_s(&rawTime, &timeInfo));
+	localtime_r(&rawTime, &timeInfo);
+	asctime_r(&timeInfo, &buffer[0]);
 #endif
 
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
@@ -1931,7 +1939,8 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 	asctime_s(&buffer[0], sizeof(buffer), &timeInfo);
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	asctime_s(buffer, sizeof(buffer), localtime_s(&rawTime, &timeInfo));
+	localtime_r(&rawTime, &timeInfo);
+	asctime_r(&timeInfo, &buffer[0]);
 #endif
 
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
@@ -2171,7 +2180,8 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 	asctime_s(&buffer[0], sizeof(buffer), &timeInfo);
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	asctime_s(buffer, sizeof(buffer), localtime_s(&rawTime, &timeInfo));
+	localtime_r(&rawTime, &timeInfo);
+	asctime_r(&timeInfo, &buffer[0]);
 #endif
 
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
