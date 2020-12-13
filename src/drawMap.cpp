@@ -16,6 +16,7 @@
 #include <codecvt>
 #include <locale>
 #include <memory>
+#include <cmath>
 
 #include "gd.h"
 #include "formatData.h"
