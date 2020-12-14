@@ -40,12 +40,12 @@ int main(int argc, char* argv[]) {
 	CURL* cURL;
 
 	size_t world = 0;
-	std::string server = "";
 
 	time_t time = 0;
 
 	std::string data = "";
 	std::string url = "";
+	std::string urlTemp = "/map/";
 
 	std::string temp = "";
 	size_t colors[45] = { 0 };
@@ -113,10 +113,8 @@ int main(int argc, char* argv[]) {
 
 			size_t zoom = 500;
 
-			url = "https://" + data + "/map/";
+			url = "https://" + data + urlTemp;
 			std::cout << "url: " << url << '\n';
-			//url = "/map/" + url;
-			//std::cout << "url: " << url << '\n';
 
 			std::deque<tribe> tribes;
 			try {
