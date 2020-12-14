@@ -18,6 +18,7 @@
 #include <memory>
 #include <cmath>
 #include <stdio.h>
+#include <iostream>
 
 #include "gd.h"
 #include "formatData.h"
@@ -29,6 +30,8 @@
 
 void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tribe*>& topTribes) {
 
+	std::cout << "inside drawTopTribes()\n";
+
 	gdImagePtr image;
 	FILE* topTribeOut;
 	std::string filePath = "";
@@ -36,11 +39,13 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 	std::string fontPath1 = "./deps/Arena-Condensed-Bold.ttf";
 	std::string fontPath2 = "./deps/Arena.ttf";
 #ifdef _WIN64
-	filePath += "./maps/" + world + "/topTribe.png";
+	filePath = "./maps/" + world + "/topTribe.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath += "/var/www/TWAUMM/maps" + world + "/topTribe.png";
+	filePath = "/var/www/TWAUMM/maps" + world + "/topTribe.png";
 #endif
+
+	std::cout << "handled first part of setup\n";
 
 	topTribeOut = fopen(filePath.c_str(), "wb");
 
@@ -51,16 +56,22 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 			black = gdImageColorAllocate(image, 0, 0, 0),
 			charcoal = gdImageColorAllocate(image, 51, 51, 51);
 
+	std::cout << "made map and colors\n";
+
 	uint32_t gdColors[15] = { 0 };
 
 	for (int count = 0; count < 15; count++)
 		gdColors[count] = gdImageColorAllocate(image, colors[count * 3], colors[count * 3 + 1], colors[count * 3 + 2]);
+
+	std::cout << "made colors\n";
 
 	float worldLength = 10.0f / (float)zoom;
 	uint32_t worldLengthFloor = std::floor(worldLength);
 	uint32_t kLength = 100 * zoom;
 	uint32_t wholeK = worldLengthFloor - (worldLengthFloor % 2);
 	float partialK = (worldLength - (float)wholeK) / 2.0f;
+
+	std::cout << "made world calculations\n";
 
 	gdImageFilledRectangle(image, 0, 30, 1000, 1030, bgcolor);
 	gdImageFilledRectangle(image, 1000, 30, 1250, 1030, white);
