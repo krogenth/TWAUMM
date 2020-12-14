@@ -466,7 +466,7 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 	filePath = "./maps/" + world + "/topTribeODA.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath = "/var/www/twaumm/maps" + world + "/topTribeODA.png";
+	filePath = "/var/www/twaumm/maps/" + world + "/topTribeODA.png";
 #endif
 	topTribeOdaOut = fopen(filePath.c_str(), "wb");
 
@@ -649,7 +649,7 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 	filePath = "./maps/" + world + "/topTribeODD.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath = "/var/www/twaumm/maps" + world + "/topTribeODD.png";
+	filePath = "/var/www/twaumm/maps/" + world + "/topTribeODD.png";
 #endif
 	topTribeOddOut = fopen(filePath.c_str(), "wb");
 
@@ -832,7 +832,7 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 	filePath = "./maps/" + world + "/topPlayerODA.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath = "/var/www/twaumm/maps" + world + "/topPlayerODA.png";
+	filePath = "/var/www/twaumm/maps/" + world + "/topPlayerODA.png";
 #endif
 	topPlayerOdaOut = fopen(filePath.c_str(), "wb");
 
@@ -1007,7 +1007,7 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 	filePath = "./maps/" + world + "/topPlayerODD.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath = "/var/www/twaumm/maps" + world + "/topPlayerODD.png";
+	filePath = "/var/www/twaumm/maps/" + world + "/topPlayerODD.png";
 #endif
 	topPlayerOddOut = fopen(filePath.c_str(), "wb");
 
@@ -1182,7 +1182,7 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 	filePath = "./maps/" + world + "/topTribeConq.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath = "/var/www/twaumm/maps" + world + "/topTribeConq.png";
+	filePath = "/var/www/twaumm/maps/" + world + "/topTribeConq.png";
 #endif
 	topTribeConqOut = fopen(filePath.c_str(), "wb");
 
@@ -1418,7 +1418,7 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 	filePath = "./maps/" + world + "/topTribeLoss.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath = "/var/www/twaumm/maps" + world + "/topTribeLoss.png";
+	filePath = "/var/www/twaumm/maps/" + world + "/topTribeLoss.png";
 #endif
 	topTribeLossOut = fopen(filePath.c_str(), "wb");
 
@@ -1654,7 +1654,7 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 	filePath = "./maps/" + world + "/topPlayerConq.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath = "/var/www/twaumm/maps" + world + "/topPlayerConq.png";
+	filePath = "/var/www/twaumm/maps/" + world + "/topPlayerConq.png";
 #endif
 	topPlayerConqOut = fopen(filePath.c_str(), "wb");
 
@@ -1882,7 +1882,7 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 	filePath = "./maps/" + world + "/topPlayerLoss.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath = "/var/www/twaumm/maps" + world + "/topPlayerLoss.png";
+	filePath = "/var/www/twaumm/maps/" + world + "/topPlayerLoss.png";
 #endif
 	topPlayerLossOut = fopen(filePath.c_str(), "wb");
 
