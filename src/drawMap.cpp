@@ -42,7 +42,7 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 	filePath = "./maps/" + world + "/topTribe.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath = "/var/www/twaumm/maps" + world + "/topTribe.png";
+	filePath = "/var/www/twaumm/maps/" + world + "/topTribe.png";
 #endif
 
 	std::cout << "handled first part of setup\n";
@@ -268,10 +268,10 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 	std::string fontPath1 = "./deps/Arena-Condensed-Bold.ttf";
 	std::string fontPath2 = "./deps/Arena.ttf";
 #ifdef _WIN64
-	filePath += "./maps/" + world + "/topPlayer.png";
+	filePath = "./maps/" + world + "/topPlayer.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath += "/var/www/TWAUMM/maps" + world + "/topPlayer.png";
+	filePath = "/var/www/twaumm/maps/" + world + "/topPlayer.png";
 #endif
 
 	topPlayerOut = fopen(filePath.c_str(), "wb");
@@ -463,10 +463,10 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 	std::string fontPath1 = "./deps/Arena-Condensed-Bold.ttf";
 	std::string fontPath2 = "./deps/Arena.ttf";
 #ifdef _WIN64
-	filePath += "./maps/" + world + "/topTribeODA.png";
+	filePath = "./maps/" + world + "/topTribeODA.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath += "/var/www/TWAUMM/maps" + world + "/topTribeODA.png";
+	filePath = "/var/www/twaumm/maps" + world + "/topTribeODA.png";
 #endif
 	topTribeOdaOut = fopen(filePath.c_str(), "wb");
 
@@ -646,10 +646,10 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 	std::string fontPath1 = "./deps/Arena-Condensed-Bold.ttf";
 	std::string fontPath2 = "./deps/Arena.ttf";
 #ifdef _WIN64
-	filePath += "./maps/" + world + "/topTribeODD.png";
+	filePath = "./maps/" + world + "/topTribeODD.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath += "/var/www/TWAUMM/maps" + world + "/topTribeODD.png";
+	filePath = "/var/www/twaumm/maps" + world + "/topTribeODD.png";
 #endif
 	topTribeOddOut = fopen(filePath.c_str(), "wb");
 
@@ -829,10 +829,10 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 	std::string fontPath1 = "./deps/Arena-Condensed-Bold.ttf";
 	std::string fontPath2 = "./deps/Arena.ttf";
 #ifdef _WIN64
-	filePath += "./maps/" + world + "/topPlayerODA.png";
+	filePath = "./maps/" + world + "/topPlayerODA.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath += "/var/www/TWAUMM/maps" + world + "/topPlayerODA.png";
+	filePath = "/var/www/twaumm/maps" + world + "/topPlayerODA.png";
 #endif
 	topPlayerOdaOut = fopen(filePath.c_str(), "wb");
 
@@ -1004,10 +1004,10 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 	std::string fontPath1 = "./deps/Arena-Condensed-Bold.ttf";
 	std::string fontPath2 = "./deps/Arena.ttf";
 #ifdef _WIN64
-	filePath += "./maps/" + world + "/topPlayerODD.png";
+	filePath = "./maps/" + world + "/topPlayerODD.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath += "/var/www/TWAUMM/maps" + world + "/topPlayerODD.png";
+	filePath = "/var/www/twaumm/maps" + world + "/topPlayerODD.png";
 #endif
 	topPlayerOddOut = fopen(filePath.c_str(), "wb");
 
@@ -1179,10 +1179,10 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 	std::string fontPath1 = "./deps/Arena-Condensed-Bold.ttf";
 	std::string fontPath2 = "./deps/Arena.ttf";
 #ifdef _WIN64
-	filePath += "./maps/" + world + "/topTribeConq.png";
+	filePath = "./maps/" + world + "/topTribeConq.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath += "/var/www/TWAUMM/maps" + world + "/topTribeConq.png";
+	filePath = "/var/www/twaumm/maps" + world + "/topTribeConq.png";
 #endif
 	topTribeConqOut = fopen(filePath.c_str(), "wb");
 
@@ -1415,10 +1415,10 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 	std::string fontPath1 = "./deps/Arena-Condensed-Bold.ttf";
 	std::string fontPath2 = "./deps/Arena.ttf";
 #ifdef _WIN64
-	filePath += "./maps/" + world + "/topTribeLoss.png";
+	filePath = "./maps/" + world + "/topTribeLoss.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath += "/var/www/TWAUMM/maps" + world + "/topTribeLoss.png";
+	filePath = "/var/www/twaumm/maps" + world + "/topTribeLoss.png";
 #endif
 	topTribeLossOut = fopen(filePath.c_str(), "wb");
 
@@ -1651,10 +1651,10 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 	std::string fontPath1 = "./deps/Arena-Condensed-Bold.ttf";
 	std::string fontPath2 = "./deps/Arena.ttf";
 #ifdef _WIN64
-	filePath += "./maps/" + world + "/topPlayerConq.png";
+	filePath = "./maps/" + world + "/topPlayerConq.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath += "/var/www/TWAUMM/maps" + world + "/topPlayerConq.png";
+	filePath = "/var/www/twaumm/maps" + world + "/topPlayerConq.png";
 #endif
 	topPlayerConqOut = fopen(filePath.c_str(), "wb");
 
@@ -1879,10 +1879,10 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 	std::string fontPath1 = "./deps/Arena-Condensed-Bold.ttf";
 	std::string fontPath2 = "./deps/Arena.ttf";
 #ifdef _WIN64
-	filePath += "./maps/" + world + "/topPlayerLoss.png";
+	filePath = "./maps/" + world + "/topPlayerLoss.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath += "/var/www/TWAUMM/maps" + world + "/topPlayerLoss.png";
+	filePath = "/var/www/twaumm/maps" + world + "/topPlayerLoss.png";
 #endif
 	topPlayerLossOut = fopen(filePath.c_str(), "wb");
 
