@@ -50,15 +50,11 @@ int main(int argc, char* argv[]) {
 	std::string temp = "";
 	size_t colors[45] = { 0 };
 
-	std::ifstream worldsFile("./worlds.txt");
-	if (!worldsFile.is_open())
-		return EXIT_FAILURE;
-
 	curl_global_init(CURL_GLOBAL_DEFAULT);
 	cURL = curl_easy_init();
 
 	std::ifstream colorsFile;
-	colorsFile.open("./colors.txt");
+	colorsFile.open("colors.txt");
 	if (!colorsFile.is_open())
 		return EXIT_FAILURE;
 
@@ -87,7 +83,9 @@ int main(int argc, char* argv[]) {
 
 		//}
 
-		worldsFile.seekg(std::ios::beg);
+		std::ifstream worldsFile("worlds.txt");
+		if (!worldsFile.is_open())
+			return EXIT_FAILURE;
 		
 		while (std::getline(worldsFile, data)) {
 
@@ -115,7 +113,8 @@ int main(int argc, char* argv[]) {
 
 			size_t zoom = 500;
 
-			url = "https://" + data + "/map/";
+			url = "https://" + data;
+			url.insert(url.length(), "/map/");
 
 			std::deque<tribe> tribes;
 			try {
@@ -257,6 +256,8 @@ int main(int argc, char* argv[]) {
 			drawTopPlayerLosses(data, colors, zoom, topPlayers, topPlayerLosses);
 
 		}
+
+		worldsFile.close();
 
 	//}
 

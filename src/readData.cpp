@@ -71,7 +71,7 @@ void readTribes(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& 
 
 	//	$tribe_id, $name, $tag, $members, $villages, $points, $all_points, $rank
 
-	url += "ally.txt";
+	url.insert(url.length(), "ally.txt");
 
 	std::cout << url << '\n';
 
@@ -162,7 +162,7 @@ void readPlayers(std::string url, std::deque<player>& players, std::deque<tribe>
 
 	//	$player_id, $name, $tribe_id, $villages, $points, $rank
 
-	url += "tribe.txt";
+	url.insert(url.length(), "tribe.txt");
 
 	std::cout << url << '\n';
 
@@ -244,7 +244,7 @@ void readVillages(std::string url, std::deque<village>& villages, std::deque<pla
 
 	//	$village_id, $name, $x, $y, $player_id, $points, $rank
 
-	url += "village.txt";
+	url.insert(url.length(), "village.txt");
 
 	std::cout << url << '\n';
 
@@ -314,7 +314,7 @@ void readOD(std::string url, std::deque<player>& players, std::deque<player*>& t
 
 	//	$rank, $id, $score
 
-	url += "kill_all.txt";
+	url.insert(url.length(), "kill_all.txt");
 
 	std::cout << url << '\n';
 
@@ -364,7 +364,7 @@ void readODA(std::string url, std::deque<player>& players, std::deque<player*>& 
 
 	//	$rank, $id, $score
 
-	url += "kill_att.txt";
+	url.insert(url.length(), "kill_att.txt");
 
 	std::cout << url << '\n';
 
@@ -414,7 +414,7 @@ void readODD(std::string url, std::deque<player>& players, std::deque<player*>& 
 
 	//	$rank, $id, $score
 
-	url += "kill_def.txt";
+	url.insert(url.length(), "kill_def.txt");
 
 	std::cout << url << '\n';
 
@@ -464,7 +464,7 @@ void readODt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& top
 
 	//	$rank, $id, $score
 
-	url += "kill_all_tribe.txt";
+	url.insert(url.length(), "kill_all_tribe.txt");
 
 	std::cout << url << '\n';
 
@@ -514,7 +514,7 @@ void readODAt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& to
 
 	//	$rank, $id, $score
 
-	url += "kill_att_tribe.txt";
+	url.insert(url.length(), "kill_att_tribe.txt");
 
 	std::cout << url << '\n';
 
@@ -564,7 +564,7 @@ void readODDt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& to
 
 	//	$rank, $id, $score
 
-	url += "kill_def_tribe.txt";
+	url.insert(url.length(), "kill_def_tribe.txt");
 
 	std::cout << url << '\n';
 
@@ -614,7 +614,7 @@ void readConq(std::string url, std::deque<village>& villages, std::deque<player>
 
 	//	$village_id, $unix_timestamp, $new_owner, $old_owner
 
-	url += "conquer.txt";
+	url.insert(url.length(), "conquer.txt");
 
 	std::cout << url << '\n';
 
