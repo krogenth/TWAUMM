@@ -8,9 +8,11 @@ class player;
 void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tribe*>& topTribes);
 void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<player*>& topPlayers);
 
+void drawTopTribeOD(std::string world, size_t* colors, size_t zoom, std::deque<tribe*>& topODTribes);
 void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<tribe*>& topODATribes);
 void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<tribe*>& topODDTribes);
 
+void drawTopPlayerOD(std::string world, size_t* colors, size_t zoom, std::deque<player*>& topODPlayers);
 void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque<player*>& topODAPlayers);
 void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque<player*>& topODDPlayers);
 

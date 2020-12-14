@@ -243,9 +243,11 @@ int main(int argc, char* argv[]) {
 			drawTopTribes(data, colors, zoom, topTribes);
 			drawTopPlayers(data, colors, zoom, topPlayers);
 
+			drawTopTribeOD(data, colors, zoom, topODt);
 			drawTopTribeODA(data, colors, zoom, topODAt);
 			drawTopTribeODD(data, colors, zoom, topODDt);
 
+			drawTopPlayerOD(data, colors, zoom, topOD);
 			drawTopPlayerODA(data, colors, zoom, topODA);
 			drawTopPlayerODD(data, colors, zoom, topODD);
 
