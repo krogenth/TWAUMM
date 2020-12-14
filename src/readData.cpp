@@ -405,8 +405,6 @@ void readODD(std::string url, std::deque<player>& players, std::deque<player*>& 
 
 	url.append("/map/kill_def.txt");
 
-	std::cout << url << '\n';
-
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
