@@ -71,12 +71,11 @@ void readTribes(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& 
 
 	//	$tribe_id, $name, $tag, $members, $villages, $points, $all_points, $rank
 
-	std::string ending = "/map/ally.txt";
-	std::string url2 = url + ending;
+	url.append("/map/ally.txt");
 
-	std::cout << url2 << '\n';
+	std::cout << url << '\n';
 
-	URL_FILE* handle = url_fopen(url2.c_str(), "r");
+	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
 
@@ -163,12 +162,11 @@ void readPlayers(std::string url, std::deque<player>& players, std::deque<tribe>
 
 	//	$player_id, $name, $tribe_id, $villages, $points, $rank
 
-	std::string ending = "/map/tribe.txt";
-	std::string url2 = url + ending;
+	url.append("/map/tribe.txt");
 
-	std::cout << url2 << '\n';
+	std::cout << url << '\n';
 
-	URL_FILE* handle = url_fopen(url2.c_str(), "r");
+	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
 
@@ -246,12 +244,11 @@ void readVillages(std::string url, std::deque<village>& villages, std::deque<pla
 
 	//	$village_id, $name, $x, $y, $player_id, $points, $rank
 
-	std::string ending = "/map/village.txt";
-	std::string url2 = url + ending;
+	url.append("/map/village.txt");
 
-	std::cout << url2 << '\n';
+	std::cout << url << '\n';
 
-	URL_FILE* handle = url_fopen(url2.c_str(), "r");
+	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
 
@@ -317,12 +314,11 @@ void readOD(std::string url, std::deque<player>& players, std::deque<player*>& t
 
 	//	$rank, $id, $score
 
-	std::string ending = "/map/kill_all.txt";
-	std::string url2 = url + ending;
+	url.append("/map/kill_all.txt");
 
-	std::cout << url2 << '\n';
+	std::cout << url << '\n';
 
-	URL_FILE* handle = url_fopen(url2.c_str(), "r");
+	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
 
@@ -368,12 +364,11 @@ void readODA(std::string url, std::deque<player>& players, std::deque<player*>& 
 
 	//	$rank, $id, $score
 
-	std::string ending = "/map/kill_att.txt";
-	std::string url2 = url + ending;
+	url.append("/map/kill_att.txt");
 
-	std::cout << url2 << '\n';
+	std::cout << url << '\n';
 
-	URL_FILE* handle = url_fopen(url2.c_str(), "r");
+	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
 
@@ -419,12 +414,11 @@ void readODD(std::string url, std::deque<player>& players, std::deque<player*>& 
 
 	//	$rank, $id, $score
 
-	std::string ending = "/map/kill_def.txt";
-	std::string url2 = url + ending;
+	url.append("/map/kill_def.txt");
 
-	std::cout << url2 << '\n';
+	std::cout << url << '\n';
 
-	URL_FILE* handle = url_fopen(url2.c_str(), "r");
+	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
 
@@ -470,12 +464,11 @@ void readODt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& top
 
 	//	$rank, $id, $score
 
-	std::string ending = "/map/kill_all_tribe.txt";
-	std::string url2 = url + ending;
+	url.append("/map/kill_all_tribe.txt");
 
-	std::cout << url2 << '\n';
+	std::cout << url << '\n';
 
-	URL_FILE* handle = url_fopen(url2.c_str(), "r");
+	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
 
@@ -521,12 +514,11 @@ void readODAt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& to
 
 	//	$rank, $id, $score
 
-	std::string ending = "/map/kill_att_tribe.txt";
-	std::string url2 = url + ending;
+	url.append("/map/kill_att_tribe.txt");
 
-	std::cout << url2 << '\n';
+	std::cout << url << '\n';
 
-	URL_FILE* handle = url_fopen(url2.c_str(), "r");
+	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
 
@@ -572,12 +564,11 @@ void readODDt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& to
 
 	//	$rank, $id, $score
 
-	std::string ending = "/map/kill_def_tribe.txt";
-	std::string url2 = url + ending;
+	url.append("/map/kill_def_tribe.txt");
 
-	std::cout << url2 << '\n';
+	std::cout << url << '\n';
 
-	URL_FILE* handle = url_fopen(url2.c_str(), "r");
+	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
 
@@ -623,12 +614,11 @@ void readConq(std::string url, std::deque<village>& villages, std::deque<player>
 
 	//	$village_id, $unix_timestamp, $new_owner, $old_owner
 
-	std::string ending = "/map/conquer.txt";
-	std::string url2 = url + ending;
+	url.append("/map/conquer.txt");
 
-	std::cout << url2 << '\n';
+	std::cout << url << '\n';
 
-	URL_FILE* handle = url_fopen(url2.c_str(), "r");
+	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
 
