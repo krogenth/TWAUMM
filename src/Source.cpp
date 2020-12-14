@@ -45,7 +45,6 @@ int main(int argc, char* argv[]) {
 
 	std::string data = "";
 	std::string url = "";
-	std::string urlTemp = "/map/";
 
 	std::string temp = "";
 	size_t colors[45] = { 0 };
@@ -113,7 +112,7 @@ int main(int argc, char* argv[]) {
 
 			size_t zoom = 500;
 
-			url = "https://" + data + urlTemp;
+			url = "https://" + data;
 			std::cout << "url: " << url << '\n';
 
 			std::deque<tribe> tribes;
