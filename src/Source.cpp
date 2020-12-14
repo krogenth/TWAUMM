@@ -114,7 +114,9 @@ int main(int argc, char* argv[]) {
 			size_t zoom = 500;
 
 			url = "https://" + data;
-			url.insert(url.length(), "/map/");
+			std::cout << "url: " << url << '\n';
+			url = url + "/map/";
+			std::cout << "url: " << url << '\n';
 
 			std::deque<tribe> tribes;
 			try {

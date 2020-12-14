@@ -71,7 +71,7 @@ void readTribes(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& 
 
 	//	$tribe_id, $name, $tag, $members, $villages, $points, $all_points, $rank
 
-	url.insert(url.length(), "ally.txt");
+	url = url + "ally.txt";
 
 	std::cout << url << '\n';
 
