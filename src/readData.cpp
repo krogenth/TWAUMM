@@ -74,9 +74,6 @@ void readTribes(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& 
 
 	url.append("/map/ally.txt");
 
-	for (int i = 0; i < url.length(); i++)
-		std::cout << url[i];
-
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
