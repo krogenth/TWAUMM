@@ -1,3 +1,4 @@
+ru69.voyna-plemyon.ru
 en113.tribalwars.net
-;ru69.voyna-plemyon.ru
-enc2.tribalwars.net
+;enc2.tribalwars.net
+;en117.tribalwars.net
