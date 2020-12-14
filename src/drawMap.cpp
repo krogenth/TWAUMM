@@ -42,7 +42,7 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 	filePath = "./maps/" + world + "/topTribe.png";
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-	filePath = "/var/www/TWAUMM/maps" + world + "/topTribe.png";
+	filePath = "/var/www/twaumm/maps" + world + "/topTribe.png";
 #endif
 
 	std::cout << "handled first part of setup\n";

@@ -130,7 +130,7 @@ int main(int argc, char* argv[]) {
 			std::deque<player> players;
 			try {
 
-			readPlayers(url, players, tribes, topPlayers);
+				readPlayers(url, players, tribes, topPlayers);
 
 			}
 			catch (std::exception& e) {
@@ -142,7 +142,7 @@ int main(int argc, char* argv[]) {
 			std::deque<village> villages;
 			try {
 
-			readVillages(url, villages, players, zoom);
+				readVillages(url, villages, players, zoom);
 
 			}
 			catch (std::exception& e) {
@@ -153,7 +153,7 @@ int main(int argc, char* argv[]) {
 
 			try {
 
-			readODt(url, tribes, topODt);
+				readODt(url, tribes, topODt);
 
 			}
 			catch (std::exception& e) {
@@ -164,7 +164,7 @@ int main(int argc, char* argv[]) {
 
 			try {
 
-			readODAt(url, tribes, topODAt);
+				readODAt(url, tribes, topODAt);
 
 			}
 			catch (std::exception& e) {
@@ -175,7 +175,7 @@ int main(int argc, char* argv[]) {
 
 			try {
 
-			readODDt(url, tribes, topODDt);
+				readODDt(url, tribes, topODDt);
 
 			}
 			catch (std::exception& e) {
@@ -186,7 +186,7 @@ int main(int argc, char* argv[]) {
 
 			try {
 
-			readOD(url, players, topOD);
+				readOD(url, players, topOD);
 
 			}
 			catch (std::exception& e) {
@@ -197,7 +197,7 @@ int main(int argc, char* argv[]) {
 
 			try {
 
-			readODA(url, players, topODA);
+				readODA(url, players, topODA);
 
 			}
 			catch (std::exception& e) {
@@ -208,7 +208,7 @@ int main(int argc, char* argv[]) {
 
 			try {
 
-			readODD(url, players, topODD);
+				readODD(url, players, topODD);
 
 			}
 			catch (std::exception& e) {
@@ -219,7 +219,7 @@ int main(int argc, char* argv[]) {
 
 			try {
 
-			readConq(url, villages, players, tribes, time, topTribeConqs, topTribeLosses, topPlayerConqs, topPlayerLosses);
+				readConq(url, villages, players, tribes, time, topTribeConqs, topTribeLosses, topPlayerConqs, topPlayerLosses);
 
 			}
 			catch (std::exception& e) {
@@ -237,10 +237,10 @@ int main(int argc, char* argv[]) {
 			std::experimental::filesystem::create_directory("maps/" + data);
 #endif
 #if defined (unix) || defined (__unix) || defined (__unix__)
-			std::filesystem::path p = std::filesystem::current_path();
-			std::string path = p.root_directory().u8string().c_str();
-			std::filesystem::create_directory(path + "/vars/www/maps");
-			std::filesystem::create_directory(path + "/vars/www/maps/" + data);
+			if (!std::filesystem::exists("/var/www/twaumm/maps"))
+					std::filesystem::create_directory("/var/www/twaumm/maps");
+			if (!std::filesystem::exists("/var/www/twaumm/maps" + data))
+					std::filesystem::create_directory("/var/www/twaumm/maps/" + data);
 #endif
 
 
