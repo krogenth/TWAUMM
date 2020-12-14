@@ -2,7 +2,6 @@
 
 #include <codecvt>
 #include <locale>
-#include <iostream>
 
 #include "cURLread.h"
 
@@ -77,10 +76,6 @@ void readTribes(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& 
 
 	for (int i = 0; i < url.length(); i++)
 		std::cout << url[i];
-
-	std::cout << '\n';
-
-	//std::cout << url << '\n';
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
@@ -169,8 +164,6 @@ void readPlayers(std::string url, std::deque<player>& players, std::deque<tribe>
 
 	url.append("/map/tribe.txt");
 
-	std::cout << url << '\n';
-
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
@@ -251,8 +244,6 @@ void readVillages(std::string url, std::deque<village>& villages, std::deque<pla
 
 	url.append("/map/village.txt");
 
-	std::cout << url << '\n';
-
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
@@ -321,8 +312,6 @@ void readOD(std::string url, std::deque<player>& players, std::deque<player*>& t
 
 	url.append("/map/kill_all.txt");
 
-	std::cout << url << '\n';
-
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
@@ -370,8 +359,6 @@ void readODA(std::string url, std::deque<player>& players, std::deque<player*>& 
 	//	$rank, $id, $score
 
 	url.append("/map/kill_att.txt");
-
-	std::cout << url << '\n';
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
@@ -471,8 +458,6 @@ void readODt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& top
 
 	url.append("/map/kill_all_tribe.txt");
 
-	std::cout << url << '\n';
-
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
@@ -520,8 +505,6 @@ void readODAt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& to
 	//	$rank, $id, $score
 
 	url.append("/map/kill_att_tribe.txt");
-
-	std::cout << url << '\n';
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
@@ -571,8 +554,6 @@ void readODDt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& to
 
 	url.append("/map/kill_def_tribe.txt");
 
-	std::cout << url << '\n';
-
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
@@ -620,8 +601,6 @@ void readConq(std::string url, std::deque<village>& villages, std::deque<player>
 	//	$village_id, $unix_timestamp, $new_owner, $old_owner
 
 	url.append("/map/conquer.txt");
-
-	std::cout << url << '\n';
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
