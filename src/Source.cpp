@@ -115,7 +115,7 @@ int main(int argc, char* argv[]) {
 
 			url = "https://" + data;
 			std::cout << "url: " << url << '\n';
-			url = url + "/map/";
+			url = "/map/" + url;
 			std::cout << "url: " << url << '\n';
 
 			std::deque<tribe> tribes;
