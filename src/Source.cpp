@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
 	cURL = curl_easy_init();
 
 	std::ifstream colorsFile;
-	colorsFile.open("colors.txt");
+	colorsFile.open("./deps/colors.txt");
 	if (!colorsFile.is_open())
 		return EXIT_FAILURE;
 
@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
 
 		//}
 
-		std::ifstream worldsFile("worlds.txt");
+		std::ifstream worldsFile("./deps/worlds.txt");
 		if (!worldsFile.is_open())
 			return EXIT_FAILURE;
 		
