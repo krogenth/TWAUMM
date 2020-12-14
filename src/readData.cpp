@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <codecvt>
 #include <locale>
 #include <iostream>
@@ -73,13 +75,16 @@ void readTribes(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& 
 
 	url.append("/map/ally.txt");
 
-	std::cout << url << '\n';
+	for (int i = 0; i < url.length(); i++)
+		std::cout << url[i];
+
+	std::cout << '\n';
+
+	//std::cout << url << '\n';
 
 	URL_FILE* handle = url_fopen(url.c_str(), "r");
 	if (!handle)
 		throw std::exception();
-
-	std::cout << url << '\n';
 
 	char buffer[256];
 	std::string bufferString = "";
