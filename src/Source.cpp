@@ -113,7 +113,6 @@ int main(int argc, char* argv[]) {
 			size_t zoom = 500;
 
 			url = "https://" + data;
-			std::cout << "url: " << url << '\n';
 
 			std::deque<tribe> tribes;
 			try {
@@ -230,8 +229,6 @@ int main(int argc, char* argv[]) {
 
 			data = data.substr(0, data.find('.'));
 
-			std::cout << "creating map folder\n";
-
 #ifdef _WIN64
 			std::experimental::filesystem::create_directory("maps");
 			std::experimental::filesystem::create_directory("maps/" + data);
@@ -243,23 +240,14 @@ int main(int argc, char* argv[]) {
 					std::filesystem::create_directory("/var/www/twaumm/maps/" + data);
 #endif
 
-
-			std::cout << "created map folder\n";
-
 			drawTopTribes(data, colors, zoom, topTribes);
 			drawTopPlayers(data, colors, zoom, topPlayers);
-
-			std::cout << "made top maps!\n";
 
 			drawTopTribeODA(data, colors, zoom, topODAt);
 			drawTopTribeODD(data, colors, zoom, topODDt);
 
-			std::cout << "made top tribe OD maps!\n";
-
 			drawTopPlayerODA(data, colors, zoom, topODA);
 			drawTopPlayerODD(data, colors, zoom, topODD);
-
-			std::cout << "made top player OD maps!\n";
 
 			drawTopTribeConqs(data, colors, zoom, topTribes, topTribeConqs);
 			drawTopTribeLosses(data, colors, zoom, topTribes, topTribeLosses);

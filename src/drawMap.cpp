@@ -18,7 +18,6 @@
 #include <memory>
 #include <cmath>
 #include <stdio.h>
-#include <iostream>
 
 #include "gd.h"
 #include "formatData.h"
@@ -29,8 +28,6 @@
 #include "village.h"
 
 void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tribe*>& topTribes) {
-
-	std::cout << "inside drawTopTribes()\n";
 
 	gdImagePtr image;
 	FILE* topTribeOut;
@@ -45,8 +42,6 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 	filePath = "/var/www/twaumm/maps/" + world + "/topTribe.png";
 #endif
 
-	std::cout << "handled first part of setup\n";
-
 	topTribeOut = fopen(filePath.c_str(), "wb");
 
 	image = gdImageCreateTrueColor(1250, 1030);
@@ -56,22 +51,16 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 			black = gdImageColorAllocate(image, 0, 0, 0),
 			charcoal = gdImageColorAllocate(image, 51, 51, 51);
 
-	std::cout << "made map and colors\n";
-
 	uint32_t gdColors[15] = { 0 };
 
 	for (int count = 0; count < 15; count++)
 		gdColors[count] = gdImageColorAllocate(image, colors[count * 3], colors[count * 3 + 1], colors[count * 3 + 2]);
-
-	std::cout << "made colors\n";
 
 	float worldLength = 10.0f / (float)zoom;
 	uint32_t worldLengthFloor = std::floor(worldLength);
 	uint32_t kLength = 100 * zoom;
 	uint32_t wholeK = worldLengthFloor - (worldLengthFloor % 2);
 	float partialK = (worldLength - (float)wholeK) / 2.0f;
-
-	std::cout << "made world calculations\n";
 
 	gdImageFilledRectangle(image, 0, 30, 1000, 1030, bgcolor);
 	gdImageFilledRectangle(image, 1000, 30, 1250, 1030, white);
@@ -106,8 +95,6 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 
 	}
 
-	std::cout << "finished first draw\n";
-
 	for (uint32_t i = 0; i < 15; i++) {
 
 		for (uint32_t j = 0; j < topTribes.at(i)->getMemberCount(); j++) {
@@ -134,7 +121,6 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 		}
 
 	}
-	std::cout << "finished second draw\n";
 
 
 	for (uint32_t i = 0; i < (uint32_t)((float)kLength * worldLength); i += kLength) {
@@ -145,8 +131,6 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 		gdImageLine(image, 0, check + 30, 1000, check + 30, kNumColor);
 
 	}
-
-	std::cout << "finished line draw\n";
 
 	int rect[8];
 	/*	meant for gdImageStringFTEx for unicode, but cannot get to work
@@ -173,8 +157,6 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 
 
 	}
-
-	std::cout << "finished number draw\n";
 
 	for (uint32_t i = 0; i < 15; i++) {
 
@@ -217,8 +199,6 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 
 	}
 
-	std::cout << "finished name draw\n";
-
 	time_t rawTime;
 	struct tm timeInfo;
 	char buffer[26];
@@ -236,19 +216,13 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 	asctime_r(&timeInfo, &buffer[0]);
 #endif
 
-	std::cout << "finished date calculations\n";
-
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 200, 20, "Top Tribes Map");
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 1000, 20, buffer);
 
-	std::cout << "finished date draw\n";
-
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topTribeOut);
-
-	std::cout << "finished write\n";
 
 	fclose(topTribeOut);
 	gdImageDestroy(image);
