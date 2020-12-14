@@ -106,6 +106,8 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 
 	}
 
+	std::cout << "finished first draw\n";
+
 	for (uint32_t i = 0; i < 15; i++) {
 
 		for (uint32_t j = 0; j < topTribes.at(i)->getMemberCount(); j++) {
@@ -132,6 +134,8 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 		}
 
 	}
+	std::cout << "finished second draw\n";
+
 
 	for (uint32_t i = 0; i < (uint32_t)((float)kLength * worldLength); i += kLength) {
 
@@ -141,6 +145,8 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 		gdImageLine(image, 0, check + 30, 1000, check + 30, kNumColor);
 
 	}
+
+	std::cout << "finished line draw\n";
 
 	int rect[8];
 	/*	meant for gdImageStringFTEx for unicode, but cannot get to work
@@ -167,6 +173,8 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 
 
 	}
+
+	std::cout << "finished number draw\n";
 
 	for (uint32_t i = 0; i < 15; i++) {
 
@@ -209,6 +217,8 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 
 	}
 
+	std::cout << "finished name draw\n";
+
 	time_t rawTime;
 	struct tm timeInfo;
 	char buffer[26];
@@ -226,13 +236,19 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 	asctime_r(&timeInfo, &buffer[0]);
 #endif
 
+	std::cout << "finished date calculations\n";
+
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 15, 20, &world[0]);
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 200, 20, "Top Tribes Map");
 	gdImageStringFT(image, &rect[0], white, &fontPath2[0], 14, 0, 1000, 20, buffer);
 
+	std::cout << "finished date draw\n";
+
 	int size = 0;
 	char* data = (char*)gdImagePngPtr(image, &size);
 	fwrite(data, sizeof(char), size, topTribeOut);
+
+	std::cout << "finished write\n";
 
 	fclose(topTribeOut);
 	gdImageDestroy(image);
