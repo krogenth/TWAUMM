@@ -182,7 +182,7 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 		//wdata = topTribes.at(i)->getTag();
 		//gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)&data[0]);
 		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena-Condensed-Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
-		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, data.c_str(), &gdStringExtras);
+		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
 		data = FormatWithCommas(topTribes.at(i)->getPoints());
 		data += " points";
@@ -372,7 +372,7 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 		gdImageFilledRectangle(image, xColor, yColor, colorWidth, colorHeight, gdColors[i]);
 
 		data = converter.to_bytes(topPlayers[i]->getName());
-		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, data.c_str(), &gdStringExtras);
+		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
 		data = FormatWithCommas(topPlayers.at(i)->getPoints());
 		data += " points";
@@ -569,7 +569,7 @@ void drawTopTribeOD(std::string world, size_t* colors, size_t zoom, std::deque<t
 		gdImageFilledRectangle(image, xColor, yColor, colorWidth, colorHeight, gdColors[i]);
 
 		data = converter.to_bytes(topODTribes[i]->getTag());
-		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, data.c_str(), &gdStringExtras);
+		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
 		data = FormatWithCommas(topODTribes.at(i)->getOD());
 		data += " points";
@@ -758,7 +758,7 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 		gdImageFilledRectangle(image, xColor, yColor, colorWidth, colorHeight, gdColors[i]);
 
 		data = converter.to_bytes(topODATribes[i]->getTag());
-		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, data.c_str(), &gdStringExtras);
+		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
 		data = converter.to_bytes(topODATribes[i]->getTag());
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, (char*)&data[0]);
@@ -952,7 +952,7 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 		gdImageFilledRectangle(image, xColor, yColor, colorWidth, colorHeight, gdColors[i]);
 
 		data = converter.to_bytes(topODDTribes[i]->getTag());
-		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, data.c_str(), &gdStringExtras);
+		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
 		data = converter.to_bytes(topODDTribes[i]->getTag());
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, (char*)&data[0]);
@@ -1138,7 +1138,7 @@ void drawTopPlayerOD(std::string world, size_t* colors, size_t zoom, std::deque<
 		gdImageFilledRectangle(image, xColor, yColor, colorWidth, colorHeight, gdColors[i]);
 
 		data = converter.to_bytes(topODPlayers[i]->getName());
-		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, data.c_str(), &gdStringExtras);
+		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
 		data = FormatWithCommas(topODPlayers.at(i)->getOD());
 		data += " points";
@@ -1319,7 +1319,7 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 		gdImageFilledRectangle(image, xColor, yColor, colorWidth, colorHeight, gdColors[i]);
 
 		data = converter.to_bytes(topODAPlayers[i]->getName());
-		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, data.c_str(), &gdStringExtras);
+		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
 		data = FormatWithCommas(topODAPlayers.at(i)->getODA());
 		data += " points";
@@ -1502,7 +1502,7 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 		gdImageFilledRectangle(image, xColor, yColor, colorWidth, colorHeight, gdColors[i]);
 
 		data = converter.to_bytes(topODDPlayers[i]->getName());
-		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, data.c_str(), &gdStringExtras);
+		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
 		data = FormatWithCommas(topODDPlayers.at(i)->getODD());
 		data += " points";
@@ -1746,7 +1746,7 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 		gdImageFilledRectangle(image, xColor, yColor, colorWidth, colorHeight, gdColors[i]);
 
 		data = converter.to_bytes(topConqTribes[i]->getTag());
-		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, data.c_str(), &gdStringExtras);
+		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
 		data = FormatWithCommas(topConqTribes.at(i)->getConqPoints());
 		data += " points";
@@ -1990,7 +1990,7 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 		gdImageFilledRectangle(image, xColor, yColor, colorWidth, colorHeight, gdColors[i]);
 
 		data = converter.to_bytes(topLossTribes[i]->getTag());
-		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, data.c_str(), &gdStringExtras);
+		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
 		data = FormatWithCommas(topLossTribes.at(i)->getLossPoints());
 		data += " points";
@@ -2226,7 +2226,7 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 		gdImageFilledRectangle(image, xColor, yColor, colorWidth, colorHeight, gdColors[i]);
 
 		data = converter.to_bytes(topConqPlayers[i]->getName());
-		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, data.c_str(), &gdStringExtras);
+		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
 		data = FormatWithCommas(topConqPlayers.at(i)->getConqPoints());
 		data += " points";
@@ -2460,7 +2460,7 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 		gdImageFilledRectangle(image, xColor, yColor, colorWidth, colorHeight, gdColors[i]);
 
 		data = converter.to_bytes(topLossPlayers[i]->getName());
-		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, data.c_str(), &gdStringExtras);
+		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
 		data = FormatWithCommas(topLossPlayers.at(i)->getLossPoints());
 		data += " points";
