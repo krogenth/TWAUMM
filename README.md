@@ -24,4 +24,4 @@ All maps created will be located within the "/maps/" folder, based on server and
 
 To-Do
 ====
-There are several features that still need to be added, specifically: auto-updating(ironic), include some multithreading, and the K Dominance Maps.
+There are several features that still need to be added, specifically: include some multithreading, and the K Dominance Maps.
