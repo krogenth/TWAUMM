@@ -75,7 +75,7 @@ int main(int argc, char* argv[]) {
 
 		currTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock().now().time_since_epoch()).count();
 
-		while ((currTime % 86400000) > 60) {
+		while ((currTime % 86400) > 60) {
 
 			std::this_thread::sleep_for(timespan);
 			currTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock().now().time_since_epoch()).count();
