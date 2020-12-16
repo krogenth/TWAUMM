@@ -161,9 +161,11 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topTribes[i])
+			continue;
+
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-		//std::wstring wdata;
 		std::string data;
 
 		xWord = 1090;
@@ -179,24 +181,15 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 		gdImageFilledRectangle(image, xColor, yColor, colorWidth, colorHeight, gdColors[i]);
 
 		data = converter.to_bytes(topTribes[i]->getTag());
-		//wdata = topTribes.at(i)->getTag();
-		//gdImageStringFT(image, &rect[0], black, &fontPath1[0], 10, 0, xWord, yWord, (char*)&data[0]);
-		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena-Condensed-Bold.ttf", 10, 0, xWord, yWord, &data[0], black);
 		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
 		data = FormatWithCommas(topTribes.at(i)->getPoints());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
-		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena-Condensed-Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
 
 		data = FormatWithCommas(topTribes.at(i)->getVillageCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
-		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena-Condensed-Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
-
-		//included for testing purposes
-		//data = "zoom: " + std::to_string(zoom);
-		//gdImageStringFT(image, &rect[0], white, &fontPath1[0], 14, 0, 500, 20, &data[0]);
 
 	}
 
@@ -205,8 +198,6 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 	char buffer[26];
 
 	std::time(&rawTime);
-	//localtime_s(&timeInfo, &rawTime);
-	//asctime_s(&buffer[0], 26, &timeInfo);
 
 #if defined(_WIN64)
 	localtime_s(&timeInfo, &rawTime);
@@ -355,6 +346,9 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topPlayers[i])
+			continue;
+
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 		std::string data;
@@ -377,16 +371,10 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 		data = FormatWithCommas(topPlayers.at(i)->getPoints());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
-		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena-Condensed-Bold.ttf", 10, 0, xWord, yWord + 15, &data[0], black);
 
 		data = FormatWithCommas(topPlayers.at(i)->getVillageCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
-		//gdImageString16(image, "C:\\Windows\\Fonts\\Arena-Condensed-Bold.ttf", 10, 0, xWord, yWord + 30, &data[0], black);
-
-		//included for testing purposes
-		//data = "zoom: " + std::to_string(zoom);
-		//gdImageStringFT(image, &rect[0], white, &fontPath1[0], 14, 0, 500, 20, &data[0]);
 
 	}
 
@@ -395,8 +383,6 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 	char buffer[26];
 
 	std::time(&rawTime);
-	//localtime_s(&timeInfo, &rawTime);
-	//asctime_s(&buffer[0], 26, &timeInfo);
 
 #if defined(_WIN64)
 	localtime_s(&timeInfo, &rawTime);
@@ -550,6 +536,9 @@ void drawTopTribeOD(std::string world, size_t* colors, size_t zoom, std::deque<t
 	gdStringExtras.fontpath = nullptr;
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topODTribes[i])
+			continue;
 
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -740,6 +729,9 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topODATribes[i])
+			continue;
+
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 		std::wstring wdata;
@@ -778,8 +770,6 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 	char buffer[26];
 
 	std::time(&rawTime);
-	//localtime_s(&timeInfo, &rawTime);
-	//asctime_s(&buffer[0], 26, &timeInfo);
 
 #if defined(_WIN64)
 	localtime_s(&timeInfo, &rawTime);
@@ -933,6 +923,9 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 	gdStringExtras.fontpath = nullptr;
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topODDTribes[i])
+			continue;
 
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -1120,6 +1113,9 @@ void drawTopPlayerOD(std::string world, size_t* colors, size_t zoom, std::deque<
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topODPlayers[i])
+			continue;
+
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 		std::wstring wdata;
@@ -1300,6 +1296,9 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 	gdStringExtras.fontpath = nullptr;
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topODAPlayers[i])
+			continue;
 
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -1484,6 +1483,9 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topODDPlayers[i])
+			continue;
+
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 		std::wstring wdata;
@@ -1519,8 +1521,6 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 	char buffer[26];
 
 	std::time(&rawTime);
-	//localtime_s(&timeInfo, &rawTime);
-	//asctime_s(&buffer[0], 26, &timeInfo);
 
 #if defined(_WIN64)
 	localtime_s(&timeInfo, &rawTime);
@@ -1728,6 +1728,9 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topConqTribes[i])
+			continue;
+
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 		std::wstring wdata;
@@ -1763,8 +1766,6 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 	char buffer[26];
 
 	std::time(&rawTime);
-	//localtime_s(&timeInfo, &rawTime);
-	//asctime_s(&buffer[0], 26, &timeInfo);
 
 #if defined(_WIN64)
 	localtime_s(&timeInfo, &rawTime);
@@ -1972,6 +1973,9 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topLossTribes[i])
+			continue;
+
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 		std::wstring wdata;
@@ -2007,8 +2011,6 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 	char buffer[26];
 
 	std::time(&rawTime);
-	//localtime_s(&timeInfo, &rawTime);
-	//asctime_s(&buffer[0], 26, &timeInfo);
 
 #if defined(_WIN64)
 	localtime_s(&timeInfo, &rawTime);
@@ -2207,6 +2209,9 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 	gdStringExtras.fontpath = nullptr;
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topConqPlayers[i])
+			continue;
 
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -2442,6 +2447,9 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topLossPlayers[i])
+			continue;
+
 		uint32_t xWord, yWord, xColor, yColor, colorHeight, colorWidth;
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 		std::wstring wdata;
@@ -2477,8 +2485,6 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 	char buffer[26];
 
 	std::time(&rawTime);
-	//localtime_s(&timeInfo, &rawTime);
-	//asctime_s(&buffer[0], 26, &timeInfo);
 
 #if defined(_WIN64)
 	localtime_s(&timeInfo, &rawTime);
