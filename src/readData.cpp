@@ -324,9 +324,10 @@ void readOD(std::string url, std::deque<player>& players, std::deque<player*>& t
 		bufferString = buffer;
 
 		rankCheck = atoi((char*)bufferString.substr(0, bufferString.find(',')).c_str());
-		bufferString.erase(0, bufferString.find(',') + 1);
 
 		if ((rankCheck - offset) <= 15) {
+
+			bufferString.erase(0, bufferString.find(',') + 1);
 
 			playerIDCheck = atoi((char*)bufferString.substr(0, bufferString.find(',')).c_str());
 			bufferString.erase(0, bufferString.find(',') + 1);
@@ -379,16 +380,17 @@ void readODA(std::string url, std::deque<player>& players, std::deque<player*>& 
 		bufferString = buffer;
 
 		rankCheck = atoi((char*)bufferString.substr(0, bufferString.find(',')).c_str());
-		bufferString.erase(0, bufferString.find(',') + 1);
 
 		if ((rankCheck - offset) <= 15) {
+
+			bufferString.erase(0, bufferString.find(',') + 1);
 
 			playerIDCheck = atoi((char*)bufferString.substr(0, bufferString.find(',')).c_str());
 			bufferString.erase(0, bufferString.find(',') + 1);
 
 			playerTemp = pbinarySearch(playerIDCheck, 0, players.size(), players);
 
-			if (!playerTemp) {
+			if (playerTemp) {
 
 				playerTemp->setODA(atoi((char*)bufferString.substr(0, bufferString.find(',')).c_str()));
 				topODA[rankCheck - 1 - offset] = playerTemp;
@@ -434,16 +436,17 @@ void readODD(std::string url, std::deque<player>& players, std::deque<player*>& 
 		bufferString = buffer;
 
 		rankCheck = atoi((char*)bufferString.substr(0, bufferString.find(',')).c_str());
-		bufferString.erase(0, bufferString.find(',') + 1);
 
 		if ((rankCheck - offset) <= 15) {
+
+			bufferString.erase(0, bufferString.find(',') + 1);
 
 			playerIDCheck = atoi((char*)bufferString.substr(0, bufferString.find(',')).c_str());
 			bufferString.erase(0, bufferString.find(',') + 1);
 
 			playerTemp = pbinarySearch(playerIDCheck, 0, players.size(), players);
 
-			if (!playerTemp) {
+			if (playerTemp) {
 
 				playerTemp->setODD(atoi((char*)bufferString.substr(0, bufferString.find(',')).c_str()));
 				topODD[rankCheck - 1 - offset] = playerTemp;
@@ -489,9 +492,10 @@ void readODt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& top
 		bufferString = buffer;
 
 		rankCheck = atoi((char*)bufferString.substr(0, bufferString.find(',')).c_str());
-		bufferString.erase(0, bufferString.find(',') + 1);
 
 		if ((rankCheck - offset) <= 15) {
+
+			bufferString.erase(0, bufferString.find(',') + 1);
 
 			tribeIDCheck = atoi((char*)bufferString.substr(0, bufferString.find(',')).c_str());
 			bufferString.erase(0, bufferString.find(',') + 1);
@@ -544,9 +548,10 @@ void readODAt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& to
 		bufferString = buffer;
 
 		rankCheck = atoi((char*)bufferString.substr(0, bufferString.find(',')).c_str());
-		bufferString.erase(0, bufferString.find(',') + 1);
-
+		
 		if ((rankCheck - offset) <= 15) {
+
+			bufferString.erase(0, bufferString.find(',') + 1);
 
 			tribeIDCheck = atoi((char*)bufferString.substr(0, bufferString.find(',')).c_str());
 			bufferString.erase(0, bufferString.find(',') + 1);
@@ -599,9 +604,10 @@ void readODDt(std::string url, std::deque<tribe>& tribes, std::deque<tribe*>& to
 		bufferString = buffer;
 
 		rankCheck = atoi((char*)bufferString.substr(0, bufferString.find(',')).c_str());
-		bufferString.erase(0, bufferString.find(',') + 1);
-
+		
 		if ((rankCheck - offset) <= 15) {
+
+			bufferString.erase(0, bufferString.find(',') + 1);
 
 			tribeIDCheck = atoi((char*)bufferString.substr(0, bufferString.find(',')).c_str());
 			bufferString.erase(0, bufferString.find(',') + 1);

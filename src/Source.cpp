@@ -71,16 +71,16 @@ int main(int argc, char* argv[]) {
 
 	colorsFile.close();
 
-	while (1) {
+	//while (1) {
 
 		currTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock().now().time_since_epoch()).count();
 
-		while ((currTime % 86400) > 60) {
+		//while ((currTime % 86400) > 60) {
 
-			std::this_thread::sleep_for(timespan);
-			currTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock().now().time_since_epoch()).count();
+			//std::this_thread::sleep_for(timespan);
+			//currTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock().now().time_since_epoch()).count();
 
-		}
+		//}
 
 		std::ifstream worldsFile("./deps/worlds.txt");
 		if (!worldsFile.is_open())
@@ -261,6 +261,6 @@ int main(int argc, char* argv[]) {
 
 		worldsFile.close();
 
-	}
+	//}
 
 }
