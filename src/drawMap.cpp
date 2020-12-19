@@ -68,6 +68,9 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topTribes.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topTribes.at(i)->getMemberCount(); j++) {
 
 			for (uint32_t k = 0; k < topTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
@@ -95,6 +98,9 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 	}
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topTribes.at(i))
+			continue;
 
 		for (uint32_t j = 0; j < topTribes.at(i)->getMemberCount(); j++) {
 
@@ -266,6 +272,9 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topPlayers.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topPlayers.at(i)->getVillageCount(); j++) {
 
 				x = std::get<0>(topPlayers.at(i)->getVillage(j)->getCoord());
@@ -289,6 +298,9 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 	}
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topPlayers.at(i))
+			continue;
 
 		for (uint32_t j = 0; j < topPlayers.at(i)->getVillageCount(); j++) {
 
@@ -450,6 +462,9 @@ void drawTopTribeOD(std::string world, size_t* colors, size_t zoom, std::deque<t
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topODTribes.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topODTribes.at(i)->getMemberCount(); j++) {
 
 			for (uint32_t k = 0; k < topODTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
@@ -477,6 +492,9 @@ void drawTopTribeOD(std::string world, size_t* colors, size_t zoom, std::deque<t
 	}
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topODTribes.at(i))
+			continue;
 
 		for (uint32_t j = 0; j < topODTribes.at(i)->getMemberCount(); j++) {
 
@@ -642,6 +660,9 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topODATribes.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topODATribes.at(i)->getMemberCount(); j++) {
 
 			for (uint32_t k = 0; k < topODATribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
@@ -669,6 +690,9 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 	}
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topODATribes.at(i))
+			continue;
 
 		for (uint32_t j = 0; j < topODATribes.at(i)->getMemberCount(); j++) {
 
@@ -837,6 +861,9 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topODDTribes.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topODDTribes.at(i)->getMemberCount(); j++) {
 
 			for (uint32_t k = 0; k < topODDTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
@@ -864,6 +891,9 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 	}
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topODDTribes.at(i))
+			continue;
 
 		for (uint32_t j = 0; j < topODDTribes.at(i)->getMemberCount(); j++) {
 
@@ -1034,6 +1064,9 @@ void drawTopPlayerOD(std::string world, size_t* colors, size_t zoom, std::deque<
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topODPlayers.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topODPlayers.at(i)->getVillageCount(); j++) {
 
 			x = std::get<0>(topODPlayers.at(i)->getVillage(j)->getCoord());
@@ -1057,6 +1090,9 @@ void drawTopPlayerOD(std::string world, size_t* colors, size_t zoom, std::deque<
 	}
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topODPlayers.at(i))
+			continue;
 
 		for (uint32_t j = 0; j < topODPlayers.at(i)->getVillageCount(); j++) {
 
@@ -1218,6 +1254,9 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topODAPlayers.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topODAPlayers.at(i)->getVillageCount(); j++) {
 
 			x = std::get<0>(topODAPlayers.at(i)->getVillage(j)->getCoord());
@@ -1241,6 +1280,9 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 	}
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topODAPlayers.at(i))
+			continue;
 
 		for (uint32_t j = 0; j < topODAPlayers.at(i)->getVillageCount(); j++) {
 
@@ -1404,6 +1446,9 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topODDPlayers.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topODDPlayers.at(i)->getVillageCount(); j++) {
 
 			x = std::get<0>(topODDPlayers.at(i)->getVillage(j)->getCoord());
@@ -1427,6 +1472,9 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 	}
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topODDPlayers.at(i))
+			continue;
 
 		for (uint32_t j = 0; j < topODDPlayers.at(i)->getVillageCount(); j++) {
 
@@ -1594,6 +1642,9 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topTribes.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topTribes.at(i)->getMemberCount(); j++) {
 
 			for (uint32_t k = 0; k < topTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
@@ -1622,6 +1673,9 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topTribes.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topTribes.at(i)->getMemberCount(); j++) {
 
 			for (uint32_t k = 0; k < topTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
@@ -1649,6 +1703,9 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topConqTribes.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topConqTribes.at(i)->getConqCount(); j++) {
 
 			x = std::get<0>(topConqTribes.at(i)->getConq(j)->getCoord());
@@ -1672,6 +1729,9 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 	}
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topConqTribes.at(i))
+			continue;
 
 		for (uint32_t j = 0; j < topConqTribes.at(i)->getConqCount(); j++) {
 
@@ -1839,6 +1899,9 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topTribes.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topTribes.at(i)->getMemberCount(); j++) {
 
 			for (uint32_t k = 0; k < topTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
@@ -1867,6 +1930,9 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topTribes.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topTribes.at(i)->getMemberCount(); j++) {
 
 			for (uint32_t k = 0; k < topTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
@@ -1894,6 +1960,9 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topLossTribes.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topLossTribes.at(i)->getLossCount(); j++) {
 
 			x = std::get<0>(topLossTribes.at(i)->getLoss(j)->getCoord());
@@ -1917,6 +1986,9 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 	}
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topLossTribes.at(i))
+			continue;
 
 		for (uint32_t j = 0; j < topLossTribes.at(i)->getLossCount(); j++) {
 
@@ -2084,6 +2156,9 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topPlayers.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topPlayers.at(i)->getVillageCount(); j++) {
 
 			x = std::get<0>(topPlayers.at(i)->getVillage(j)->getCoord());
@@ -2108,6 +2183,9 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topPlayers.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topPlayers.at(i)->getVillageCount(); j++) {
 
 			x = std::get<0>(topPlayers.at(i)->getVillage(j)->getCoord());
@@ -2130,6 +2208,9 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 	}
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topConqPlayers.at(i))
+			continue;
 
 		for (uint32_t j = 0; j < topConqPlayers.at(i)->getConqCount(); j++) {
 
@@ -2154,6 +2235,9 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 	}
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topConqPlayers.at(i))
+			continue;
 
 		for (uint32_t j = 0; j < topConqPlayers.at(i)->getConqCount(); j++) {
 
@@ -2321,6 +2405,9 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topPlayers.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topPlayers.at(i)->getVillageCount(); j++) {
 
 			x = std::get<0>(topPlayers.at(i)->getVillage(j)->getCoord());
@@ -2345,6 +2432,9 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 
 	for (uint32_t i = 0; i < 15; i++) {
 
+		if (!topPlayers.at(i))
+			continue;
+
 		for (uint32_t j = 0; j < topPlayers.at(i)->getVillageCount(); j++) {
 
 			x = std::get<0>(topPlayers.at(i)->getVillage(j)->getCoord());
@@ -2367,6 +2457,9 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 	}
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topLossPlayers.at(i))
+			continue;
 
 		for (uint32_t j = 0; j < topLossPlayers.at(i)->getLossCount(); j++) {
 
@@ -2391,6 +2484,9 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 	}
 
 	for (uint32_t i = 0; i < 15; i++) {
+
+		if (!topLossPlayers.at(i))
+			continue;
 
 		for (uint32_t j = 0; j < topLossPlayers.at(i)->getLossCount(); j++) {
 
