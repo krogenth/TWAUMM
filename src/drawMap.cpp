@@ -13,8 +13,10 @@
 #include <filesystem>
 #endif
 
-#include <codecvt>
-#include <locale>
+#if defined (_DEBUG) || defined (DEBUG)
+#include "ld/LeakDetector.hpp"
+#endif
+
 #include <memory>
 #include <cmath>
 #include <stdio.h>
@@ -26,6 +28,89 @@
 #include "tribe.h"
 #include "player.h"
 #include "village.h"
+
+void drawTribePixels(gdImagePtr image, const uint32_t& color, size_t zoom, tribe* tribe) {
+
+	uint32_t x = 0, y = 0;
+
+	for (uint32_t j = 0; j < tribe->getMemberCount(); j++) {
+
+		for (uint32_t k = 0; k < tribe->getMemberID(j)->getVillageCount(); k++) {
+
+			x = std::get<0>(tribe->getMemberID(j)->getVillage(k)->getCoord());
+			y = std::get<1>(tribe->getMemberID(j)->getVillage(k)->getCoord());
+
+			if (x < 500)
+				x = 500 - ((500 - x) * zoom);
+			else
+				x = 500 + ((x - 500) * zoom);
+
+			if (y < 500)
+				y = 500 - ((500 - y) * zoom);
+			else
+				y = 500 + ((y - 500) * zoom);
+
+
+			gdImageFilledRectangle(image, x - 1, y - 1 + 30, x + zoom + 1, y + zoom + 1 + 30, color);
+
+		}
+
+	}
+
+}
+
+void drawPlayerPixels(gdImagePtr image, const uint32_t& color, size_t zoom, player* player) {
+
+	uint32_t x = 0, y = 0;
+
+	for (uint32_t j = 0; j < player->getVillageCount(); j++) {
+
+		x = std::get<0>(player->getVillage(j)->getCoord());
+		y = std::get<1>(player->getVillage(j)->getCoord());
+
+		if (x < 500)
+			x = 500 - ((500 - x) * zoom);
+		else
+			x = 500 + ((x - 500) * zoom);
+
+		if (y < 500)
+			y = 500 - ((500 - y) * zoom);
+		else
+			y = 500 + ((y - 500) * zoom);
+
+
+		gdImageFilledRectangle(image, x - 1, y - 1 + 30, x + zoom + 1, y + zoom + 1 + 30, color);
+
+	}
+
+}
+
+void drawKontinents(gdImagePtr image, const uint32_t& kNumColor, const float& worldLength, const uint32_t& kLength, const float& partialK, const std::string& fontPath) {
+
+	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
+
+		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
+		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
+
+	}
+
+	int rect[8];
+	uint32_t x = 0, y = 0;
+
+	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
+
+		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
+
+			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
+			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
+			gdImageStringFT(image, &rect[0], kNumColor, &fontPath[0], 10, 0, x, y, &kNum[0]);
+
+		}
+
+	}
+
+}
 
 void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tribe*>& topTribes) {
 
@@ -71,29 +156,7 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 		if (!topTribes.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topTribes.at(i)->getMemberCount(); j++) {
-
-			for (uint32_t k = 0; k < topTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
-
-				x = std::get<0>(topTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-				y = std::get<1>(topTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-
-				if (x < 500)
-					x = 500 - ((500 - x) * zoom);
-				else
-					x = 500 + ((x - 500) * zoom);
-
-				if (y < 500)
-					y = 500 - ((500 - y) * zoom);
-				else
-					y = 500 + ((y - 500) * zoom);
-				
-
-				gdImageFilledRectangle(image, x - 1, y - 1 + 30, x + zoom + 1, y + zoom + 1 + 30, charcoal);
-
-			}
-
-		}
+		drawTribePixels(image, charcoal, zoom, topTribes.at(i));
 
 	}
 
@@ -102,57 +165,11 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 		if (!topTribes.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topTribes.at(i)->getMemberCount(); j++) {
-
-			for (uint32_t k = 0; k < topTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
-
-				x = std::get<0>(topTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-				y = std::get<1>(topTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-
-				if (x < 500)
-					x = 500 - ((500 - x) * zoom);
-				else
-					x = 500 + ((x - 500) * zoom);
-
-				if (y < 500)
-					y = 500 - ((500 - y) * zoom);
-				else
-					y = 500 + ((y - 500) * zoom);
-
-				gdImageFilledRectangle(image, x, y + 30, x + zoom, y + zoom + 30, gdColors[i]);
-
-			}
-
-		}
+		drawTribePixels(image, gdColors[i], zoom, topTribes.at(i));
 
 	}
 
-
-	for (uint32_t i = 0; i < (uint32_t)((float)kLength * worldLength); i += kLength) {
-
-		uint32_t check = (uint32_t)((float)kLength * partialK) + i;
-
-		gdImageLine(image, check, 30, check, 1030, kNumColor);
-		gdImageLine(image, 0, check + 30, 1000, check + 30, kNumColor);
-
-	}
-
-	int rect[8];
-	//	meant for gdImageStringFTEx for unicode, but cannot get to work
-
-	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
-
-		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
-
-			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
-			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			gdImageStringFT(image, &rect[0], kNumColor, &fontPath[0], 10, 0, x, y, &kNum[0]);
-
-		}
-
-
-	}
+	drawKontinents(image, kNumColor, worldLength, kLength, partialK, fontPath);
 
 	gdFreeFontCache();
 
@@ -164,6 +181,8 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 	gdStringExtras.vdpi = 96;
 	gdStringExtras.xshow = nullptr;
 	gdStringExtras.fontpath = nullptr;
+
+	int rect[8];
 
 	for (uint32_t i = 0; i < 15; i++) {
 
@@ -189,11 +208,11 @@ void drawTopTribes(std::string world, size_t* colors, size_t zoom, std::deque<tr
 		data = converter.to_bytes(topTribes[i]->getTag());
 		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
-		data = FormatWithCommas(topTribes.at(i)->getPoints());
+		data = RecursiveCommas(topTribes.at(i)->getPoints());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 
-		data = FormatWithCommas(topTribes.at(i)->getVillageCount());
+		data = RecursiveCommas(topTribes.at(i)->getVillageCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 
@@ -275,25 +294,7 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 		if (!topPlayers.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topPlayers.at(i)->getVillageCount(); j++) {
-
-				x = std::get<0>(topPlayers.at(i)->getVillage(j)->getCoord());
-				y = std::get<1>(topPlayers.at(i)->getVillage(j)->getCoord());
-
-				if (x < 500)
-					x = 500 - ((500 - x) * zoom);
-				else
-					x = 500 + ((x - 500) * zoom);
-
-				if (y < 500)
-					y = 500 - ((500 - y) * zoom);
-				else
-					y = 500 + ((y - 500) * zoom);
-
-
-				gdImageFilledRectangle(image, x - 1, y - 1 + 30, x + zoom + 1, y + zoom + 1 + 30, charcoal);
-
-		}
+		drawPlayerPixels(image, charcoal, zoom, topPlayers.at(i));
 
 	}
 
@@ -302,49 +303,11 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 		if (!topPlayers.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topPlayers.at(i)->getVillageCount(); j++) {
-
-				x = std::get<0>(topPlayers.at(i)->getVillage(j)->getCoord());
-				y = std::get<1>(topPlayers.at(i)->getVillage(j)->getCoord());
-
-				if (x < 500)
-					x = 500 - ((500 - x) * zoom);
-				else
-					x = 500 + ((x - 500) * zoom);
-
-				if (y < 500)
-					y = 500 - ((500 - y) * zoom);
-				else
-					y = 500 + ((y - 500) * zoom);
-
-				gdImageFilledRectangle(image, x, y + 30, x + zoom, y + zoom + 30, gdColors[i]);
-
-		}
+		drawPlayerPixels(image, gdColors[i], zoom, topPlayers.at(i));
 
 	}
 
-	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
-
-		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
-		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
-
-	}
-
-	int rect[8];
-
-	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
-
-		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
-
-			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
-			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			gdImageStringFT(image, &rect[0], kNumColor, &fontPath[0], 10, 0, x, y, &kNum[0]);
-
-		}
-
-
-	}
+	drawKontinents(image, kNumColor, worldLength, kLength, partialK, fontPath);
 
 	gdFTStringExtra gdStringExtras;
 	gdStringExtras.flags = gdFTEX_LINESPACE | gdFTEX_CHARMAP;
@@ -355,6 +318,7 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 	gdStringExtras.xshow = nullptr;
 	gdStringExtras.fontpath = nullptr;
 	
+	int rect[8];
 
 	for (uint32_t i = 0; i < 15; i++) {
 
@@ -380,11 +344,11 @@ void drawTopPlayers(std::string world, size_t* colors, size_t zoom, std::deque<p
 		data = converter.to_bytes(topPlayers[i]->getName());
 		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
-		data = FormatWithCommas(topPlayers.at(i)->getPoints());
+		data = RecursiveCommas(topPlayers.at(i)->getPoints());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 
-		data = FormatWithCommas(topPlayers.at(i)->getVillageCount());
+		data = RecursiveCommas(topPlayers.at(i)->getVillageCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 
@@ -465,29 +429,7 @@ void drawTopTribeOD(std::string world, size_t* colors, size_t zoom, std::deque<t
 		if (!topODTribes.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topODTribes.at(i)->getMemberCount(); j++) {
-
-			for (uint32_t k = 0; k < topODTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
-
-				x = std::get<0>(topODTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-				y = std::get<1>(topODTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-
-				if (x < 500)
-					x = 500 - ((500 - x) * zoom);
-				else
-					x = 500 + ((x - 500) * zoom);
-
-				if (y < 500)
-					y = 500 - ((500 - y) * zoom);
-				else
-					y = 500 + ((y - 500) * zoom);
-
-
-				gdImageFilledRectangle(image, x - 1, y - 1 + 30, x + zoom + 1, y + zoom + 1 + 30, charcoal);
-
-			}
-
-		}
+		drawTribePixels(image, charcoal, zoom, topODTribes.at(i));
 
 	}
 
@@ -496,53 +438,11 @@ void drawTopTribeOD(std::string world, size_t* colors, size_t zoom, std::deque<t
 		if (!topODTribes.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topODTribes.at(i)->getMemberCount(); j++) {
-
-			for (uint32_t k = 0; k < topODTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
-
-				x = std::get<0>(topODTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-				y = std::get<1>(topODTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-
-				if (x < 500)
-					x = 500 - ((500 - x) * zoom);
-				else
-					x = 500 + ((x - 500) * zoom);
-
-				if (y < 500)
-					y = 500 - ((500 - y) * zoom);
-				else
-					y = 500 + ((y - 500) * zoom);
-
-				gdImageFilledRectangle(image, x, y + 30, x + zoom, y + zoom + 30, gdColors[i]);
-
-			}
-
-		}
+		drawTribePixels(image, gdColors[i], zoom, topODTribes.at(i));
 
 	}
 
-	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
-
-		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
-		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
-
-	}
-
-	int rect[8];
-
-	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
-
-		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
-
-			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
-			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			gdImageStringFT(image, &rect[0], kNumColor, &fontPath[0], 10, 0, x, y, &kNum[0]);
-
-		}
-
-
-	}
+	drawKontinents(image, kNumColor, worldLength, kLength, partialK, fontPath);
 
 	gdFTStringExtra gdStringExtras;
 	gdStringExtras.flags = gdFTEX_LINESPACE | gdFTEX_CHARMAP;
@@ -552,6 +452,8 @@ void drawTopTribeOD(std::string world, size_t* colors, size_t zoom, std::deque<t
 	gdStringExtras.vdpi = 0;
 	gdStringExtras.xshow = nullptr;
 	gdStringExtras.fontpath = nullptr;
+
+	int rect[8];
 
 	for (uint32_t i = 0; i < 15; i++) {
 
@@ -578,11 +480,11 @@ void drawTopTribeOD(std::string world, size_t* colors, size_t zoom, std::deque<t
 		data = converter.to_bytes(topODTribes[i]->getTag());
 		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
-		data = FormatWithCommas(topODTribes.at(i)->getOD());
+		data = RecursiveCommas(topODTribes.at(i)->getOD());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 
-		data = FormatWithCommas(topODTribes.at(i)->getVillageCount());
+		data = RecursiveCommas(topODTribes.at(i)->getVillageCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 
@@ -663,29 +565,7 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 		if (!topODATribes.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topODATribes.at(i)->getMemberCount(); j++) {
-
-			for (uint32_t k = 0; k < topODATribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
-
-				x = std::get<0>(topODATribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-				y = std::get<1>(topODATribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-
-				if (x < 500)
-					x = 500 - ((500 - x) * zoom);
-				else
-					x = 500 + ((x - 500) * zoom);
-
-				if (y < 500)
-					y = 500 - ((500 - y) * zoom);
-				else
-					y = 500 + ((y - 500) * zoom);
-
-
-				gdImageFilledRectangle(image, x - 1, y - 1 + 30, x + zoom + 1, y + zoom + 1 + 30, charcoal);
-
-			}
-
-		}
+		drawTribePixels(image, charcoal, zoom, topODATribes.at(i));
 
 	}
 
@@ -694,53 +574,11 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 		if (!topODATribes.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topODATribes.at(i)->getMemberCount(); j++) {
-
-			for (uint32_t k = 0; k < topODATribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
-
-				x = std::get<0>(topODATribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-				y = std::get<1>(topODATribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-
-				if (x < 500)
-					x = 500 - ((500 - x) * zoom);
-				else
-					x = 500 + ((x - 500) * zoom);
-
-				if (y < 500)
-					y = 500 - ((500 - y) * zoom);
-				else
-					y = 500 + ((y - 500) * zoom);
-
-				gdImageFilledRectangle(image, x, y + 30, x + zoom, y + zoom + 30, gdColors[i]);
-
-			}
-
-		}
+		drawTribePixels(image, gdColors[i], zoom, topODATribes.at(i));
 
 	}
 
-	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
-
-		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
-		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
-
-	}
-
-	int rect[8];
-
-	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
-
-		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
-
-			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
-			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			gdImageStringFT(image, &rect[0], kNumColor, &fontPath[0], 10, 0, x, y, &kNum[0]);
-
-		}
-
-
-	}
+	drawKontinents(image, kNumColor, worldLength, kLength, partialK, fontPath);
 
 	gdFTStringExtra gdStringExtras;
 	gdStringExtras.flags = gdFTEX_LINESPACE | gdFTEX_CHARMAP;
@@ -750,6 +588,8 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 	gdStringExtras.vdpi = 0;
 	gdStringExtras.xshow = nullptr;
 	gdStringExtras.fontpath = nullptr;
+
+	int rect[8];
 
 	for (uint32_t i = 0; i < 15; i++) {
 
@@ -779,11 +619,11 @@ void drawTopTribeODA(std::string world, size_t* colors, size_t zoom, std::deque<
 		data = converter.to_bytes(topODATribes[i]->getTag());
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, (char*)&data[0]);
 
-		data = FormatWithCommas(topODATribes.at(i)->getODA());
+		data = RecursiveCommas(topODATribes.at(i)->getODA());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 
-		data = FormatWithCommas(topODATribes.at(i)->getVillageCount());
+		data = RecursiveCommas(topODATribes.at(i)->getVillageCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 
@@ -864,29 +704,7 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 		if (!topODDTribes.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topODDTribes.at(i)->getMemberCount(); j++) {
-
-			for (uint32_t k = 0; k < topODDTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
-
-				x = std::get<0>(topODDTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-				y = std::get<1>(topODDTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-
-				if (x < 500)
-					x = 500 - ((500 - x) * zoom);
-				else
-					x = 500 + ((x - 500) * zoom);
-
-				if (y < 500)
-					y = 500 - ((500 - y) * zoom);
-				else
-					y = 500 + ((y - 500) * zoom);
-
-
-				gdImageFilledRectangle(image, x - 1, y - 1 + 30, x + zoom + 1, y + zoom + 1 + 30, charcoal);
-
-			}
-
-		}
+		drawTribePixels(image, charcoal, zoom, topODDTribes.at(i));
 
 	}
 
@@ -895,53 +713,11 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 		if (!topODDTribes.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topODDTribes.at(i)->getMemberCount(); j++) {
-
-			for (uint32_t k = 0; k < topODDTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
-
-				x = std::get<0>(topODDTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-				y = std::get<1>(topODDTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-
-				if (x < 500)
-					x = 500 - ((500 - x) * zoom);
-				else
-					x = 500 + ((x - 500) * zoom);
-
-				if (y < 500)
-					y = 500 - ((500 - y) * zoom);
-				else
-					y = 500 + ((y - 500) * zoom);
-
-				gdImageFilledRectangle(image, x, y + 30, x + zoom, y + zoom + 30, gdColors[i]);
-
-			}
-
-		}
+		drawTribePixels(image, gdColors[i], zoom, topODDTribes.at(i));
 
 	}
 
-	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
-
-		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
-		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
-
-	}
-
-	int rect[8];
-
-	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
-
-		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
-
-			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
-			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			gdImageStringFT(image, &rect[0], kNumColor, &fontPath[0], 10, 0, x, y, &kNum[0]);
-
-		}
-
-
-	}
+	drawKontinents(image, kNumColor, worldLength, kLength, partialK, fontPath);
 
 	gdFTStringExtra gdStringExtras;
 	gdStringExtras.flags = gdFTEX_LINESPACE | gdFTEX_CHARMAP;
@@ -951,6 +727,8 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 	gdStringExtras.vdpi = 0;
 	gdStringExtras.xshow = nullptr;
 	gdStringExtras.fontpath = nullptr;
+
+	int rect[8];
 
 	for (uint32_t i = 0; i < 15; i++) {
 
@@ -980,11 +758,11 @@ void drawTopTribeODD(std::string world, size_t* colors, size_t zoom, std::deque<
 		data = converter.to_bytes(topODDTribes[i]->getTag());
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, (char*)&data[0]);
 
-		data = FormatWithCommas(topODDTribes.at(i)->getODD());
+		data = RecursiveCommas(topODDTribes.at(i)->getODD());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 
-		data = FormatWithCommas(topODDTribes.at(i)->getVillageCount());
+		data = RecursiveCommas(topODDTribes.at(i)->getVillageCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 
@@ -1067,25 +845,7 @@ void drawTopPlayerOD(std::string world, size_t* colors, size_t zoom, std::deque<
 		if (!topODPlayers.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topODPlayers.at(i)->getVillageCount(); j++) {
-
-			x = std::get<0>(topODPlayers.at(i)->getVillage(j)->getCoord());
-			y = std::get<1>(topODPlayers.at(i)->getVillage(j)->getCoord());
-
-			if (x < 500)
-				x = 500 - ((500 - x) * zoom);
-			else
-				x = 500 + ((x - 500) * zoom);
-
-			if (y < 500)
-				y = 500 - ((500 - y) * zoom);
-			else
-				y = 500 + ((y - 500) * zoom);
-
-
-			gdImageFilledRectangle(image, x - 1, y - 1 + 30, x + zoom + 1, y + zoom + 1 + 30, charcoal);
-
-		}
+		drawPlayerPixels(image, charcoal, zoom, topODPlayers.at(i));
 
 	}
 
@@ -1094,49 +854,11 @@ void drawTopPlayerOD(std::string world, size_t* colors, size_t zoom, std::deque<
 		if (!topODPlayers.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topODPlayers.at(i)->getVillageCount(); j++) {
-
-			x = std::get<0>(topODPlayers.at(i)->getVillage(j)->getCoord());
-			y = std::get<1>(topODPlayers.at(i)->getVillage(j)->getCoord());
-
-			if (x < 500)
-				x = 500 - ((500 - x) * zoom);
-			else
-				x = 500 + ((x - 500) * zoom);
-
-			if (y < 500)
-				y = 500 - ((500 - y) * zoom);
-			else
-				y = 500 + ((y - 500) * zoom);
-
-			gdImageFilledRectangle(image, x, y + 30, x + zoom, y + zoom + 30, gdColors[i]);
-
-		}
+		drawPlayerPixels(image, gdColors[i], zoom, topODPlayers.at(i));
 
 	}
 
-	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
-
-		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
-		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
-
-	}
-
-	int rect[8];
-
-	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
-
-		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
-
-			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
-			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			gdImageStringFT(image, &rect[0], kNumColor, &fontPath[0], 10, 0, x, y, &kNum[0]);
-
-		}
-
-
-	}
+	drawKontinents(image, kNumColor, worldLength, kLength, partialK, fontPath);
 
 	gdFTStringExtra gdStringExtras;
 	gdStringExtras.flags = gdFTEX_LINESPACE | gdFTEX_CHARMAP;
@@ -1146,6 +868,8 @@ void drawTopPlayerOD(std::string world, size_t* colors, size_t zoom, std::deque<
 	gdStringExtras.vdpi = 0;
 	gdStringExtras.xshow = nullptr;
 	gdStringExtras.fontpath = nullptr;
+
+	int rect[8];
 
 	for (uint32_t i = 0; i < 15; i++) {
 
@@ -1172,11 +896,11 @@ void drawTopPlayerOD(std::string world, size_t* colors, size_t zoom, std::deque<
 		data = converter.to_bytes(topODPlayers[i]->getName());
 		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
-		data = FormatWithCommas(topODPlayers.at(i)->getOD());
+		data = RecursiveCommas(topODPlayers.at(i)->getOD());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 
-		data = FormatWithCommas(topODPlayers.at(i)->getVillageCount());
+		data = RecursiveCommas(topODPlayers.at(i)->getVillageCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 
@@ -1257,25 +981,7 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 		if (!topODAPlayers.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topODAPlayers.at(i)->getVillageCount(); j++) {
-
-			x = std::get<0>(topODAPlayers.at(i)->getVillage(j)->getCoord());
-			y = std::get<1>(topODAPlayers.at(i)->getVillage(j)->getCoord());
-
-			if (x < 500)
-				x = 500 - ((500 - x) * zoom);
-			else
-				x = 500 + ((x - 500) * zoom);
-
-			if (y < 500)
-				y = 500 - ((500 - y) * zoom);
-			else
-				y = 500 + ((y - 500) * zoom);
-
-
-			gdImageFilledRectangle(image, x - 1, y - 1 + 30, x + zoom + 1, y + zoom + 1 + 30, charcoal);
-
-		}
+		drawPlayerPixels(image, charcoal, zoom, topODAPlayers.at(i));
 
 	}
 
@@ -1284,49 +990,11 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 		if (!topODAPlayers.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topODAPlayers.at(i)->getVillageCount(); j++) {
-
-			x = std::get<0>(topODAPlayers.at(i)->getVillage(j)->getCoord());
-			y = std::get<1>(topODAPlayers.at(i)->getVillage(j)->getCoord());
-
-			if (x < 500)
-				x = 500 - ((500 - x) * zoom);
-			else
-				x = 500 + ((x - 500) * zoom);
-
-			if (y < 500)
-				y = 500 - ((500 - y) * zoom);
-			else
-				y = 500 + ((y - 500) * zoom);
-
-			gdImageFilledRectangle(image, x, y + 30, x + zoom, y + zoom + 30, gdColors[i]);
-
-		}
+		drawPlayerPixels(image, gdColors[i], zoom, topODAPlayers.at(i));
 
 	}
 
-	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
-
-		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
-		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
-
-	}
-
-	int rect[8];
-
-	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
-
-		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
-
-			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
-			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			gdImageStringFT(image, &rect[0], kNumColor, &fontPath[0], 10, 0, x, y, &kNum[0]);
-
-		}
-
-
-	}
+	drawKontinents(image, kNumColor, worldLength, kLength, partialK, fontPath);
 
 	gdFTStringExtra gdStringExtras;
 	gdStringExtras.flags = gdFTEX_LINESPACE | gdFTEX_CHARMAP;
@@ -1336,6 +1004,8 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 	gdStringExtras.vdpi = 0;
 	gdStringExtras.xshow = nullptr;
 	gdStringExtras.fontpath = nullptr;
+
+	int rect[8];
 
 	for (uint32_t i = 0; i < 15; i++) {
 
@@ -1362,11 +1032,11 @@ void drawTopPlayerODA(std::string world, size_t* colors, size_t zoom, std::deque
 		data = converter.to_bytes(topODAPlayers[i]->getName());
 		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
-		data = FormatWithCommas(topODAPlayers.at(i)->getODA());
+		data = RecursiveCommas(topODAPlayers.at(i)->getODA());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 
-		data = FormatWithCommas(topODAPlayers.at(i)->getVillageCount());
+		data = RecursiveCommas(topODAPlayers.at(i)->getVillageCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 
@@ -1449,25 +1119,7 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 		if (!topODDPlayers.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topODDPlayers.at(i)->getVillageCount(); j++) {
-
-			x = std::get<0>(topODDPlayers.at(i)->getVillage(j)->getCoord());
-			y = std::get<1>(topODDPlayers.at(i)->getVillage(j)->getCoord());
-
-			if (x < 500)
-				x = 500 - ((500 - x) * zoom);
-			else
-				x = 500 + ((x - 500) * zoom);
-
-			if (y < 500)
-				y = 500 - ((500 - y) * zoom);
-			else
-				y = 500 + ((y - 500) * zoom);
-
-
-			gdImageFilledRectangle(image, x - 1, y - 1 + 30, x + zoom + 1, y + zoom + 1 + 30, charcoal);
-
-		}
+		drawPlayerPixels(image, charcoal, zoom, topODDPlayers.at(i));
 
 	}
 
@@ -1476,49 +1128,11 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 		if (!topODDPlayers.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topODDPlayers.at(i)->getVillageCount(); j++) {
-
-			x = std::get<0>(topODDPlayers.at(i)->getVillage(j)->getCoord());
-			y = std::get<1>(topODDPlayers.at(i)->getVillage(j)->getCoord());
-
-			if (x < 500)
-				x = 500 - ((500 - x) * zoom);
-			else
-				x = 500 + ((x - 500) * zoom);
-
-			if (y < 500)
-				y = 500 - ((500 - y) * zoom);
-			else
-				y = 500 + ((y - 500) * zoom);
-
-			gdImageFilledRectangle(image, x, y + 30, x + zoom, y + zoom + 30, gdColors[i]);
-
-		}
+		drawPlayerPixels(image, gdColors[i], zoom, topODDPlayers.at(i));
 
 	}
 
-	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
-
-		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
-		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
-
-	}
-
-	int rect[8];
-
-	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
-
-		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
-
-			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
-			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			gdImageStringFT(image, &rect[0], kNumColor, &fontPath[0], 10, 0, x, y, &kNum[0]);
-
-		}
-
-
-	}
+	drawKontinents(image, kNumColor, worldLength, kLength, partialK, fontPath);
 
 	gdFTStringExtra gdStringExtras;
 	gdStringExtras.flags = gdFTEX_LINESPACE | gdFTEX_CHARMAP;
@@ -1528,6 +1142,8 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 	gdStringExtras.vdpi = 0;
 	gdStringExtras.xshow = nullptr;
 	gdStringExtras.fontpath = nullptr;
+
+	int rect[8];
 
 	for (uint32_t i = 0; i < 15; i++) {
 
@@ -1554,11 +1170,11 @@ void drawTopPlayerODD(std::string world, size_t* colors, size_t zoom, std::deque
 		data = converter.to_bytes(topODDPlayers[i]->getName());
 		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
-		data = FormatWithCommas(topODDPlayers.at(i)->getODD());
+		data = RecursiveCommas(topODDPlayers.at(i)->getODD());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 
-		data = FormatWithCommas(topODDPlayers.at(i)->getVillageCount());
+		data = RecursiveCommas(topODDPlayers.at(i)->getVillageCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 
@@ -1645,29 +1261,7 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 		if (!topTribes.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topTribes.at(i)->getMemberCount(); j++) {
-
-			for (uint32_t k = 0; k < topTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
-
-				x = std::get<0>(topTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-				y = std::get<1>(topTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-
-				if (x < 500)
-					x = 500 - ((500 - x) * zoom);
-				else
-					x = 500 + ((x - 500) * zoom);
-
-				if (y < 500)
-					y = 500 - ((500 - y) * zoom);
-				else
-					y = 500 + ((y - 500) * zoom);
-
-
-				gdImageFilledRectangle(image, x - 1, y - 1 + 30, x + zoom + 1, y + zoom + 1 + 30, charcoalAlpha);
-
-			}
-
-		}
+		drawTribePixels(image, charcoalAlpha, zoom, topTribes.at(i));
 
 	}
 
@@ -1676,28 +1270,7 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 		if (!topTribes.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topTribes.at(i)->getMemberCount(); j++) {
-
-			for (uint32_t k = 0; k < topTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
-
-				x = std::get<0>(topTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-				y = std::get<1>(topTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-
-				if (x < 500)
-					x = 500 - ((500 - x) * zoom);
-				else
-					x = 500 + ((x - 500) * zoom);
-
-				if (y < 500)
-					y = 500 - ((500 - y) * zoom);
-				else
-					y = 500 + ((y - 500) * zoom);
-
-				gdImageFilledRectangle(image, x, y + 30, x + zoom, y + zoom + 30, gdAlphaColors[i]);
-
-			}
-
-		}
+		drawTribePixels(image, gdAlphaColors[i], zoom, topTribes.at(i));
 
 	}
 
@@ -1720,7 +1293,6 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 					y = 500 - ((500 - y) * zoom);
 				else
 					y = 500 + ((y - 500) * zoom);
-
 
 				gdImageFilledRectangle(image, x - 2, y - 1 + 30, x + zoom + 2, y + zoom + 2 + 30, charcoal);
 
@@ -1754,28 +1326,7 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 
 	}
 
-	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
-
-		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
-		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
-
-	}
-
-	int rect[8];
-
-	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
-
-		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
-
-			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
-			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			gdImageStringFT(image, &rect[0], kNumColor, &fontPath[0], 10, 0, x, y, &kNum[0]);
-
-		}
-
-
-	}
+	drawKontinents(image, kNumColor, worldLength, kLength, partialK, fontPath);
 
 	gdFTStringExtra gdStringExtras;
 	gdStringExtras.flags = gdFTEX_LINESPACE | gdFTEX_CHARMAP;
@@ -1785,6 +1336,8 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 	gdStringExtras.vdpi = 0;
 	gdStringExtras.xshow = nullptr;
 	gdStringExtras.fontpath = nullptr;
+
+	int rect[8];
 
 	for (uint32_t i = 0; i < 15; i++) {
 
@@ -1811,11 +1364,11 @@ void drawTopTribeConqs(std::string world, size_t* colors, size_t zoom, std::dequ
 		data = converter.to_bytes(topConqTribes[i]->getTag());
 		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
-		data = FormatWithCommas(topConqTribes.at(i)->getConqPoints());
+		data = RecursiveCommas(topConqTribes.at(i)->getConqPoints());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 
-		data = FormatWithCommas(topConqTribes.at(i)->getConqCount());
+		data = RecursiveCommas(topConqTribes.at(i)->getConqCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 
@@ -1902,29 +1455,7 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 		if (!topTribes.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topTribes.at(i)->getMemberCount(); j++) {
-
-			for (uint32_t k = 0; k < topTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
-
-				x = std::get<0>(topTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-				y = std::get<1>(topTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-
-				if (x < 500)
-					x = 500 - ((500 - x) * zoom);
-				else
-					x = 500 + ((x - 500) * zoom);
-
-				if (y < 500)
-					y = 500 - ((500 - y) * zoom);
-				else
-					y = 500 + ((y - 500) * zoom);
-
-
-				gdImageFilledRectangle(image, x - 1, y - 1 + 30, x + zoom + 1, y + zoom + 1 + 30, charcoalAlpha);
-
-			}
-
-		}
+		drawTribePixels(image, charcoalAlpha, zoom, topTribes.at(i));
 
 	}
 
@@ -1933,28 +1464,7 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 		if (!topTribes.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topTribes.at(i)->getMemberCount(); j++) {
-
-			for (uint32_t k = 0; k < topTribes.at(i)->getMemberID(j)->getVillageCount(); k++) {
-
-				x = std::get<0>(topTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-				y = std::get<1>(topTribes.at(i)->getMemberID(j)->getVillage(k)->getCoord());
-
-				if (x < 500)
-					x = 500 - ((500 - x) * zoom);
-				else
-					x = 500 + ((x - 500) * zoom);
-
-				if (y < 500)
-					y = 500 - ((500 - y) * zoom);
-				else
-					y = 500 + ((y - 500) * zoom);
-
-				gdImageFilledRectangle(image, x, y + 30, x + zoom, y + zoom + 30, gdAlphaColors[i]);
-
-			}
-
-		}
+		drawTribePixels(image, gdAlphaColors[i], zoom, topTribes.at(i));
 
 	}
 
@@ -2011,28 +1521,7 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 
 	}
 
-	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
-
-		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
-		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
-
-	}
-
-	int rect[8];
-
-	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
-
-		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
-
-			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
-			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			gdImageStringFT(image, &rect[0], kNumColor, &fontPath[0], 10, 0, x, y, &kNum[0]);
-
-		}
-
-
-	}
+	drawKontinents(image, kNumColor, worldLength, kLength, partialK, fontPath);
 
 	gdFTStringExtra gdStringExtras;
 	gdStringExtras.flags = gdFTEX_LINESPACE | gdFTEX_CHARMAP;
@@ -2042,6 +1531,8 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 	gdStringExtras.vdpi = 0;
 	gdStringExtras.xshow = nullptr;
 	gdStringExtras.fontpath = nullptr;
+
+	int rect[8];
 
 	for (uint32_t i = 0; i < 15; i++) {
 
@@ -2068,11 +1559,11 @@ void drawTopTribeLosses(std::string world, size_t* colors, size_t zoom, std::deq
 		data = converter.to_bytes(topLossTribes[i]->getTag());
 		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
-		data = FormatWithCommas(topLossTribes.at(i)->getLossPoints());
+		data = RecursiveCommas(topLossTribes.at(i)->getLossPoints());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 
-		data = FormatWithCommas(topLossTribes.at(i)->getLossCount());
+		data = RecursiveCommas(topLossTribes.at(i)->getLossCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 
@@ -2159,25 +1650,7 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 		if (!topPlayers.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topPlayers.at(i)->getVillageCount(); j++) {
-
-			x = std::get<0>(topPlayers.at(i)->getVillage(j)->getCoord());
-			y = std::get<1>(topPlayers.at(i)->getVillage(j)->getCoord());
-
-			if (x < 500)
-				x = 500 - ((500 - x) * zoom);
-			else
-				x = 500 + ((x - 500) * zoom);
-
-			if (y < 500)
-				y = 500 - ((500 - y) * zoom);
-			else
-				y = 500 + ((y - 500) * zoom);
-
-
-			gdImageFilledRectangle(image, x - 1, y - 1 + 30, x + zoom + 1, y + zoom + 1 + 30, charcoalAlpha);
-
-		}
+		drawPlayerPixels(image, charcoalAlpha, zoom, topPlayers.at(i));
 
 	}
 
@@ -2186,24 +1659,7 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 		if (!topPlayers.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topPlayers.at(i)->getVillageCount(); j++) {
-
-			x = std::get<0>(topPlayers.at(i)->getVillage(j)->getCoord());
-			y = std::get<1>(topPlayers.at(i)->getVillage(j)->getCoord());
-
-			if (x < 500)
-				x = 500 - ((500 - x) * zoom);
-			else
-				x = 500 + ((x - 500) * zoom);
-
-			if (y < 500)
-				y = 500 - ((500 - y) * zoom);
-			else
-				y = 500 + ((y - 500) * zoom);
-
-			gdImageFilledRectangle(image, x, y + 30, x + zoom, y + zoom + 30, gdAlphaColors[i]);
-
-		}
+		drawPlayerPixels(image, gdAlphaColors[i], zoom, topPlayers.at(i));
 
 	}
 
@@ -2260,28 +1716,7 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 
 	}
 
-	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
-
-		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
-		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
-
-	}
-
-	int rect[8];
-
-	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
-
-		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
-
-			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
-			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			gdImageStringFT(image, &rect[0], kNumColor, &fontPath[0], 10, 0, x, y, &kNum[0]);
-
-		}
-
-
-	}
+	drawKontinents(image, kNumColor, worldLength, kLength, partialK, fontPath);
 
 	gdFTStringExtra gdStringExtras;
 	gdStringExtras.flags = gdFTEX_LINESPACE | gdFTEX_CHARMAP;
@@ -2291,6 +1726,8 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 	gdStringExtras.vdpi = 0;
 	gdStringExtras.xshow = nullptr;
 	gdStringExtras.fontpath = nullptr;
+
+	int rect[8];
 
 	for (uint32_t i = 0; i < 15; i++) {
 
@@ -2317,11 +1754,11 @@ void drawTopPlayerConqs(std::string world, size_t* colors, size_t zoom, std::deq
 		data = converter.to_bytes(topConqPlayers[i]->getName());
 		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
-		data = FormatWithCommas(topConqPlayers.at(i)->getConqPoints());
+		data = RecursiveCommas(topConqPlayers.at(i)->getConqPoints());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 
-		data = FormatWithCommas(topConqPlayers.at(i)->getConqCount());
+		data = RecursiveCommas(topConqPlayers.at(i)->getConqCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 
@@ -2408,25 +1845,7 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 		if (!topPlayers.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topPlayers.at(i)->getVillageCount(); j++) {
-
-			x = std::get<0>(topPlayers.at(i)->getVillage(j)->getCoord());
-			y = std::get<1>(topPlayers.at(i)->getVillage(j)->getCoord());
-
-			if (x < 500)
-				x = 500 - ((500 - x) * zoom);
-			else
-				x = 500 + ((x - 500) * zoom);
-
-			if (y < 500)
-				y = 500 - ((500 - y) * zoom);
-			else
-				y = 500 + ((y - 500) * zoom);
-
-
-			gdImageFilledRectangle(image, x - 1, y - 1 + 30, x + zoom + 1, y + zoom + 1 + 30, charcoalAlpha);
-
-		}
+		drawPlayerPixels(image, charcoalAlpha, zoom, topPlayers.at(i));
 
 	}
 
@@ -2435,24 +1854,7 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 		if (!topPlayers.at(i))
 			continue;
 
-		for (uint32_t j = 0; j < topPlayers.at(i)->getVillageCount(); j++) {
-
-			x = std::get<0>(topPlayers.at(i)->getVillage(j)->getCoord());
-			y = std::get<1>(topPlayers.at(i)->getVillage(j)->getCoord());
-
-			if (x < 500)
-				x = 500 - ((500 - x) * zoom);
-			else
-				x = 500 + ((x - 500) * zoom);
-
-			if (y < 500)
-				y = 500 - ((500 - y) * zoom);
-			else
-				y = 500 + ((y - 500) * zoom);
-
-			gdImageFilledRectangle(image, x, y + 30, x + zoom, y + zoom + 30, gdAlphaColors[i]);
-
-		}
+		drawPlayerPixels(image, gdAlphaColors[i], zoom, topPlayers.at(i));
 
 	}
 
@@ -2509,37 +1911,18 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 
 	}
 
-	for (uint32_t i = 0; i < kLength * worldLength; i += kLength) {
+	drawKontinents(image, kNumColor, worldLength, kLength, partialK, fontPath);
 
-		gdImageLine(image, (uint32_t)((float)kLength * partialK) + i, 30, (uint32_t)((float)kLength * partialK) + i, 1030, kNumColor);
-		gdImageLine(image, 0, (uint32_t)((float)kLength * partialK) + i + 30, 1000, (uint32_t)((float)kLength * partialK) + i + 30, kNumColor);
-
-	}
+	gdFTStringExtra gdStringExtras;
+	gdStringExtras.flags = gdFTEX_LINESPACE | gdFTEX_CHARMAP;
+	gdStringExtras.linespacing = 1.05;
+	gdStringExtras.charmap = gdFTEX_Unicode;
+	gdStringExtras.hdpi = 0;
+	gdStringExtras.vdpi = 0;
+	gdStringExtras.xshow = nullptr;
+	gdStringExtras.fontpath = nullptr;
 
 	int rect[8];
-
-	for (uint8_t xLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); xLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); xLine++) {
-
-		for (uint8_t yLine = (uint8_t)std::ceil((10.0f - worldLength - 1.0f) / 2.0f); yLine < 10 - (uint8_t)std::ceil((10.0f - worldLength) / 2.0f); yLine++) {
-
-			std::string kNum = std::to_string(xLine) + std::to_string(yLine);
-			x = 82 + ((yLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			y = 128 + ((xLine - (uint8_t)std::floor((10.0f - worldLength) / 2.0f)) * kLength);
-			gdImageStringFT(image, &rect[0], kNumColor, &fontPath[0], 10, 0, x, y, &kNum[0]);
-
-		}
-
-
-	}
-
-		gdFTStringExtra gdStringExtras;
-		gdStringExtras.flags = gdFTEX_LINESPACE | gdFTEX_CHARMAP;
-		gdStringExtras.linespacing = 1.05;
-		gdStringExtras.charmap = gdFTEX_Unicode;
-		gdStringExtras.hdpi = 0;
-		gdStringExtras.vdpi = 0;
-		gdStringExtras.xshow = nullptr;
-		gdStringExtras.fontpath = nullptr;
 
 	for (uint32_t i = 0; i < 15; i++) {
 
@@ -2566,11 +1949,11 @@ void drawTopPlayerLosses(std::string world, size_t* colors, size_t zoom, std::de
 		data = converter.to_bytes(topLossPlayers[i]->getName());
 		gdImageStringFTEx(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord, &data[0], &gdStringExtras);
 
-		data = FormatWithCommas(topLossPlayers.at(i)->getLossPoints());
+		data = RecursiveCommas(topLossPlayers.at(i)->getLossPoints());
 		data += " points";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 15, (char*)&data[0]);
 
-		data = FormatWithCommas(topLossPlayers.at(i)->getLossCount());
+		data = RecursiveCommas(topLossPlayers.at(i)->getLossCount());
 		data += " villages";
 		gdImageStringFT(image, &rect[0], black, &fontPath[0], 10, 0, xWord, yWord + 30, (char*)&data[0]);
 
