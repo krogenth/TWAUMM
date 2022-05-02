@@ -1,0 +1,59 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Ouput Dir
+/build
+
+# specific folders
+/vs/.vs
+/vs/x64
+/vs/TWAUMM/Debug
+/vs/TWAUMM/Release
+/vs/TWAUMM/maps
+/vs/TWAUMM/x64
+/.vscode
+/libs/gdbuild
+
+# specific files
+/vs/TWAUMM/colors.txt
+/vs/TWAUMM/worlds.txt
+/vs/TWAUMM/config.json
+/vs/TWAUMM/arialuni.ttf
+
+# vs specific files
+*.user
+*.tlog
+*.lastbuildstate
+*.recipe
+*.ilk
+*.idb
+*.pdb
+*.log
+*.iobj
+*.ipdb

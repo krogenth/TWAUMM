@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\initialization">
+      <UniqueIdentifier>{d0f6a18e-61b7-4259-a8f1-17fbb7cc7c89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\player">
+      <UniqueIdentifier>{27c10848-b8b8-4e63-8e98-1f7dc2d115ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tribe">
+      <UniqueIdentifier>{79311440-6b41-4f64-accb-f51fa9bf1e68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\village">
+      <UniqueIdentifier>{f2fb4fc9-f7cb-4404-81a7-3f054fac947a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\handleData">
+      <UniqueIdentifier>{e348c299-593a-4380-96c3-f151c10bfe3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\handleData\search">
+      <UniqueIdentifier>{d0a3ca8c-31c0-4dcc-b9a2-c04a1d1d31de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\conversion">
+      <UniqueIdentifier>{da53a90d-02ab-49cb-a2fe-a5421135aa6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\draw">
+      <UniqueIdentifier>{1c79a0e7-a814-44c5-9684-29affe362632}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\initialization\initialization.cpp">
+      <Filter>Source Files\initialization</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\handleData\readData.cpp">
+      <Filter>Source Files\handleData</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\conversion\stringConversion.cpp">
+      <Filter>Source Files\conversion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\draw\draw.cpp">
+      <Filter>Source Files\draw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\handleData\formatData.h">
+      <Filter>Source Files\handleData</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\player\player.cpp">
+      <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\village\village.cpp">
+      <Filter>Source Files\village</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\initialization\initialization.h">
+      <Filter>Source Files\initialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\village\village.h">
+      <Filter>Source Files\village</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\tribe\tribe.h">
+      <Filter>Source Files\tribe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\player\player.h">
+      <Filter>Source Files\player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\handleData\readData.h">
+      <Filter>Source Files\handleData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\conversion\stringConversion.h">
+      <Filter>Source Files\conversion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\handleData\search\search.h">
+      <Filter>Source Files\handleData\search</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\draw\draw.h">
+      <Filter>Source Files\draw</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

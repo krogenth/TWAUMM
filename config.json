@@ -1,0 +1,5 @@
+{
+	"outdir": "maps",
+	"colors_file": "colors.txt",
+	"worlds_file": "worlds.txt"
+}
