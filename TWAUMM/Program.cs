@@ -15,22 +15,26 @@ namespace TWAUMM.Program
                 Directory.CreateDirectory(config.GetConfigInfo().outputDir);
             }
 
-            IterateWorlds();
-
-            /*while (true)
+            while (true)
             {
                 DelayToNextDay();
                 config.RefreshConfig("./config.json");
                 IterateWorlds();
-            }*/
+            }
         }
 
+        /// <summary>
+        /// Pause execution until the next day
+        /// </summary>
         static void DelayToNextDay()
         {
             var sleepTime = DateTime.Today.AddDays(1).Subtract(DateTime.Now);
             Thread.Sleep((int)sleepTime.TotalMilliseconds);
         }
 
+        /// <summary>
+        /// Cycles through all worlds in the config to generate maps
+        /// </summary>
         static void IterateWorlds()
         {
             var config = Config.GetInstance();
@@ -39,7 +43,7 @@ namespace TWAUMM.Program
             {
                 
                 var worldTag = WorldTag.GetWorldTag(world);
-                var worldPath = config.GetConfigInfo().outputDir + "/" + worldTag;
+                var worldPath = config.GetConfigInfo()?.outputDir + "/" + worldTag;
                 var worldUrl = WorldToUrl.GetUrl(world);
 
                 if (!Directory.Exists(worldPath))
@@ -58,19 +62,7 @@ namespace TWAUMM.Program
 
                 Conquers.Conquers.ReadConquerData(worldUrl);
 
-                DrawPlayers.DrawTopPlayers(worldTag);
-                DrawPlayers.DrawTopODPlayers(worldTag);
-                DrawPlayers.DrawTopODAPlayers(worldTag);
-                DrawPlayers.DrawTopODDPlayers(worldTag);
-                DrawPlayers.DrawTopConqPlayers(worldTag);
-                DrawPlayers.DrawTopLossPlayers(worldTag);
-
-                DrawTribes.DrawTopTribes(worldTag);
-                DrawTribes.DrawTopODTribes(worldTag);
-                DrawTribes.DrawTopODATribes(worldTag);
-                DrawTribes.DrawTopODDTribes(worldTag);
-                DrawTribes.DrawTopConquerTribes(worldTag);
-                DrawTribes.DrawTopLossTribes(worldTag);
+                Draws.DrawMaps(worldUrl);
             });
         }
     }
