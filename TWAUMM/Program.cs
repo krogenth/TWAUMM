@@ -8,7 +8,6 @@ namespace TWAUMM.Program
         static void Main(string[] args)
         {
             var config = Config.GetInstance();
-            config.RefreshConfig("./config.json");
 
             if (!Directory.Exists(config.GetConfigInfo().outputDir))
             {
