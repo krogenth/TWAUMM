@@ -16,6 +16,7 @@ namespace TWAUMM.Utility
     {
         private static JsonInfo? info;
         private static readonly Config _singleton = new Config();
+        private static string configFilename = "./config.json";
 
         private Config() { }
 
@@ -28,10 +29,9 @@ namespace TWAUMM.Utility
         /// <summary>
         /// Re-reads the jsoninfo file to allow live-updating
         /// </summary>
-        /// <param name="filePath"></param>
-        public void RefreshConfig(string filePath)
+        public void RefreshConfig()
         {
-            string text = File.ReadAllText(filePath);
+            string text = File.ReadAllText(configFilename);
             info = JsonSerializer.Deserialize<JsonInfo>(text);
         }
 

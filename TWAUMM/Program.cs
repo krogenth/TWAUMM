@@ -9,15 +9,14 @@ namespace TWAUMM.Program
         {
             var config = Config.GetInstance();
 
-            if (!Directory.Exists(config.GetConfigInfo().outputDir))
-            {
-                Directory.CreateDirectory(config.GetConfigInfo().outputDir);
-            }
-
             while (true)
             {
                 DelayToNextDay();
-                config.RefreshConfig("./config.json");
+                config.RefreshConfig();
+                if (!Directory.Exists(config.GetConfigInfo()?.outputDir))
+                {
+                    Directory.CreateDirectory(config.GetConfigInfo()?.outputDir);
+                }
                 IterateWorlds();
             }
         }
@@ -61,7 +60,7 @@ namespace TWAUMM.Program
 
                 Conquers.Conquers.ReadConquerData(worldUrl);
 
-                Draws.DrawMaps(worldUrl);
+                Draws.DrawMaps(worldTag);
             });
         }
     }
