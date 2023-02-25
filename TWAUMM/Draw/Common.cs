@@ -76,7 +76,7 @@ namespace TWAUMM.Draw
             DrawImageText(img, dateTime, font, new PointF(1000, 5), HorizontalAlignment.Left, whiteColor);
         }
 
-        public static void DrawImageTopInformation(Image img, string name, UInt64 points, UInt64 villages, UInt64 index, Rgba32 color)
+        public static void DrawImageTopInformation<T>(Image img, string name, T obj, Func<T, string> topTextFunc, Func<T, string> bottomTextFunc, UInt64 index, Rgba32 color)
         {
             var font = Fonts.GetInstance().GetFont("Arial Unicode MS", 10);
 
@@ -98,8 +98,8 @@ namespace TWAUMM.Draw
             img.Mutate(x => x.Fill(color, colorRect));
 
             DrawImageText(img, name, font, new PointF(1090, 47 + (index * 60)), HorizontalAlignment.Left, blackColor);
-            DrawImageText(img, points.ToString("N0") + " points", font, new PointF(1090, 47 + 15 + (index * 60)), HorizontalAlignment.Left, blackColor);
-            DrawImageText(img, villages.ToString("N0") + " villages", font, new PointF(1090, 47 + 30 + (index * 60)), HorizontalAlignment.Left, blackColor);
+            DrawImageText(img, topTextFunc(obj), font, new PointF(1090, 47 + 15 + (index * 60)), HorizontalAlignment.Left, blackColor);
+            DrawImageText(img, bottomTextFunc(obj), font, new PointF(1090, 47 + 30 + (index * 60)), HorizontalAlignment.Left, blackColor);
         }
 
         public static void DrawKontinentLines(Image img, float worldLength, UInt64 kLength, float partialK)

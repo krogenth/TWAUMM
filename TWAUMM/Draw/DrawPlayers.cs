@@ -4,13 +4,14 @@ using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System.Numerics;
 using TWAUMM.Players;
+using TWAUMM.Tribes;
 using TWAUMM.Utility;
 
 namespace TWAUMM.Draw
 {
     public class DrawPlayers
     {
-        private static void DrawPlayersMap(Image img, Dictionary<UInt64, Player> players, Rgba32 borderColor, float alpha = 0.0f, bool drawSidebar = true)
+        private static void DrawPlayersMap(Image img, Dictionary<UInt64, Player> players, Rgba32 borderColor, float alpha = 0.0f, Func<Player, string>? sidebarTopTextFunc = null, Func<Player, string>? sidebarBottomTextFunc = null)
         {
             var configInfo = Config.GetInstance().GetConfigInfo();
             var zoom = Villages.Villages.GetInstance().GetZoom();
@@ -35,20 +36,27 @@ namespace TWAUMM.Draw
                 Rgba32 color = new Rgba32(configColor[0], configColor[1], configColor[2], alpha);
                 Common.DrawPlayerVillages(img, player.Value.villages, zoom, 1, borderColor);
                 Common.DrawPlayerVillages(img, player.Value.villages, zoom, 0, color);
-                if (drawSidebar)
+                if (sidebarTopTextFunc != null && sidebarBottomTextFunc != null)
                 {
-                    Common.DrawImageTopInformation(img, player.Value.name, player.Value.points, (UInt64)player.Value.villages.Count, player.Key - 1, color);
+                    Common.DrawImageTopInformation(img, player.Value.name, player.Value, sidebarTopTextFunc, sidebarBottomTextFunc, player.Key - 1, color);
                 }
             }
 
             Common.DrawKontinentLines(img, worldLength, kLength, partialK);
         }
 
-        private static void DrawTopPlayersMap(string world, Dictionary<UInt64, Player> players, string mapName, string filename)
+        private static void DrawTopPlayersMap(string world, Dictionary<UInt64, Player> players, string mapName, string filename, Func<Player, string> sidebarTopTextFunc, Func<Player, string> sidebarBottomTextFunc)
         {
             Image img = new Image<Rgba32>(1250, 1030);
             var configInfo = Config.GetInstance().GetConfigInfo();
-            DrawPlayersMap(img, players, Common.charcoalColor, Common.noAlpha, true);
+            DrawPlayersMap(
+                img,
+                players,
+                Common.charcoalColor,
+                Common.noAlpha,
+                sidebarTopTextFunc,
+                sidebarBottomTextFunc
+            );
             Common.DrawImageHeader(img, world, mapName);
             string outputFile = configInfo?.outputDir + "/" + world + "/" + filename + ".png";
             img.SaveAsPng(outputFile);
@@ -57,28 +65,55 @@ namespace TWAUMM.Draw
 
         public static void DrawTopPlayers(string world)
         {
-            DrawTopPlayersMap(world, Players.Players.GetInstance().GetTopPlayers(), "Top Players Map", "topPlayers");
+            DrawTopPlayersMap(
+                world,
+                Players.Players.GetInstance().GetTopPlayers(),
+                "Top Players Map",
+                "topPlayers",
+                (Player player) => player.points.ToString("N0") + " points",
+                (Player player) => player.villages.Count.ToString("N0") + " villages"
+            );
         }
 
         public static void DrawTopODPlayers(string world)
         {
-            DrawTopPlayersMap(world, Players.Players.GetInstance().GetTopODPlayers(), "Top OD Players Map", "topODPlayers");
+            DrawTopPlayersMap(
+                world,
+                Players.Players.GetInstance().GetTopODPlayers(),
+                "Top OD Players Map",
+                "topODPlayers",
+                (Player player) => player.od.ToString("N0") + " OD",
+                (Player player) => player.villages.Count.ToString("N0") + " villages"
+            );
         }
 
         public static void DrawTopODAPlayers(string world)
         {
-            DrawTopPlayersMap(world, Players.Players.GetInstance().GetTopODAPlayers(), "Top ODA Players Map", "topODAPlayers");
+            DrawTopPlayersMap(
+                world,
+                Players.Players.GetInstance().GetTopODAPlayers(),
+                "Top ODA Players Map",
+                "topODAPlayers",
+                (Player player) => player.oda.ToString("N0") + " ODA",
+                (Player player) => player.villages.Count.ToString("N0") + " villages");
         }
 
         public static void DrawTopODDPlayers(string world)
         {
-            DrawTopPlayersMap(world, Players.Players.GetInstance().GetTopODDPlayers(), "Top ODD Players Map", "topODDPlayers");
+            DrawTopPlayersMap(
+                world,
+                Players.Players.GetInstance().GetTopODDPlayers(),
+                "Top ODD Players Map",
+                "topODDPlayers",
+                (Player player) => player.odd.ToString("N0") + " ODD",
+                (Player player) => player.villages.Count.ToString("N0") + " villages"
+            );
         }
 
         public static void DrawTopConqPlayers(string world)
         {
             Image img = new Image<Rgba32>(1250, 1030);
-            DrawPlayersMap(img, Players.Players.GetInstance().GetTopConqerPlayers(), Common.alphaCharcoalColor, Common.alpha, false);
+            DrawPlayersMap(img, Players.Players.GetInstance().GetTopConqerPlayers(), Common.alphaCharcoalColor, Common.alpha);
 
             var configInfo = Config.GetInstance().GetConfigInfo();
             var zoom = Villages.Villages.GetInstance().GetZoom();
@@ -95,7 +130,15 @@ namespace TWAUMM.Draw
                 Rgba32 color = new Rgba32(configColor[0], configColor[1], configColor[2]);
                 Common.DrawPlayerVillages(img, player.Value.conquers, zoom, 2, Common.charcoalColor);
                 Common.DrawPlayerVillages(img, player.Value.conquers, zoom, 1, color);
-                Common.DrawImageTopInformation(img, player.Value.name, player.Value.conquerPoints, (UInt64)player.Value.conquers.Count, player.Key - 1, color);
+                Common.DrawImageTopInformation(
+                    img,
+                    player.Value.name,
+                    player.Value,
+                    (Player player) => player.conquerPoints.ToString("N0") + " points",
+                    (Player player) => player.conquers.Count.ToString("N0") + " villages",
+                    player.Key - 1,
+                    color
+                );
             }
             Common.DrawImageHeader(img, world, "Top Nobling Players Map");
             string outputFile = configInfo?.outputDir + "/" + world + "/topConqPlayers.png";
@@ -106,7 +149,7 @@ namespace TWAUMM.Draw
         public static void DrawTopLossPlayers(string world)
         {
             Image img = new Image<Rgba32>(1250, 1030);
-            DrawPlayersMap(img, Players.Players.GetInstance().GetTopLossPlayers(), Common.alphaCharcoalColor, Common.alpha, false);
+            DrawPlayersMap(img, Players.Players.GetInstance().GetTopLossPlayers(), Common.alphaCharcoalColor, Common.alpha);
 
             var configInfo = Config.GetInstance().GetConfigInfo();
             var zoom = Villages.Villages.GetInstance().GetZoom();
@@ -123,7 +166,15 @@ namespace TWAUMM.Draw
                 Rgba32 color = new Rgba32(configColor[0], configColor[1], configColor[2]);
                 Common.DrawPlayerVillages(img, player.Value.losses, zoom, 2, Common.charcoalColor);
                 Common.DrawPlayerVillages(img, player.Value.losses, zoom, 1, color);
-                Common.DrawImageTopInformation(img, player.Value.name, player.Value.lossPoints, (UInt64)player.Value.losses.Count, player.Key - 1, color);
+                Common.DrawImageTopInformation(
+                    img,
+                    player.Value.name,
+                    player.Value,
+                    (Player player) => player.lossPoints.ToString("N0") + " points",
+                    (Player player) => player.losses.Count.ToString("N0") + " villages",
+                    player.Key - 1,
+                    color
+                );
             }
 
             Common.DrawImageHeader(img, world, "Top Nobled Players Map");
