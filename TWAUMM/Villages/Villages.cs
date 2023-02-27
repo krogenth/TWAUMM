@@ -26,9 +26,14 @@ namespace TWAUMM.Villages
 
         public UInt64 GetZoom() { return _zoom; }
 
-        public void ReadVillageData(string baseUrl)
+        public void ClearVillageData()
         {
             _villages.Clear();
+        }
+
+        public void ReadVillageData(string baseUrl)
+        {
+            ClearVillageData();
             _zoom = 500;
             ReadVillageBaseData(baseUrl);
         }

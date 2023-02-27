@@ -77,9 +77,14 @@ namespace TWAUMM.Players
                 .ToDictionary(kvp => (UInt64)kvp.index + 1, kvp => kvp.Value);
         }
 
-        public void ReadPlayerData(string baseUrl)
+        public void ClearPlayerData()
         {
             _players.Clear();
+        }
+
+        public void ReadPlayerData(string baseUrl)
+        {
+            ClearPlayerData();
             ReadPlayerBaseData(baseUrl);
             ReadPlayerODData(baseUrl);
             ReadPlayerODAData(baseUrl);

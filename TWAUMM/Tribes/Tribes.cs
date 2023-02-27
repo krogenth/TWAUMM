@@ -81,13 +81,18 @@ namespace TWAUMM.Tribes
                 .ToDictionary(kvp => (UInt64)kvp.index + 1, kvp => kvp.Value);
         }
 
+        public void ClearTribeData()
+        {
+            _tribes.Clear();
+        }
+
         /// <summary>
         /// Public method to allow retrieving all tribe data for a given base world url
         /// </summary>
         /// <param name="baseUrl"></param>
         public void ReadTribeData(string baseUrl)
         {
-            _tribes.Clear();
+            ClearTribeData();
             ReadTribeBaseData(baseUrl);
             ReadTribeODData(baseUrl);
             ReadTribeODAData(baseUrl);

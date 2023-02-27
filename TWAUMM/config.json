@@ -1,8 +1,16 @@
 {
-    "worlds": [
-      "en132.tribalwars.net",
-      "en131.tribalwars.net"
-    ],
+  "worlds": [
+    "en133.tribalwars.net",
+    "en132.tribalwars.net",
+    "en131.tribalwars.net",
+    "enp13.tribalwars.net",
+    "enp12.tribalwars.net",
+    "enp11.tribalwars.net",
+    "enc4.tribalwars.net",
+    "enc2.tribalwars.net",
+    "enc1.tribalwars.net",
+    "ens1.tribalwars.net"
+  ],
     "colors": [
       [ 0.0, 0.0, 0.0 ],
       [ 0.5, 0.0, 1.0 ],

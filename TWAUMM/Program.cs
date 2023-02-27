@@ -61,6 +61,10 @@ namespace TWAUMM.Program
                 Conquers.Conquers.ReadConquerData(worldUrl);
 
                 Draws.DrawMaps(worldTag);
+
+                tribes.ClearTribeData();
+                players.ClearPlayerData();
+                villages.ClearVillageData();
             });
         }
     }
