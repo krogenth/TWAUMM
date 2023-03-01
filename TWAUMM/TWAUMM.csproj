@@ -8,15 +8,24 @@
     <BaseOutputPath>..\bin</BaseOutputPath>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' != ''">
+	  <PublishSingleFile>true</PublishSingleFile>
+  </PropertyGroup>
   
   <ItemGroup>
-	<PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
-	<PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15" />
-	<PackageReference Include="SixLabors.Fonts" Version="1.0.0-beta19" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15" />
+    <PackageReference Include="SixLabors.Fonts" Version="1.0.0-beta19" />
   </ItemGroup>
   
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y &quot;./arialuni.ttf&quot; &quot;$(ProjectDir)..\bin\$(ConfigurationName)\net7.0\arialuni.ttf&quot;&#xD;&#xA;copy /Y &quot;./config.json&quot; &quot;$(ProjectDir)..\bin\$(ConfigurationName)\net7.0\config.json&quot;" />
-  </Target>
+  <ItemGroup>
+    <None Update="arialuni.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>
