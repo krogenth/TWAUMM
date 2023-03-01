@@ -1,37 +1,27 @@
-TWAUMM
-======
+## TWAUMM
 
-TribalWars Auto-Updating Map Maker
+TribalWars Auto-Updating Map maker
 
-This is the work of an old TribalWars fan, beginning when Nickjer first announced he would discontinue his server for the maps. The intention was to recreate his code, to be more efficient, better organized, and open to the public at all times.
+### Requirements
 
-Overall improvements include: an automated zoom, more maps, modular structure, and it's open source.
-
-Supported maps
-=====
-
-Top Tribes, Top Players, Top ODA Tribes, Top ODD Tribes, Top ODA Players, Top ODD Players, Tribe Conquers, Tribe Losses, Player Conquers, and Player Losses
-
-How to build
-=====
-
-Ensure you have [Visual Studio 2022](https://docs.microsoft.com/en-us/visualstudio/ide/whats-new-visual-studio-2022?view=vs-2022).
-
-Clone this repo and and its linked libraries:
+This project requires the following:
 
 ```
-git clone https://github.com/krogenth/TWAUMM.git
-cd TWAUMM
-git submodule update --init --recursive
+Visual Studio 2022
 ```
 
-For Windows, change libgd to version 2.2 to avoid libheif:
+### Supported Maps
 
-```
-cd libs/libgd
-git checkout GD-2.2
-```
+Top Tribes, Top OD Tribes, Top ODA Tribes, Top ODD Tribes, Top Conquering Tribes, Top Losing Tribes
 
-Follow the listed instructions required for each library to be built for whatever platform you are running on.
+Top Players, Top OD Players, Top ODA Players, Top ODD Players, Top Conquering Players, Top Losing Players
 
-Once all libraries have been built, you can create the project through VS2022. All builds can be found within the `./build/` directory.
+### How to Build
+
+Simply open the provided `TWAUMM.sln` file and build targeting whatever configuration you want.
+
+### Adding Maps
+
+Additional maps can be added based on the naming scheme given from the `World Info` link on the [home page](https://www.tribalwars.net/en-dk/).
+
+Generally, worlds follow the naming scheme of `en[number].tribalwars.net`, but the casual, speed, and HP servers are slightly different.
