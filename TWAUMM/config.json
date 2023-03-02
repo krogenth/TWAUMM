@@ -1,32 +1,62 @@
 {
   "worlds": [
-    "en133.tribalwars.net",
-    "en132.tribalwars.net",
-    "en131.tribalwars.net",
-    "enp13.tribalwars.net",
-    "enp12.tribalwars.net",
-    "enp11.tribalwars.net",
-    "enc4.tribalwars.net",
-    "enc2.tribalwars.net",
-    "enc1.tribalwars.net",
-    "ens1.tribalwars.net"
+    {
+      "world": "en133.tribalwars.net",
+      "duration": 1
+    },
+    {
+      "world": "en132.tribalwars.net",
+      "duration": 1
+    },
+    {
+      "world": "en131.tribalwars.net",
+      "duration": 1
+    },
+    {
+      "world": "enp13.tribalwars.net",
+      "duration": 1
+    },
+    {
+      "world": "enp12.tribalwars.net",
+      "duration": 1
+    },
+    {
+      "world": "enp11.tribalwars.net",
+      "duration": 1
+    },
+    {
+      "world": "enc4.tribalwars.net",
+      "duration": 1
+    },
+    {
+      "world": "enc2.tribalwars.net",
+      "duration": 1
+    },
+    {
+      "world": "enc1.tribalwars.net",
+      "duration": 1
+    },
+    {
+      "world": "ens1.tribalwars.net",
+      "duration": 1
+    }
   ],
-    "colors": [
-      [ 0.0, 0.0, 0.0 ],
-      [ 0.5, 0.0, 1.0 ],
-      [ 1.0, 0.0, 0.0 ],
-      [ 0.0, 1.0, 0.0 ],
-      [ 1.0, 0.5, 0.0 ],
-      [ 1.0, 0.5, 1.0 ],
-      [ 0.0, 1.0, 1.0 ],
-      [ 0.5, 1.0, 0.5 ],
-      [ 0.5, 0.25, 0.0 ],
-      [ 1.0, 0.25, 0.5 ],
-      [ 0.5, 0.5, 1.0 ],
-      [ 0.5, 1.0, 0.25 ],
-      [ 1.0, 1.0, 0.5 ],
-      [ 1.0, 1.0, 1.0 ],
-      [ 0.5, 0.5, 0.5 ]
-    ],
-    "outputDir": "maps"
+  "colors": [
+    [ 0.0, 0.0, 0.0 ],
+    [ 0.5, 0.0, 1.0 ],
+    [ 1.0, 0.0, 0.0 ],
+    [ 0.0, 1.0, 0.0 ],
+    [ 1.0, 0.5, 0.0 ],
+    [ 1.0, 0.5, 1.0 ],
+    [ 0.0, 1.0, 1.0 ],
+    [ 0.5, 1.0, 0.5 ],
+    [ 0.5, 0.25, 0.0 ],
+    [ 1.0, 0.25, 0.5 ],
+    [ 0.5, 0.5, 1.0 ],
+    [ 0.5, 1.0, 0.25 ],
+    [ 1.0, 1.0, 0.5 ],
+    [ 1.0, 1.0, 1.0 ],
+    [ 0.5, 0.5, 0.5 ]
+  ],
+  "outputDir": "maps"
 }

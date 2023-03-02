@@ -1,12 +1,24 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace TWAUMM.Utility
 {
+    public class WorldInfo
+    {
+        [JsonPropertyName("duration")]
+        public uint duration { get; set; }
+        [JsonPropertyName("world")]
+        public string world { get; set; } = "";
+    }
+
     public class JsonInfo
     {
+        [JsonPropertyName("outputDir")]
         public string outputDir { get; set; } = "";
+        [JsonPropertyName("colors")]
         public List<List<float>> colors { get; set; } = new List<List<float>>();
-        public List<string> worlds { get; set; } = new List<string>();
+        [JsonPropertyName("worlds")]
+        public List<WorldInfo> worlds { get; set; } = new List<WorldInfo>();
     }
 
     /// <summary>

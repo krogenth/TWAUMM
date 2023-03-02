@@ -2,9 +2,7 @@
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using System.Numerics;
 using TWAUMM.Players;
-using TWAUMM.Tribes;
 using TWAUMM.Utility;
 
 namespace TWAUMM.Draw
@@ -110,7 +108,7 @@ namespace TWAUMM.Draw
             );
         }
 
-        public static void DrawTopConqPlayers(string world)
+        public static void DrawTopConqPlayers(string world, uint duration)
         {
             Image img = new Image<Rgba32>(1250, 1030);
             DrawPlayersMap(img, Players.Players.GetInstance().GetTopConqerPlayers(), Common.alphaCharcoalColor, Common.alpha);
@@ -140,13 +138,13 @@ namespace TWAUMM.Draw
                     color
                 );
             }
-            Common.DrawImageHeader(img, world, "Top Nobling Players Map");
+            Common.DrawImageHeader(img, world, "Top Nobling Players Map (" + duration + "days)");
             string outputFile = configInfo?.outputDir + "/" + world + "/topConqPlayers.png";
             img.SaveAsPng(outputFile);
             img.Dispose();
         }
 
-        public static void DrawTopLossPlayers(string world)
+        public static void DrawTopLossPlayers(string world, uint duration)
         {
             Image img = new Image<Rgba32>(1250, 1030);
             DrawPlayersMap(img, Players.Players.GetInstance().GetTopLossPlayers(), Common.alphaCharcoalColor, Common.alpha);
@@ -177,7 +175,7 @@ namespace TWAUMM.Draw
                 );
             }
 
-            Common.DrawImageHeader(img, world, "Top Nobled Players Map");
+            Common.DrawImageHeader(img, world, "Top Nobled Players Map (" + duration + "days)");
             string outputFile = configInfo?.outputDir + "/" + world + "/topLossPlayers.png";
             img.SaveAsPng(outputFile);
             img.Dispose();

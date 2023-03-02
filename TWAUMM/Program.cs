@@ -39,10 +39,9 @@ namespace TWAUMM.Program
 
             config.GetConfigInfo()?.worlds?.ForEach(world =>
             {
-                
-                var worldTag = WorldTag.GetWorldTag(world);
+                var worldTag = WorldTag.GetWorldTag(world.world);
                 var worldPath = config.GetConfigInfo()?.outputDir + "/" + worldTag;
-                var worldUrl = WorldToUrl.GetUrl(world);
+                var worldUrl = WorldToUrl.GetUrl(world.world);
 
                 if (!Directory.Exists(worldPath))
                 {
@@ -58,9 +57,9 @@ namespace TWAUMM.Program
                 var villages = Villages.Villages.GetInstance();
                 villages.ReadVillageData(worldUrl);
 
-                Conquers.Conquers.ReadConquerData(worldUrl);
+                Conquers.Conquers.ReadConquerData(worldUrl, world.duration);
 
-                Draws.DrawMaps(worldTag);
+                Draws.DrawMaps(worldTag, world.duration);
 
                 tribes.ClearTribeData();
                 players.ClearPlayerData();

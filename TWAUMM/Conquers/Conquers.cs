@@ -1,13 +1,10 @@
-﻿using TWAUMM.Players;
-using TWAUMM.Tribes;
-using TWAUMM.Utility;
-using TWAUMM.Villages;
+﻿using TWAUMM.Utility;
 
 namespace TWAUMM.Conquers
 {
     public class Conquers
     {
-        public static void ReadConquerData(string baseUrl)
+        public static void ReadConquerData(string baseUrl, uint duration)
         {
             var tribes = Tribes.Tribes.GetInstance().GetTribes();
             var players = Players.Players.GetInstance().GetPlayers();
@@ -34,7 +31,7 @@ namespace TWAUMM.Conquers
                     var loserId = UInt64.Parse(lineValues[3]);
 
                     // check if time of conquer is within current timeframe
-                    if (now - datetime > TimeSpan.FromDays(1d))
+                    if (now - datetime > TimeSpan.FromDays(duration))
                     {
                         continue;
                     }
@@ -59,7 +56,6 @@ namespace TWAUMM.Conquers
                             conquerer.tribe.conquerPoints += village.points;
                         }
                     }
-
 
                     if (players.ContainsKey(loserId))
                     {
