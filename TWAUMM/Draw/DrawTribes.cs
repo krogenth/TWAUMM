@@ -111,7 +111,7 @@ namespace TWAUMM.Draw
             );
         }
 
-        public static void DrawTopConquerTribes(string world)
+        public static void DrawTopConquerTribes(string world, uint duration)
         {
             Image img = new Image<Rgba32>(1250, 1030);
             DrawTribesMap(
@@ -150,13 +150,13 @@ namespace TWAUMM.Draw
                 );
             }
 
-            Common.DrawImageHeader(img, world, "Top Nobling Tribes Map");
+            Common.DrawImageHeader(img, world, "Top Nobling Tribes Map (" + duration + "days)");
             string outputFile = configInfo?.outputDir + "/" + world + "/topConqTribes.png";
             img.SaveAsPng(outputFile);
             img.Dispose();
         }
 
-        public static void DrawTopLossTribes(string world)
+        public static void DrawTopLossTribes(string world, uint duration)
         {
             Image img = new Image<Rgba32>(1250, 1030);
             DrawTribesMap(img, Tribes.Tribes.GetInstance().GetTopLossTribes(), Common.alphaCharcoalColor, Common.alpha);
@@ -190,7 +190,7 @@ namespace TWAUMM.Draw
                 );
             }
 
-            Common.DrawImageHeader(img, world, "Top Nobled Tribes Map");
+            Common.DrawImageHeader(img, world, "Top Nobled Tribes Map (" + duration + "days)");
             string outputFile = configInfo?.outputDir + "/" + world + "/topLossTribes.png";
             img.SaveAsPng(outputFile);
             img.Dispose();
