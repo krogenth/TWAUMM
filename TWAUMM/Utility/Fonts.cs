@@ -14,7 +14,7 @@ namespace TWAUMM.Utility
 
         public static Fonts GetInstance() { return _singleton; }
 
-        public Font GetFont(string fontName, UInt32 size = 12, FontStyle style = FontStyle.Regular)
+        public Font GetFont(string fontName, float size = 12.0f, FontStyle style = FontStyle.Bold)
         {
             return _fonts.Get(fontName).CreateFont(size, style);
         }

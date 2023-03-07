@@ -17,6 +17,7 @@ namespace TWAUMM.Villages
         private SortedDictionary<Id, Village> _villages = new SortedDictionary<Id, Village>();
         private static readonly Villages _singleton = new Villages();
         private UInt64 _zoom = 500;
+        private UInt64[] kontinentTotalPoints { get; set; } = new UInt64[100];
 
         private Villages() { }
 
@@ -25,6 +26,8 @@ namespace TWAUMM.Villages
         public SortedDictionary<Id, Village> GetVillages() { return _villages; }
 
         public UInt64 GetZoom() { return _zoom; }
+
+        public UInt64 GetKontinentTotalPoints(UInt64 kontinent) { return kontinentTotalPoints[kontinent - 1]; }
 
         public void ClearVillageData()
         {
@@ -55,7 +58,7 @@ namespace TWAUMM.Villages
 
             using (var reader = new StreamReader(StringToStream.GenerateStreamFromString(response.Result)))
             {
-                // $village_id, $name, $x, $y, $player_id, $points, $rank
+                // $village_id, $name, $x, $y, $player_id, $points, $special
                 for (string? line = reader.ReadLine(); line != null && line.Length > 0; line = reader.ReadLine())
                 {
                     var lineValues = line.Split(',');
@@ -73,7 +76,9 @@ namespace TWAUMM.Villages
                         try
                         {
                             _villages[villageId].player = players[playerId];
-                            players[playerId].villages.Add(_villages[villageId]);
+                            players[playerId].AddVillage(_villages[villageId]);
+                            // we ignore all barbarian villages for this
+                            kontinentTotalPoints[Kontinent.KontinentFromVillage(_villages[villageId]) - 1] += _villages[villageId].points;
                         } catch(Exception ex)
                         {
                             Console.WriteLine(ex.Message);

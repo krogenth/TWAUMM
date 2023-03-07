@@ -10,6 +10,7 @@
             DrawPlayers.DrawTopODDPlayers(world);
             DrawPlayers.DrawTopConqPlayers(world, duration);
             DrawPlayers.DrawTopLossPlayers(world, duration);
+            DrawPlayers.DrawTopKontinentPlayers(world);
 
             DrawTribes.DrawTopTribes(world);
             DrawTribes.DrawTopODTribes(world);
@@ -17,6 +18,7 @@
             DrawTribes.DrawTopODDTribes(world);
             DrawTribes.DrawTopConquerTribes(world, duration);
             DrawTribes.DrawTopLossTribes(world, duration);
+            DrawTribes.DrawTopKontinentTribes(world);
         }
     }
 }

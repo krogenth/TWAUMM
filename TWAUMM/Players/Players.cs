@@ -24,6 +24,17 @@ namespace TWAUMM.Players
         public List<Village> conquers { get; set; } = new List<Village>();
         public UInt64 lossPoints { get; set; }
         public List<Village> losses { get; set; } = new List<Village>();
+        public UInt64[] kontinentTotalPoints { get; set; } = new UInt64[100];
+
+        public void AddVillage(Village village)
+        {
+            villages.Add(village);
+            kontinentTotalPoints[Kontinent.KontinentFromVillage(village) - 1] += village.points;
+            if (tribe != null)
+            {
+                tribe.AddVillage(village);
+            }
+        }
     }
 
     public class Players
@@ -74,6 +85,14 @@ namespace TWAUMM.Players
             return (from entry in _players where entry.Value.lossPoints > 0 orderby entry.Value.lossPoints descending select entry)
                 .Take(15)
                 .Select((element, index) => new { index, element.Value })
+                .ToDictionary(kvp => (UInt64)kvp.index + 1, kvp => kvp.Value);
+        }
+
+        public Dictionary<Id, Player> GetTopKPlayers(UInt64 kontinent)
+        {
+            return (from entry in _players where entry.Value.kontinentTotalPoints[kontinent - 1] > 0 orderby entry.Value.kontinentTotalPoints[kontinent - 1] descending select entry)
+                .Take(2)
+                .Select((element, index) => new {index, element.Value, element.Key})
                 .ToDictionary(kvp => (UInt64)kvp.index + 1, kvp => kvp.Value);
         }
 

@@ -1,4 +1,5 @@
-﻿using SixLabors.ImageSharp;
+﻿using SixLabors.Fonts;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -35,6 +36,9 @@ namespace TWAUMM.Draw
                 foreach (var player in tribe.Value.players)
                 {
                     Common.DrawPlayerVillages(img, player.villages, zoom, 1, borderColor);
+                }
+                foreach (var player in tribe.Value.players)
+                {
                     Common.DrawPlayerVillages(img, player.villages, zoom, 0, color);
                 }
                 if (sidebarTopTextFunc != null && sidebarBottomTextFunc != null)
@@ -43,7 +47,7 @@ namespace TWAUMM.Draw
                 }
             }
 
-            Common.DrawKontinentLines(img, worldLength, kLength, partialK);
+            Common.DrawKontinentDetails(img, worldLength, kLength, partialK);
         }
 
         private static void DrawTopTribesMap(string world, Dictionary<UInt64, Tribe> tribes, Func<Tribe, string> sidebarTopTextFunc, Func<Tribe, string> sidebarBottomTextFunc, string mapName, string filename)
@@ -58,7 +62,7 @@ namespace TWAUMM.Draw
                 sidebarTopTextFunc,
                 sidebarBottomTextFunc
             );
-            Common.DrawImageHeader(img, world, mapName);
+            Common.DrawTopImageHeader(img, world, mapName);
             string outputFile = configInfo?.outputDir + "/" + world + "/" + filename + ".png";
             img.SaveAsPng(outputFile);
             img.Dispose();
@@ -150,7 +154,7 @@ namespace TWAUMM.Draw
                 );
             }
 
-            Common.DrawImageHeader(img, world, "Top Nobling Tribes Map (" + duration + "days)");
+            Common.DrawTopImageHeader(img, world, "Top Nobling Tribes Map (" + duration + "days)");
             string outputFile = configInfo?.outputDir + "/" + world + "/topConqTribes.png";
             img.SaveAsPng(outputFile);
             img.Dispose();
@@ -177,6 +181,9 @@ namespace TWAUMM.Draw
                 foreach (var player in tribe.Value.players)
                 {
                     Common.DrawPlayerVillages(img, player.conquers, zoom, 2, Common.charcoalColor);
+                }
+                foreach (var player in tribe.Value.players)
+                {
                     Common.DrawPlayerVillages(img, player.conquers, zoom, 1, color);
                 }
                 Common.DrawImageTopInformation(
@@ -190,8 +197,153 @@ namespace TWAUMM.Draw
                 );
             }
 
-            Common.DrawImageHeader(img, world, "Top Nobled Tribes Map (" + duration + "days)");
+            Common.DrawTopImageHeader(img, world, "Top Nobled Tribes Map (" + duration + "days)");
             string outputFile = configInfo?.outputDir + "/" + world + "/topLossTribes.png";
+            img.SaveAsPng(outputFile);
+            img.Dispose();
+        }
+
+        public static void DrawTopKontinentTribes(string world)
+        {
+            Image img = new Image<Rgba32>(1000, 1030);
+            var configInfo = Config.GetInstance().GetConfigInfo();
+            var zoom = Villages.Villages.GetInstance().GetZoom();
+
+            float worldLength = 10.0f / (float)zoom;
+            UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
+            UInt64 kLength = 100 * zoom;
+            UInt64 wholeKCount = worldLengthFloor - (worldLengthFloor % 2);
+            float partialK = (worldLength - (float)wholeKCount) / 2.0f;
+
+            // fill in primary areas for drawing
+            var headerRect = new Rectangle(0, 0, 1250, 30);
+            var backgroundRect = new Rectangle(0, 30, 1000, 1000);
+            img.Mutate(x => x.Fill(Common.blackColor, headerRect));
+            img.Mutate(x => x.Fill(Common.backgroundColor, backgroundRect));
+
+            List<UInt64> drawnTribeRanks = new List<UInt64>();
+
+            var startKontinentNumber = (byte)(Math.Ceiling((10.0f - worldLength) / 2.0f));
+            var endKontinentNumber = (byte)(10 - startKontinentNumber);
+            var colorIndex = 0;
+
+            for (var yKontinentNumber = startKontinentNumber; yKontinentNumber < endKontinentNumber; yKontinentNumber++)
+            {
+                for (var xKontinentNumber = startKontinentNumber; xKontinentNumber < endKontinentNumber; xKontinentNumber++)
+                {
+                    UInt64 kontinent = (UInt64)(yKontinentNumber * 10 + xKontinentNumber);
+                    var kontinentTopTribes = Tribes.Tribes.GetInstance().GetTopKTribes(kontinent);
+                    if (kontinentTopTribes.Count <= 0)
+                    {
+                        continue;
+                    }
+
+                    if (!drawnTribeRanks.Contains(kontinentTopTribes[1].rank))
+                    {
+                        var configColor = configInfo?.colors[colorIndex];
+                        Rgba32 color = new Rgba32(configColor[0], configColor[1], configColor[2]);
+
+                        foreach (var player in kontinentTopTribes[1].players)
+                        {
+                            Common.DrawPlayerVillages(img, player.villages, zoom, 1, Common.charcoalColor);
+                        }
+                        foreach (var player in kontinentTopTribes[1].players)
+                        {
+                            Common.DrawPlayerVillages(img, player.villages, zoom, 0, color);
+                        }
+
+                        colorIndex++;
+                        drawnTribeRanks.Add(kontinentTopTribes[1].rank);
+                    }
+                }
+            }
+
+            Common.DrawKontinentDetails(img, worldLength, kLength, partialK);
+
+            // draw each kontinent's top two tribe percentage information after drawing villages
+            // this avoids the possibility that a tribe's villages might overlap the details
+            var firstFont = Fonts.GetInstance().GetFont("Arial Unicode MS", 14.0f, FontStyle.Regular);
+            var secondFont = Fonts.GetInstance().GetFont("Arial Unicode MS", 12.0f, FontStyle.Regular);
+            for (var yKontinentNumber = startKontinentNumber; yKontinentNumber < endKontinentNumber; yKontinentNumber++)
+            {
+                for (var xKontinentNumber = startKontinentNumber; xKontinentNumber < endKontinentNumber; xKontinentNumber++)
+                {
+                    UInt64 kontinent = (UInt64)(yKontinentNumber * 10 + xKontinentNumber);
+                    var kontinentTopTribes = Tribes.Tribes.GetInstance().GetTopKTribes(kontinent);
+                    var kontinentTotalPoints = Villages.Villages.GetInstance().GetKontinentTotalPoints(kontinent);
+                    if (kontinentTopTribes.Count <= 0)
+                    {
+                        continue;
+                    }
+
+                    var firstTribePercentage = (float)kontinentTopTribes[1].kontinentTotalPoints[kontinent - 1] * 100.0f / (float)kontinentTotalPoints;
+                    var HalfWholeOffscreenKontinents = (byte)Math.Floor((10.0f - worldLength) / 2.0f);
+                    Common.DrawImageTextWithOutline(
+                        img,
+                        $"{kontinentTopTribes[1].tag}\n{firstTribePercentage.ToString("0.00")}%",
+                        firstFont,
+                        new PointF(
+                            ((UInt64)(xKontinentNumber - HalfWholeOffscreenKontinents) * kLength),
+                            ((UInt64)(yKontinentNumber - HalfWholeOffscreenKontinents) * kLength - 25)
+                        ),
+                        HorizontalAlignment.Center,
+                        TextAlignment.Center,
+                        Common.blackColor,
+                        Common.blackColor,
+                        4.0f
+                    );
+                    Common.DrawImageTextWithOutline(
+                        img,
+                        $"{kontinentTopTribes[1].tag}\n{firstTribePercentage.ToString("0.00")}%",
+                        firstFont,
+                        new PointF(
+                            ((UInt64)(xKontinentNumber - HalfWholeOffscreenKontinents) * kLength),
+                            ((UInt64)(yKontinentNumber - HalfWholeOffscreenKontinents) * kLength - 25)
+                        ),
+                        HorizontalAlignment.Center,
+                        TextAlignment.Center,
+                        Common.whiteColor,
+                        Common.whiteColor
+                    );
+
+                    // there may not be a second tribe in the kontinent, verify first
+                    if (!kontinentTopTribes.ContainsKey(2))
+                    {
+                        continue;
+                    }
+                    float secondTribePercentage = (float)kontinentTopTribes[2].kontinentTotalPoints[kontinent - 1] * 100.0f / (float)kontinentTotalPoints;
+                    Common.DrawImageTextWithOutline(
+                        img,
+                        $"{kontinentTopTribes[2].tag}\n{secondTribePercentage.ToString("0.00")}%",
+                        secondFont,
+                        new PointF(
+                            ((UInt64)(xKontinentNumber - HalfWholeOffscreenKontinents) * kLength),
+                            ((UInt64)(yKontinentNumber - HalfWholeOffscreenKontinents) * kLength + (25 * zoom))
+                        ),
+                        HorizontalAlignment.Center,
+                        TextAlignment.Center,
+                        Common.blackColor,
+                        Common.blackColor,
+                        4.0f
+                    );
+                    Common.DrawImageTextWithOutline(
+                        img,
+                        $"{kontinentTopTribes[2].tag}\n{secondTribePercentage.ToString("0.00")}%",
+                        secondFont,
+                        new PointF(
+                            ((UInt64)(xKontinentNumber - HalfWholeOffscreenKontinents) * kLength),
+                            ((UInt64)(yKontinentNumber - HalfWholeOffscreenKontinents) * kLength + (25 * zoom))
+                        ),
+                        HorizontalAlignment.Center,
+                        TextAlignment.Center,
+                        Common.whiteColor,
+                        Common.whiteColor
+                    );
+                }
+            }
+
+            Common.DrawDominanceImageHeader(img, world, "Kontinent Dominance Tribes Map");
+            string outputFile = configInfo?.outputDir + "/" + world + "/topDominanceTribes.png";
             img.SaveAsPng(outputFile);
             img.Dispose();
         }
