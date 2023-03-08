@@ -17,7 +17,7 @@ namespace TWAUMM.Draw
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
-            UInt64 kLength = 100 * zoom;
+            UInt64 kLength = (UInt64)(100.0f * zoom);
             UInt64 wholeKCount = worldLengthFloor - (worldLengthFloor % 2);
             float partialK = (worldLength - (float)wholeKCount) / 2.0f;
 
@@ -130,7 +130,7 @@ namespace TWAUMM.Draw
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
-            UInt64 kLength = 100 * zoom;
+            UInt64 kLength = (UInt64)(100.0f * zoom);
             UInt64 wholeKCount = worldLengthFloor - (worldLengthFloor % 2);
             float partialK = (worldLength - (float)wholeKCount) / 2.0f;
 
@@ -170,7 +170,7 @@ namespace TWAUMM.Draw
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
-            UInt64 kLength = 100 * zoom;
+            UInt64 kLength = (UInt64)(100.0f * zoom);
             UInt64 wholeKCount = worldLengthFloor - (worldLengthFloor % 2);
             float partialK = (worldLength - (float)wholeKCount) / 2.0f;
 
@@ -211,7 +211,7 @@ namespace TWAUMM.Draw
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
-            UInt64 kLength = 100 * zoom;
+            UInt64 kLength = (UInt64)(100.0f * zoom);
             UInt64 wholeKCount = worldLengthFloor - (worldLengthFloor % 2);
             float partialK = (worldLength - (float)wholeKCount) / 2.0f;
 
@@ -262,8 +262,8 @@ namespace TWAUMM.Draw
 
             // draw each kontinent's top two tribe percentage information after drawing villages
             // this avoids the possibility that a tribe's villages might overlap the details
-            var firstFont = Fonts.GetInstance().GetFont("Arial Unicode MS", 14.0f, FontStyle.Regular);
-            var secondFont = Fonts.GetInstance().GetFont("Arial Unicode MS", 12.0f, FontStyle.Regular);
+            var firstFont = Fonts.GetInstance().GetFont("Arial Unicode MS", 10 + zoom, FontStyle.Regular);
+            var secondFont = Fonts.GetInstance().GetFont("Arial Unicode MS", 8 + zoom, FontStyle.Regular);
             for (var yKontinentNumber = startKontinentNumber; yKontinentNumber < endKontinentNumber; yKontinentNumber++)
             {
                 for (var xKontinentNumber = startKontinentNumber; xKontinentNumber < endKontinentNumber; xKontinentNumber++)
@@ -276,15 +276,15 @@ namespace TWAUMM.Draw
                         continue;
                     }
 
-                    var firstTribePercentage = (float)kontinentTopTribes[1].kontinentTotalPoints[kontinent - 1] * 100.0f / (float)kontinentTotalPoints;
-                    var HalfWholeOffscreenKontinents = (byte)Math.Floor((10.0f - worldLength) / 2.0f);
+                    var firstTribePercentage = (float)kontinentTopTribes[1].kontinentTotalPoints[kontinent] * 100.0f / (float)kontinentTotalPoints;
+                    var HalfOffscreenKontinents = (10.0f - worldLength) / 2.0f;
                     Common.DrawImageTextWithOutline(
                         img,
                         $"{kontinentTopTribes[1].tag}\n{firstTribePercentage.ToString("0.00")}%",
                         firstFont,
                         new PointF(
-                            ((UInt64)(xKontinentNumber - HalfWholeOffscreenKontinents) * kLength),
-                            ((UInt64)(yKontinentNumber - HalfWholeOffscreenKontinents) * kLength - 25)
+                            ((xKontinentNumber - HalfOffscreenKontinents + 0.5f) * kLength),
+                            ((yKontinentNumber - HalfOffscreenKontinents + 0.125f) * kLength + 30)
                         ),
                         HorizontalAlignment.Center,
                         TextAlignment.Center,
@@ -297,8 +297,8 @@ namespace TWAUMM.Draw
                         $"{kontinentTopTribes[1].tag}\n{firstTribePercentage.ToString("0.00")}%",
                         firstFont,
                         new PointF(
-                            ((UInt64)(xKontinentNumber - HalfWholeOffscreenKontinents) * kLength),
-                            ((UInt64)(yKontinentNumber - HalfWholeOffscreenKontinents) * kLength - 25)
+                            ((xKontinentNumber - HalfOffscreenKontinents + 0.5f) * kLength),
+                            ((yKontinentNumber - HalfOffscreenKontinents + 0.125f) * kLength + 30)
                         ),
                         HorizontalAlignment.Center,
                         TextAlignment.Center,
@@ -311,14 +311,14 @@ namespace TWAUMM.Draw
                     {
                         continue;
                     }
-                    float secondTribePercentage = (float)kontinentTopTribes[2].kontinentTotalPoints[kontinent - 1] * 100.0f / (float)kontinentTotalPoints;
+                    float secondTribePercentage = (float)kontinentTopTribes[2].kontinentTotalPoints[kontinent] * 100.0f / (float)kontinentTotalPoints;
                     Common.DrawImageTextWithOutline(
                         img,
                         $"{kontinentTopTribes[2].tag}\n{secondTribePercentage.ToString("0.00")}%",
                         secondFont,
                         new PointF(
-                            ((UInt64)(xKontinentNumber - HalfWholeOffscreenKontinents) * kLength),
-                            ((UInt64)(yKontinentNumber - HalfWholeOffscreenKontinents) * kLength + (25 * zoom))
+                            ((xKontinentNumber - HalfOffscreenKontinents + 0.5f) * kLength),
+                            ((yKontinentNumber - HalfOffscreenKontinents + 0.125f) * kLength + (50 * zoom) + 30)
                         ),
                         HorizontalAlignment.Center,
                         TextAlignment.Center,
@@ -331,8 +331,8 @@ namespace TWAUMM.Draw
                         $"{kontinentTopTribes[2].tag}\n{secondTribePercentage.ToString("0.00")}%",
                         secondFont,
                         new PointF(
-                            ((UInt64)(xKontinentNumber - HalfWholeOffscreenKontinents) * kLength),
-                            ((UInt64)(yKontinentNumber - HalfWholeOffscreenKontinents) * kLength + (25 * zoom))
+                            ((xKontinentNumber - HalfOffscreenKontinents + 0.5f) * kLength),
+                            ((yKontinentNumber - HalfOffscreenKontinents + 0.125f) * kLength + (50 * zoom) + 30)
                         ),
                         HorizontalAlignment.Center,
                         TextAlignment.Center,

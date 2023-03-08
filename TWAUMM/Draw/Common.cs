@@ -19,28 +19,28 @@ namespace TWAUMM.Draw
         public static float noAlpha = 1.0f;
         public static float alpha = 80.0f / 255.0f;
 
-        public static void DrawVillage(Image img, (UInt64, UInt64) coords, UInt64 zoom, UInt64 offset, Rgba32 color)
+        public static void DrawVillage(Image img, (UInt64, UInt64) coords, float zoom, UInt64 offset, Rgba32 color)
         {
             var x = coords.Item1;
             var y = coords.Item2;
 
-            if (x < 500) { x = 500 - ((500 - x) * zoom); }
-            else { x = 500 + ((x - 500) * zoom); }
+            if (x < 500) { x = (UInt64)Math.Floor(500.0f - ((float)(500 - x) * zoom)); }
+            else { x = (UInt64)Math.Floor(500.0f + ((float)(x - 500) * zoom)); }
 
-            if (y < 500) { y = 500 - ((500 - y) * zoom); }
-            else { y = 500 + ((y - 500) * zoom); }
+            if (y < 500) { y = (UInt64)Math.Floor(500.0f - ((float)(500 - y) * zoom)); }
+            else { y = (UInt64)Math.Floor(500.0f + ((float)(y - 500) * zoom)); }
 
             var rect = new Rectangle(
                 (int)(x - offset),
                 (int)(y - offset + 30),
-                (int)(zoom + (offset * 2)),
-                (int)(zoom + (offset * 2))
+                (int)(Math.Floor(zoom) + (offset * 2)),
+                (int)(Math.Floor(zoom) + (offset * 2))
             );
 
             img.Mutate(x => x.Fill(color, rect));
         }
 
-        public static void DrawPlayerVillages(Image img, List<Village> villages, UInt64 zoom, UInt64 offset, Rgba32 color)
+        public static void DrawPlayerVillages(Image img, List<Village> villages, float zoom, UInt64 offset, Rgba32 color)
         {
             foreach (var village in villages)
             {
@@ -74,6 +74,7 @@ namespace TWAUMM.Draw
                         Origin = origin,
                         TabWidth = 4,
                         HorizontalAlignment = hAlignment,
+                        VerticalAlignment = VerticalAlignment.Top,
                         TextAlignment = textAlignment
                     },
                     text,
@@ -157,7 +158,7 @@ namespace TWAUMM.Draw
                 );
             }
 
-            var startKontinentNumber = (byte)(Math.Ceiling((10.0f - worldLength) / 2.0f) - 1.0f);
+            var startKontinentNumber = (byte)Math.Max((Math.Ceiling((10.0f - worldLength) / 2.0f) - 1.0f), 0);
             var endKontinentNumber = (byte)(10 - Math.Ceiling((10.0f - worldLength) / 2.0f));
             var HalfWholeOffscreenKontinents = (byte)Math.Floor((10.0f - worldLength) / 2.0f);
 

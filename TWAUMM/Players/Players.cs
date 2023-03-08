@@ -29,7 +29,7 @@ namespace TWAUMM.Players
         public void AddVillage(Village village)
         {
             villages.Add(village);
-            kontinentTotalPoints[Kontinent.KontinentFromVillage(village) - 1] += village.points;
+            kontinentTotalPoints[Kontinent.KontinentFromVillage(village)] += village.points;
             if (tribe != null)
             {
                 tribe.AddVillage(village);
@@ -90,7 +90,7 @@ namespace TWAUMM.Players
 
         public Dictionary<Id, Player> GetTopKPlayers(UInt64 kontinent)
         {
-            return (from entry in _players where entry.Value.kontinentTotalPoints[kontinent - 1] > 0 orderby entry.Value.kontinentTotalPoints[kontinent - 1] descending select entry)
+            return (from entry in _players where entry.Value.kontinentTotalPoints[kontinent] > 0 orderby entry.Value.kontinentTotalPoints[kontinent] descending select entry)
                 .Take(2)
                 .Select((element, index) => new {index, element.Value, element.Key})
                 .ToDictionary(kvp => (UInt64)kvp.index + 1, kvp => kvp.Value);
