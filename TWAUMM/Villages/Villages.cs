@@ -25,6 +25,13 @@ namespace TWAUMM.Villages
 
         public SortedDictionary<Id, Village> GetVillages() { return _villages; }
 
+        public List<Village> GetBarbarianVillages()
+        {
+            return _villages.Where(village => village.Value.player == null)
+                .Select(kvp => kvp.Value)
+                .ToList();
+        }
+
         public float GetZoom() { return _zoom; }
 
         public UInt64 GetKontinentTotalPoints(UInt64 kontinent) { return kontinentTotalPoints[kontinent]; }
