@@ -2,6 +2,7 @@
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using SixLabors.Fonts;
 using TWAUMM.Players;
 using TWAUMM.Utility;
 
@@ -16,7 +17,7 @@ namespace TWAUMM.Draw
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
-            UInt64 kLength = 100 * zoom;
+            UInt64 kLength = (UInt64)(100.0f * zoom);
             UInt64 wholeKCount = worldLengthFloor - (worldLengthFloor % 2);
             float partialK = (worldLength - (float)wholeKCount) / 2.0f;
 
@@ -40,7 +41,7 @@ namespace TWAUMM.Draw
                 }
             }
 
-            Common.DrawKontinentLines(img, worldLength, kLength, partialK);
+            Common.DrawKontinentDetails(img, worldLength, kLength, partialK);
         }
 
         private static void DrawTopPlayersMap(string world, Dictionary<UInt64, Player> players, string mapName, string filename, Func<Player, string> sidebarTopTextFunc, Func<Player, string> sidebarBottomTextFunc)
@@ -55,7 +56,7 @@ namespace TWAUMM.Draw
                 sidebarTopTextFunc,
                 sidebarBottomTextFunc
             );
-            Common.DrawImageHeader(img, world, mapName);
+            Common.DrawTopImageHeader(img, world, mapName);
             string outputFile = configInfo?.outputDir + "/" + world + "/" + filename + ".png";
             img.SaveAsPng(outputFile);
             img.Dispose();
@@ -118,7 +119,7 @@ namespace TWAUMM.Draw
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
-            UInt64 kLength = 100 * zoom;
+            UInt64 kLength = (UInt64)(100.0f * zoom);
             UInt64 wholeKCount = worldLengthFloor - (worldLengthFloor % 2);
             float partialK = (worldLength - (float)wholeKCount) / 2.0f;
 
@@ -138,7 +139,7 @@ namespace TWAUMM.Draw
                     color
                 );
             }
-            Common.DrawImageHeader(img, world, "Top Nobling Players Map (" + duration + "days)");
+            Common.DrawTopImageHeader(img, world, "Top Nobling Players Map (" + duration + "days)");
             string outputFile = configInfo?.outputDir + "/" + world + "/topConqPlayers.png";
             img.SaveAsPng(outputFile);
             img.Dispose();
@@ -154,7 +155,7 @@ namespace TWAUMM.Draw
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
-            UInt64 kLength = 100 * zoom;
+            UInt64 kLength = (UInt64)(100.0f * zoom);
             UInt64 wholeKCount = worldLengthFloor - (worldLengthFloor % 2);
             float partialK = (worldLength - (float)wholeKCount) / 2.0f;
 
@@ -175,8 +176,147 @@ namespace TWAUMM.Draw
                 );
             }
 
-            Common.DrawImageHeader(img, world, "Top Nobled Players Map (" + duration + "days)");
+            Common.DrawTopImageHeader(img, world, "Top Nobled Players Map (" + duration + "days)");
             string outputFile = configInfo?.outputDir + "/" + world + "/topLossPlayers.png";
+            img.SaveAsPng(outputFile);
+            img.Dispose();
+        }
+
+        public static void DrawTopKontinentPlayers(string world)
+        {
+            Image img = new Image<Rgba32>(1000, 1030);
+            var configInfo = Config.GetInstance().GetConfigInfo();
+            var zoom = Villages.Villages.GetInstance().GetZoom();
+
+            float worldLength = 10.0f / (float)zoom;
+            UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
+            UInt64 kLength = (UInt64)(100.0f * zoom);
+            UInt64 wholeKCount = worldLengthFloor - (worldLengthFloor % 2);
+            float partialK = (worldLength - (float)wholeKCount) / 2.0f;
+
+            // fill in primary areas for drawing
+            var headerRect = new Rectangle(0, 0, 1250, 30);
+            var backgroundRect = new Rectangle(0, 30, 1000, 1000);
+            img.Mutate(x => x.Fill(Common.blackColor, headerRect));
+            img.Mutate(x => x.Fill(Common.backgroundColor, backgroundRect));
+
+            List<UInt64> drawnPlayerRanks = new List<UInt64>();
+
+            var startKontinentNumber = (byte)(Math.Ceiling((10.0f - worldLength) / 2.0f));
+            var endKontinentNumber = (byte)(10 - startKontinentNumber);
+            var colorIndex = 0;
+
+            for (var yKontinentNumber = startKontinentNumber; yKontinentNumber < endKontinentNumber; yKontinentNumber++)
+            {
+                for (var xKontinentNumber = startKontinentNumber; xKontinentNumber < endKontinentNumber; xKontinentNumber++)
+                {
+                    UInt64 kontinent = (UInt64)(yKontinentNumber * 10 + xKontinentNumber);
+                    var kontinentTopPlayers = Players.Players.GetInstance().GetTopKPlayers(kontinent);
+                    if (kontinentTopPlayers.Count <= 0)
+                    {
+                        continue;
+                    }
+
+                    if (!drawnPlayerRanks.Contains(kontinentTopPlayers[1].rank))
+                    {
+                        var configColor = configInfo?.colors[colorIndex];
+                        Rgba32 color = new Rgba32(configColor[0], configColor[1], configColor[2]);
+
+                        Common.DrawPlayerVillages(img, kontinentTopPlayers[1].villages, zoom, 1, Common.charcoalColor);
+                        Common.DrawPlayerVillages(img, kontinentTopPlayers[1].villages, zoom, 0, color);
+
+                        colorIndex++;
+                        drawnPlayerRanks.Add(kontinentTopPlayers[1].rank);
+                    }
+                }
+            }
+
+            Common.DrawKontinentDetails(img, worldLength, kLength, partialK);
+
+            // draw each kontinent's top two player percentage information after drawing villages
+            // this avoids the possibility that a player's villages might overlap the details
+            var firstFont = Fonts.GetInstance().GetFont("Arial Unicode MS", 10 + zoom, FontStyle.Regular);
+            var secondFont = Fonts.GetInstance().GetFont("Arial Unicode MS", 8 + zoom, FontStyle.Regular);
+            for (var yKontinentNumber = startKontinentNumber; yKontinentNumber < endKontinentNumber; yKontinentNumber++)
+            {
+                for (var xKontinentNumber = startKontinentNumber; xKontinentNumber < endKontinentNumber; xKontinentNumber++)
+                {
+                    UInt64 kontinent = (UInt64)(yKontinentNumber * 10 + xKontinentNumber);
+                    var kontinentTopPlayers = Players.Players.GetInstance().GetTopKPlayers(kontinent);
+                    var kontinentTotalPoints = Villages.Villages.GetInstance().GetKontinentTotalPoints(kontinent);
+                    if (kontinentTopPlayers.Count <= 0)
+                    {
+                        continue;
+                    }
+
+                    var firstPlayerPercentage = (float)kontinentTopPlayers[1].kontinentTotalPoints[kontinent] * 100.0f / (float)kontinentTotalPoints;
+                    var HalfOffscreenKontinents = (10.0f - worldLength) / 2.0f;
+                    Common.DrawImageTextWithOutline(
+                        img,
+                        $"{kontinentTopPlayers[1].name}\n{firstPlayerPercentage.ToString("0.00")}%",
+                        firstFont,
+                        new PointF(
+                            ((xKontinentNumber - HalfOffscreenKontinents + 0.5f) * kLength),
+                            ((yKontinentNumber - HalfOffscreenKontinents + 0.125f) * kLength + 30)
+                        ),
+                        HorizontalAlignment.Center,
+                        TextAlignment.Center,
+                        Common.blackColor,
+                        Common.blackColor,
+                        4.0f
+                    );
+                    Common.DrawImageTextWithOutline(
+                        img,
+                        $"{kontinentTopPlayers[1].name}\n{firstPlayerPercentage.ToString("0.00")}%",
+                        firstFont,
+                        new PointF(
+                            ((xKontinentNumber - HalfOffscreenKontinents + 0.5f) * kLength),
+                            ((yKontinentNumber - HalfOffscreenKontinents + 0.125f) * kLength + 30)
+                        ),
+                        HorizontalAlignment.Center,
+                        TextAlignment.Center,
+                        Common.whiteColor,
+                        Common.whiteColor
+                    );
+
+                    // there may not be a second player in the kontinent, verify first
+                    if (!kontinentTopPlayers.ContainsKey(2))
+                    {
+                        continue;
+                    }
+                    float secondPlayerPercentage = (float)kontinentTopPlayers[2].kontinentTotalPoints[kontinent] * 100.0f / (float)kontinentTotalPoints;
+                    Common.DrawImageTextWithOutline(
+                        img,
+                        $"{kontinentTopPlayers[2].name}\n{secondPlayerPercentage.ToString("0.00")}%",
+                        secondFont,
+                        new PointF(
+                            ((xKontinentNumber - HalfOffscreenKontinents + 0.5f) * kLength),
+                            ((yKontinentNumber - HalfOffscreenKontinents + 0.125f) * kLength + (50 * zoom) + 30)
+                        ),
+                        HorizontalAlignment.Center,
+                        TextAlignment.Center,
+                        Common.blackColor,
+                        Common.blackColor,
+                        4.0f
+                    );
+                    Common.DrawImageTextWithOutline(
+                        img,
+                        $"{kontinentTopPlayers[2].name}\n{secondPlayerPercentage.ToString("0.00")}%",
+                        secondFont,
+                        new PointF(
+                            ((xKontinentNumber - HalfOffscreenKontinents + 0.5f) * kLength),
+                            ((yKontinentNumber - HalfOffscreenKontinents + 0.125f) * kLength + (50 * zoom) + 30)
+                        ),
+                        HorizontalAlignment.Center,
+                        TextAlignment.Center,
+                        Common.whiteColor,
+                        Common.whiteColor
+                    );
+                }
+            }
+
+            Common.DrawDominanceImageHeader(img, world, "Kontinent Dominance Players Map");
+            string outputFile = configInfo?.outputDir + "/" + world + "/topDominancePlayers.png";
             img.SaveAsPng(outputFile);
             img.Dispose();
         }

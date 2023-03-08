@@ -19,28 +19,28 @@ namespace TWAUMM.Draw
         public static float noAlpha = 1.0f;
         public static float alpha = 80.0f / 255.0f;
 
-        public static void DrawVillage(Image img, (UInt64, UInt64) coords, UInt64 zoom, UInt64 offset, Rgba32 color)
+        public static void DrawVillage(Image img, (UInt64, UInt64) coords, float zoom, UInt64 offset, Rgba32 color)
         {
             var x = coords.Item1;
             var y = coords.Item2;
 
-            if (x < 500) { x = 500 - ((500 - x) * zoom); }
-            else { x = 500 + ((x - 500) * zoom); }
+            if (x < 500) { x = (UInt64)Math.Floor(500.0f - ((float)(500 - x) * zoom)); }
+            else { x = (UInt64)Math.Floor(500.0f + ((float)(x - 500) * zoom)); }
 
-            if (y < 500) { y = 500 - ((500 - y) * zoom); }
-            else { y = 500 + ((y - 500) * zoom); }
+            if (y < 500) { y = (UInt64)Math.Floor(500.0f - ((float)(500 - y) * zoom)); }
+            else { y = (UInt64)Math.Floor(500.0f + ((float)(y - 500) * zoom)); }
 
             var rect = new Rectangle(
                 (int)(x - offset),
                 (int)(y - offset + 30),
-                (int)(zoom + (offset * 2)),
-                (int)(zoom + (offset * 2))
+                (int)(Math.Floor(zoom) + (offset * 2)),
+                (int)(Math.Floor(zoom) + (offset * 2))
             );
 
             img.Mutate(x => x.Fill(color, rect));
         }
 
-        public static void DrawPlayerVillages(Image img, List<Village> villages, UInt64 zoom, UInt64 offset, Rgba32 color)
+        public static void DrawPlayerVillages(Image img, List<Village> villages, float zoom, UInt64 offset, Rgba32 color)
         {
             foreach (var village in villages)
             {
@@ -60,14 +60,33 @@ namespace TWAUMM.Draw
                     },
                     text,
                     Brushes.Solid(color),
-                    Pens.Solid(color, 1)
+                    Pens.Solid(color, 1.0f)
                 )
             );
         }
 
-        public static void DrawImageHeader(Image img, string world, string mapname)
+        public static void DrawImageTextWithOutline(Image img, string text, Font font, PointF origin, HorizontalAlignment hAlignment, TextAlignment textAlignment, Rgba32 color, Rgba32 outline, float outlineThickness = 1.0f)
         {
-            var font = Fonts.GetInstance().GetFont("Arial Unicode MS", 14);
+            img.Mutate(x =>
+                x.DrawText(
+                    new TextOptions(font)
+                    {
+                        Origin = origin,
+                        TabWidth = 4,
+                        HorizontalAlignment = hAlignment,
+                        VerticalAlignment = VerticalAlignment.Top,
+                        TextAlignment = textAlignment
+                    },
+                    text,
+                    Brushes.Solid(color),
+                    Pens.Solid(outline, outlineThickness)
+                )
+            );
+        }
+
+        public static void DrawTopImageHeader(Image img, string world, string mapname)
+        {
+            var font = Fonts.GetInstance().GetFont("Arial Unicode MS", 14.0f);
 
             var dateTime = DateTime.UtcNow.ToString("f");
 
@@ -76,9 +95,20 @@ namespace TWAUMM.Draw
             DrawImageText(img, dateTime, font, new PointF(1000, 5), HorizontalAlignment.Left, whiteColor);
         }
 
+        public static void DrawDominanceImageHeader(Image img, string world, string mapname)
+        {
+            var font = Fonts.GetInstance().GetFont("Arial Unicode MS", 14.0f);
+
+            var dateTime = DateTime.UtcNow.ToString("f");
+
+            DrawImageText(img, world, font, new PointF(15, 5), HorizontalAlignment.Left, whiteColor);
+            DrawImageText(img, mapname, font, new PointF(200, 5), HorizontalAlignment.Left, whiteColor);
+            DrawImageText(img, dateTime, font, new PointF(750, 5), HorizontalAlignment.Left, whiteColor);
+        }
+
         public static void DrawImageTopInformation<T>(Image img, string name, T obj, Func<T, string> topTextFunc, Func<T, string> bottomTextFunc, UInt64 index, Rgba32 color)
         {
-            var font = Fonts.GetInstance().GetFont("Arial Unicode MS", 10);
+            var font = Fonts.GetInstance().GetFont("Arial Unicode MS", 10.0f);
 
             var colorBorderRect = new Rectangle(
                 1014,
@@ -102,9 +132,9 @@ namespace TWAUMM.Draw
             DrawImageText(img, bottomTextFunc(obj), font, new PointF(1090, 47 + 30 + (index * 60)), HorizontalAlignment.Left, blackColor);
         }
 
-        public static void DrawKontinentLines(Image img, float worldLength, UInt64 kLength, float partialK)
+        public static void DrawKontinentDetails(Image img, float worldLength, UInt64 kLength, float partialK)
         {
-            var font = Fonts.GetInstance().GetFont("Arial Unicode MS", 10);
+            var font = Fonts.GetInstance().GetFont("Arial Unicode MS", 10.0f);
 
             for (UInt64 index = 0; (float)index < (float)kLength * worldLength; index += kLength)
             {
@@ -112,8 +142,8 @@ namespace TWAUMM.Draw
                     x.DrawLines(
                         new Pen(alphaBlackColor, 1),
                         new PointF[2]{
-                            new PointF( x:((int)((float)kLength * partialK) + (int)index), y: 30),
-                            new PointF( x: ((int)((float)kLength * partialK) + (int)index), y: 1030)
+                            new PointF(x: ((int)((float)kLength * partialK) + (int)index), y: 30),
+                            new PointF(x: ((int)((float)kLength * partialK) + (int)index), y: 1030)
                         }
                     )
                 );
@@ -128,13 +158,17 @@ namespace TWAUMM.Draw
                 );
             }
 
-            for (byte xNumber = (byte)Math.Ceiling((10.0f - worldLength - 1.0f) / 2.0f); xNumber < 10 - (byte)Math.Ceiling((10.0f - worldLength) / 2.0f); xNumber++)
+            var startKontinentNumber = (byte)Math.Max((Math.Ceiling((10.0f - worldLength) / 2.0f) - 1.0f), 0);
+            var endKontinentNumber = (byte)(10 - Math.Ceiling((10.0f - worldLength) / 2.0f));
+            var HalfWholeOffscreenKontinents = (byte)Math.Floor((10.0f - worldLength) / 2.0f);
+
+            for (byte yKontinentNumber = startKontinentNumber; yKontinentNumber < endKontinentNumber; yKontinentNumber++)
             {
-                for (byte yNumber = (byte)Math.Ceiling((10.0f - worldLength - 1.0f) / 2.0f); yNumber < 10 - (byte)Math.Ceiling((10.0f - worldLength) / 2.0f); yNumber++)
+                for (byte xKontinentNumber = startKontinentNumber; xKontinentNumber < endKontinentNumber; xKontinentNumber++)
                 {
-                    string kNumber = xNumber.ToString() + yNumber.ToString();
-                    UInt64 xPos = 87 + ((UInt64)(yNumber - (byte)Math.Floor((10.0f - worldLength) / 2.0f)) * kLength);
-                    UInt64 yPos = 115 + ((UInt64)(xNumber - (byte)Math.Floor((10.0f - worldLength) / 2.0f)) * kLength);
+                    string kNumber = yKontinentNumber.ToString() + xKontinentNumber.ToString();
+                    UInt64 xPos = 87 + ((UInt64)(xKontinentNumber - HalfWholeOffscreenKontinents) * kLength);
+                    UInt64 yPos = 115 + ((UInt64)(yKontinentNumber - HalfWholeOffscreenKontinents) * kLength);
                     DrawImageText(img, kNumber, font, new PointF(xPos, yPos), HorizontalAlignment.Left, alphaBlackColor);
                 }
             }
