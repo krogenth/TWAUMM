@@ -342,7 +342,7 @@ namespace TWAUMM.Draw
                 }
             }
 
-            Common.DrawDominanceImageHeader(img, world, "Kontinent Dominance Tribes Map");
+            Common.DrawNoSidebarImageHeader(img, world, "Kontinent Dominance Tribes Map");
             string outputFile = configInfo?.outputDir + "/" + world + "/topDominanceTribes.png";
             img.SaveAsPng(outputFile);
             img.Dispose();

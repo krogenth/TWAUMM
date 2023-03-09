@@ -96,7 +96,7 @@ namespace TWAUMM.Draw
             DrawImageText(img, dateTime, font, new PointF(1000, 5), HorizontalAlignment.Left, whiteColor);
         }
 
-        public static void DrawDominanceImageHeader(Image img, string world, string mapname)
+        public static void DrawNoSidebarImageHeader(Image img, string world, string mapname)
         {
             var font = Fonts.GetInstance().GetFont("Arial Unicode MS", 14.0f);
 

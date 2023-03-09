@@ -34,7 +34,7 @@ namespace TWAUMM.Draw
             Common.DrawPlayerVillages(img, villages, zoom, 0, Common.greyColor);
 
             Common.DrawKontinentDetails(img, worldLength, kLength, partialK);
-            Common.DrawTopImageHeader(img, world, "Barbarian Villages");
+            Common.DrawNoSidebarImageHeader(img, world, "Barbarian Villages");
 
             string outputFile = configInfo?.outputDir + "/" + world + "/barbarians.png";
             img.SaveAsPng(outputFile);
