@@ -14,6 +14,7 @@ namespace TWAUMM.Draw
         public static Rgba32 whiteColor = new Rgba32(255, 255, 255);
         public static Rgba32 blackColor = new Rgba32(0, 0, 0);
         public static Rgba32 charcoalColor = new Rgba32(51, 51, 51);
+        public static Rgba32 greyColor = new Rgba32(150, 150, 150);
         public static Rgba32 alphaCharcoalColor = new Rgba32(51, 51, 51, 80);
         public static Rgba32 alphaBlackColor = new Rgba32(255, 255, 255, 50);
         public static float noAlpha = 1.0f;
@@ -95,7 +96,7 @@ namespace TWAUMM.Draw
             DrawImageText(img, dateTime, font, new PointF(1000, 5), HorizontalAlignment.Left, whiteColor);
         }
 
-        public static void DrawDominanceImageHeader(Image img, string world, string mapname)
+        public static void DrawNoSidebarImageHeader(Image img, string world, string mapname)
         {
             var font = Fonts.GetInstance().GetFont("Arial Unicode MS", 14.0f);
 

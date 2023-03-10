@@ -315,7 +315,7 @@ namespace TWAUMM.Draw
                 }
             }
 
-            Common.DrawDominanceImageHeader(img, world, "Kontinent Dominance Players Map");
+            Common.DrawNoSidebarImageHeader(img, world, "Kontinent Dominance Players Map");
             string outputFile = configInfo?.outputDir + "/" + world + "/topDominancePlayers.png";
             img.SaveAsPng(outputFile);
             img.Dispose();

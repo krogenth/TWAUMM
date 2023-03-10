@@ -19,6 +19,8 @@
             DrawTribes.DrawTopConquerTribes(world, duration);
             DrawTribes.DrawTopLossTribes(world, duration);
             DrawTribes.DrawTopKontinentTribes(world);
+
+            DrawVillages.DrawBarbarians(world);
         }
     }
 }
