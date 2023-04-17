@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.IO.Compression;
+using System.Net;
 using TWAUMM.Tribes;
 using TWAUMM.Utility;
 using TWAUMM.Villages;
@@ -44,7 +45,7 @@ namespace TWAUMM.Players
 
         private Players() { }
 
-        public static Players GetInstance() { return _singleton; }
+        public static Players Instance { get { return _singleton; } }
 
         public SortedDictionary<Id, Player> GetPlayers() { return _players; }
 
@@ -116,16 +117,14 @@ namespace TWAUMM.Players
         /// <param name="baseUrl"></param>
         private void ReadPlayerBaseData(string baseUrl)
         {
-            var tribes = Tribes.Tribes.GetInstance().GetTribes();
+            var task = Downloader.DownloadFile(baseUrl + "/map/tribe.txt.gz", "tribe.txt.gz");
+            task.Wait();
 
-            using Task<string> response = UrlRequest.GetWebResponse(baseUrl + "/map/tribe.txt");
-            response.Wait();
-            if (response.Result.Length <= 0)
-            {
-                return;
-            }
+            var tribes = Tribes.Tribes.Instance.GetTribes();
 
-            using (var reader = new StreamReader(StringToStream.GenerateStreamFromString(response.Result)))
+            using (var stream = File.OpenRead("tribe.txt.gz"))
+            using (var gzipStream = new GZipStream(stream, CompressionMode.Decompress))
+            using (var reader = new StreamReader(gzipStream))
             {
                 // $player_id, $name, $tribe_id, $villages, $points, $rank
                 for (string? line = reader.ReadLine(); line != null && line.Length > 0; line = reader.ReadLine())
@@ -163,14 +162,12 @@ namespace TWAUMM.Players
         /// <param name="baseUrl"></param>
         private void ReadPlayerODData(string baseUrl)
         {
-            using Task<string> response = UrlRequest.GetWebResponse(baseUrl + "/map/kill_all.txt");
-            response.Wait();
-            if (response.Result.Length <= 0)
-            {
-                return;
-            }
+            var task = Downloader.DownloadFile(baseUrl + "/map/kill_all.txt.gz", "kill_all.txt.gz");
+            task.Wait();
 
-            using (var reader = new StreamReader(StringToStream.GenerateStreamFromString(response.Result)))
+            using (var stream = File.OpenRead("kill_all.txt.gz"))
+            using (var gzipStream = new GZipStream(stream, CompressionMode.Decompress))
+            using (var reader = new StreamReader(gzipStream))
             {
                 // $rank, $id, $score
                 for (string? line = reader.ReadLine(); line != null && line.Length > 0; line = reader.ReadLine())
@@ -193,14 +190,12 @@ namespace TWAUMM.Players
         /// <param name="baseUrl"></param>
         private void ReadPlayerODAData(string baseUrl)
         {
-            using Task<string> response = UrlRequest.GetWebResponse(baseUrl + "/map/kill_att.txt");
-            response.Wait();
-            if (response.Result.Length <= 0)
-            {
-                return;
-            }
+            var task = Downloader.DownloadFile(baseUrl + "/map/kill_att.txt.gz", "kill_att.txt.gz");
+            task.Wait();
 
-            using (var reader = new StreamReader(StringToStream.GenerateStreamFromString(response.Result)))
+            using (var stream = File.OpenRead("kill_att.txt.gz"))
+            using (var gzipStream = new GZipStream(stream, CompressionMode.Decompress))
+            using (var reader = new StreamReader(gzipStream))
             {
                 // $rank, $id, $score
                 for (string? line = reader.ReadLine(); line != null && line.Length > 0; line = reader.ReadLine())
@@ -223,14 +218,12 @@ namespace TWAUMM.Players
         /// <param name="baseUrl"></param>
         private void ReadPlayerODDData(string baseUrl)
         {
-            using Task<string> response = UrlRequest.GetWebResponse(baseUrl + "/map/kill_def.txt");
-            response.Wait();
-            if (response.Result.Length <= 0)
-            {
-                return;
-            }
+            var task = Downloader.DownloadFile(baseUrl + "/map/kill_def.txt.gz", "kill_def.txt.gz");
+            task.Wait();
 
-            using (var reader = new StreamReader(StringToStream.GenerateStreamFromString(response.Result)))
+            using (var stream = File.OpenRead("kill_def.txt.gz"))
+            using (var gzipStream = new GZipStream(stream, CompressionMode.Decompress))
+            using (var reader = new StreamReader(gzipStream))
             {
                 // $rank, $id, $score
                 for (string? line = reader.ReadLine(); line != null && line.Length > 0; line = reader.ReadLine())

@@ -13,8 +13,8 @@ namespace TWAUMM.Draw
         public static void DrawBarbarians(string world)
         {
             Image img = new Image<Rgba32>(1000, 1030);
-            var configInfo = Config.GetInstance().GetConfigInfo();
-            var zoom = Villages.Villages.GetInstance().GetZoom();
+            var configInfo = Config.Instance.GetConfigInfo();
+            var zoom = Villages.Villages.Instance.GetZoom();
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
@@ -28,7 +28,7 @@ namespace TWAUMM.Draw
             img.Mutate(x => x.Fill(Common.blackColor, headerRect));
             img.Mutate(x => x.Fill(Common.backgroundColor, backgroundRect));
 
-            var villages = Villages.Villages.GetInstance().GetBarbarianVillages();
+            var villages = Villages.Villages.Instance.GetBarbarianVillages();
 
             Common.DrawPlayerVillages(img, villages, zoom, 1, Common.charcoalColor);
             Common.DrawPlayerVillages(img, villages, zoom, 0, Common.greyColor);

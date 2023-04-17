@@ -87,7 +87,7 @@ namespace TWAUMM.Draw
 
         public static void DrawTopImageHeader(Image img, string world, string mapname)
         {
-            var font = Fonts.GetInstance().GetFont("Arial Unicode MS", 14.0f);
+            var font = Fonts.Instance.GetFont("Arial Unicode MS", 14.0f);
 
             var dateTime = DateTime.UtcNow.ToString("f");
 
@@ -98,7 +98,7 @@ namespace TWAUMM.Draw
 
         public static void DrawNoSidebarImageHeader(Image img, string world, string mapname)
         {
-            var font = Fonts.GetInstance().GetFont("Arial Unicode MS", 14.0f);
+            var font = Fonts.Instance.GetFont("Arial Unicode MS", 14.0f);
 
             var dateTime = DateTime.UtcNow.ToString("f");
 
@@ -109,7 +109,7 @@ namespace TWAUMM.Draw
 
         public static void DrawImageTopInformation<T>(Image img, string name, T obj, Func<T, string> topTextFunc, Func<T, string> bottomTextFunc, UInt64 index, Rgba32 color)
         {
-            var font = Fonts.GetInstance().GetFont("Arial Unicode MS", 10.0f);
+            var font = Fonts.Instance.GetFont("Arial Unicode MS", 10.0f);
 
             var colorBorderRect = new Rectangle(
                 1014,
@@ -135,7 +135,7 @@ namespace TWAUMM.Draw
 
         public static void DrawKontinentDetails(Image img, float worldLength, UInt64 kLength, float partialK)
         {
-            var font = Fonts.GetInstance().GetFont("Arial Unicode MS", 10.0f);
+            var font = Fonts.Instance.GetFont("Arial Unicode MS", 10.0f);
 
             for (UInt64 index = 0; (float)index < (float)kLength * worldLength; index += kLength)
             {
