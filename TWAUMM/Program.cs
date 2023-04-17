@@ -7,7 +7,7 @@ namespace TWAUMM.Program
     {
         static void Main(string[] args)
         {
-            var config = Config.GetInstance();
+            var config = Config.Instance;
 
             while (true)
             {
@@ -35,7 +35,7 @@ namespace TWAUMM.Program
         /// </summary>
         static void IterateWorlds()
         {
-            var config = Config.GetInstance();
+            var config = Config.Instance;
 
             config.GetConfigInfo()?.worlds?.ForEach(world =>
             {
@@ -48,13 +48,13 @@ namespace TWAUMM.Program
                     Directory.CreateDirectory(worldPath);
                 }
 
-                var tribes = Tribes.Tribes.GetInstance();
+                var tribes = Tribes.Tribes.Instance;
                 tribes.ReadTribeData(worldUrl);
 
-                var players = Players.Players.GetInstance();
+                var players = Players.Players.Instance;
                 players.ReadPlayerData(worldUrl);
 
-                var villages = Villages.Villages.GetInstance();
+                var villages = Villages.Villages.Instance;
                 villages.ReadVillageData(worldUrl);
 
                 Conquers.Conquers.ReadConquerData(worldUrl, world.duration);

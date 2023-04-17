@@ -36,7 +36,7 @@ namespace TWAUMM.Utility
         /// Returns the singleton instance of the class
         /// </summary>
         /// <returns></returns>
-        public static Config GetInstance() { return _singleton; }
+        public static Config Instance { get { return _singleton; } }
 
         /// <summary>
         /// Re-reads the jsoninfo file to allow live-updating

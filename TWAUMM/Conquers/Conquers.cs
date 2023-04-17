@@ -1,4 +1,5 @@
-﻿using TWAUMM.Utility;
+﻿using System.IO.Compression;
+using TWAUMM.Utility;
 
 namespace TWAUMM.Conquers
 {
@@ -6,20 +7,17 @@ namespace TWAUMM.Conquers
     {
         public static void ReadConquerData(string baseUrl, uint duration)
         {
-            var tribes = Tribes.Tribes.GetInstance().GetTribes();
-            var players = Players.Players.GetInstance().GetPlayers();
-            var villages = Villages.Villages.GetInstance().GetVillages();
+            var task = Downloader.DownloadFile(baseUrl + "/map/conquer.txt.gz", "conquer.txt.gz");
+            task.Wait();
 
+            var tribes = Tribes.Tribes.Instance.GetTribes();
+            var players = Players.Players.Instance.GetPlayers();
+            var villages = Villages.Villages.Instance.GetVillages();
             var now = DateTime.UtcNow;
 
-            using Task<string> response = UrlRequest.GetWebResponse(baseUrl + "/map/conquer.txt");
-            response.Wait();
-            if (response.Result.Length <= 0)
-            {
-                return;
-            }
-
-            using (var reader = new StreamReader(StringToStream.GenerateStreamFromString(response.Result)))
+            using (var stream = File.OpenRead("conquer.txt.gz"))
+            using (var gzipStream = new GZipStream(stream, CompressionMode.Decompress))
+            using (var reader = new StreamReader(gzipStream))
             {
                 // $village_id, $unix_timestamp, $new_owner, $old_owner
                 for (string? line = reader.ReadLine(); line != null && line.Length > 0; line = reader.ReadLine())

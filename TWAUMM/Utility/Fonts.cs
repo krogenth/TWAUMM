@@ -12,7 +12,7 @@ namespace TWAUMM.Utility
             _fonts.Add("arialuni.ttf");
         }
 
-        public static Fonts GetInstance() { return _singleton; }
+        public static Fonts Instance { get { return _singleton; } }
 
         public Font GetFont(string fontName, float size = 12.0f, FontStyle style = FontStyle.Bold)
         {

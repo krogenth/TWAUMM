@@ -12,8 +12,8 @@ namespace TWAUMM.Draw
     {
         private static void DrawPlayersMap(Image img, Dictionary<UInt64, Player> players, Rgba32 borderColor, float alpha = 0.0f, Func<Player, string>? sidebarTopTextFunc = null, Func<Player, string>? sidebarBottomTextFunc = null)
         {
-            var configInfo = Config.GetInstance().GetConfigInfo();
-            var zoom = Villages.Villages.GetInstance().GetZoom();
+            var configInfo = Config.Instance.GetConfigInfo();
+            var zoom = Villages.Villages.Instance.GetZoom();
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
@@ -47,7 +47,7 @@ namespace TWAUMM.Draw
         private static void DrawTopPlayersMap(string world, Dictionary<UInt64, Player> players, string mapName, string filename, Func<Player, string> sidebarTopTextFunc, Func<Player, string> sidebarBottomTextFunc)
         {
             Image img = new Image<Rgba32>(1250, 1030);
-            var configInfo = Config.GetInstance().GetConfigInfo();
+            var configInfo = Config.Instance.GetConfigInfo();
             DrawPlayersMap(
                 img,
                 players,
@@ -66,7 +66,7 @@ namespace TWAUMM.Draw
         {
             DrawTopPlayersMap(
                 world,
-                Players.Players.GetInstance().GetTopPlayers(),
+                Players.Players.Instance.GetTopPlayers(),
                 "Top Players Map",
                 "topPlayers",
                 (Player player) => player.points.ToString("N0") + " points",
@@ -78,7 +78,7 @@ namespace TWAUMM.Draw
         {
             DrawTopPlayersMap(
                 world,
-                Players.Players.GetInstance().GetTopODPlayers(),
+                Players.Players.Instance.GetTopODPlayers(),
                 "Top OD Players Map",
                 "topODPlayers",
                 (Player player) => player.od.ToString("N0") + " OD",
@@ -90,7 +90,7 @@ namespace TWAUMM.Draw
         {
             DrawTopPlayersMap(
                 world,
-                Players.Players.GetInstance().GetTopODAPlayers(),
+                Players.Players.Instance.GetTopODAPlayers(),
                 "Top ODA Players Map",
                 "topODAPlayers",
                 (Player player) => player.oda.ToString("N0") + " ODA",
@@ -101,7 +101,7 @@ namespace TWAUMM.Draw
         {
             DrawTopPlayersMap(
                 world,
-                Players.Players.GetInstance().GetTopODDPlayers(),
+                Players.Players.Instance.GetTopODDPlayers(),
                 "Top ODD Players Map",
                 "topODDPlayers",
                 (Player player) => player.odd.ToString("N0") + " ODD",
@@ -112,10 +112,10 @@ namespace TWAUMM.Draw
         public static void DrawTopConqPlayers(string world, uint duration)
         {
             Image img = new Image<Rgba32>(1250, 1030);
-            DrawPlayersMap(img, Players.Players.GetInstance().GetTopConqerPlayers(), Common.alphaCharcoalColor, Common.alpha);
+            DrawPlayersMap(img, Players.Players.Instance.GetTopConqerPlayers(), Common.alphaCharcoalColor, Common.alpha);
 
-            var configInfo = Config.GetInstance().GetConfigInfo();
-            var zoom = Villages.Villages.GetInstance().GetZoom();
+            var configInfo = Config.Instance.GetConfigInfo();
+            var zoom = Villages.Villages.Instance.GetZoom();
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
@@ -123,7 +123,7 @@ namespace TWAUMM.Draw
             UInt64 wholeKCount = worldLengthFloor - (worldLengthFloor % 2);
             float partialK = (worldLength - (float)wholeKCount) / 2.0f;
 
-            foreach (var player in Players.Players.GetInstance().GetTopConqerPlayers())
+            foreach (var player in Players.Players.Instance.GetTopConqerPlayers())
             {
                 var configColor = configInfo?.colors[(Int32)player.Key - 1];
                 Rgba32 color = new Rgba32(configColor[0], configColor[1], configColor[2]);
@@ -148,10 +148,10 @@ namespace TWAUMM.Draw
         public static void DrawTopLossPlayers(string world, uint duration)
         {
             Image img = new Image<Rgba32>(1250, 1030);
-            DrawPlayersMap(img, Players.Players.GetInstance().GetTopLossPlayers(), Common.alphaCharcoalColor, Common.alpha);
+            DrawPlayersMap(img, Players.Players.Instance.GetTopLossPlayers(), Common.alphaCharcoalColor, Common.alpha);
 
-            var configInfo = Config.GetInstance().GetConfigInfo();
-            var zoom = Villages.Villages.GetInstance().GetZoom();
+            var configInfo = Config.Instance.GetConfigInfo();
+            var zoom = Villages.Villages.Instance.GetZoom();
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
@@ -159,7 +159,7 @@ namespace TWAUMM.Draw
             UInt64 wholeKCount = worldLengthFloor - (worldLengthFloor % 2);
             float partialK = (worldLength - (float)wholeKCount) / 2.0f;
 
-            foreach (var player in Players.Players.GetInstance().GetTopLossPlayers())
+            foreach (var player in Players.Players.Instance.GetTopLossPlayers())
             {
                 var configColor = configInfo?.colors[(Int32)player.Key - 1];
                 Rgba32 color = new Rgba32(configColor[0], configColor[1], configColor[2]);
@@ -185,8 +185,8 @@ namespace TWAUMM.Draw
         public static void DrawTopKontinentPlayers(string world)
         {
             Image img = new Image<Rgba32>(1000, 1030);
-            var configInfo = Config.GetInstance().GetConfigInfo();
-            var zoom = Villages.Villages.GetInstance().GetZoom();
+            var configInfo = Config.Instance.GetConfigInfo();
+            var zoom = Villages.Villages.Instance.GetZoom();
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
@@ -211,7 +211,7 @@ namespace TWAUMM.Draw
                 for (var xKontinentNumber = startKontinentNumber; xKontinentNumber < endKontinentNumber; xKontinentNumber++)
                 {
                     UInt64 kontinent = (UInt64)(yKontinentNumber * 10 + xKontinentNumber);
-                    var kontinentTopPlayers = Players.Players.GetInstance().GetTopKPlayers(kontinent);
+                    var kontinentTopPlayers = Players.Players.Instance.GetTopKPlayers(kontinent);
                     if (kontinentTopPlayers.Count <= 0)
                     {
                         continue;
@@ -235,15 +235,15 @@ namespace TWAUMM.Draw
 
             // draw each kontinent's top two player percentage information after drawing villages
             // this avoids the possibility that a player's villages might overlap the details
-            var firstFont = Fonts.GetInstance().GetFont("Arial Unicode MS", 10 + zoom, FontStyle.Regular);
-            var secondFont = Fonts.GetInstance().GetFont("Arial Unicode MS", 8 + zoom, FontStyle.Regular);
+            var firstFont = Fonts.Instance.GetFont("Arial Unicode MS", 10 + zoom, FontStyle.Regular);
+            var secondFont = Fonts.Instance.GetFont("Arial Unicode MS", 8 + zoom, FontStyle.Regular);
             for (var yKontinentNumber = startKontinentNumber; yKontinentNumber < endKontinentNumber; yKontinentNumber++)
             {
                 for (var xKontinentNumber = startKontinentNumber; xKontinentNumber < endKontinentNumber; xKontinentNumber++)
                 {
                     UInt64 kontinent = (UInt64)(yKontinentNumber * 10 + xKontinentNumber);
-                    var kontinentTopPlayers = Players.Players.GetInstance().GetTopKPlayers(kontinent);
-                    var kontinentTotalPoints = Villages.Villages.GetInstance().GetKontinentTotalPoints(kontinent);
+                    var kontinentTopPlayers = Players.Players.Instance.GetTopKPlayers(kontinent);
+                    var kontinentTotalPoints = Villages.Villages.Instance.GetKontinentTotalPoints(kontinent);
                     if (kontinentTopPlayers.Count <= 0)
                     {
                         continue;

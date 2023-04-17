@@ -12,8 +12,8 @@ namespace TWAUMM.Draw
     {
         private static void DrawTribesMap(Image img, Dictionary<UInt64, Tribe> tribes, Rgba32 borderColor, float alpha = 0.0f, Func<Tribe, string>? sidebarTopTextFunc = null, Func<Tribe, string>? sidebarBottomTextFunc = null)
         {
-            var configInfo = Config.GetInstance().GetConfigInfo();
-            var zoom = Villages.Villages.GetInstance().GetZoom();
+            var configInfo = Config.Instance.GetConfigInfo();
+            var zoom = Villages.Villages.Instance.GetZoom();
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
@@ -53,7 +53,7 @@ namespace TWAUMM.Draw
         private static void DrawTopTribesMap(string world, Dictionary<UInt64, Tribe> tribes, Func<Tribe, string> sidebarTopTextFunc, Func<Tribe, string> sidebarBottomTextFunc, string mapName, string filename)
         {
             Image img = new Image<Rgba32>(1250, 1030);
-            var configInfo = Config.GetInstance().GetConfigInfo();
+            var configInfo = Config.Instance.GetConfigInfo();
             DrawTribesMap(
                 img,
                 tribes,
@@ -72,7 +72,7 @@ namespace TWAUMM.Draw
         {
             DrawTopTribesMap(
                 world,
-                Tribes.Tribes.GetInstance().GetTopTribes(),
+                Tribes.Tribes.Instance.GetTopTribes(),
                 (Tribe tribe) => tribe.totalPoints.ToString("N0") + " points",
                 (Tribe tribe) => tribe.villageCount.ToString("N0") + " villages",
                 "Top Tribes Map",
@@ -84,7 +84,7 @@ namespace TWAUMM.Draw
         {
             DrawTopTribesMap(
                 world,
-                Tribes.Tribes.GetInstance().GetTopODTribes(),
+                Tribes.Tribes.Instance.GetTopODTribes(),
                 (Tribe tribe) => tribe.od.ToString("N0") + " OD",
                 (Tribe tribe) => tribe.villageCount.ToString("N0") + " villages",
                 "Top OD Tribes Map",
@@ -96,7 +96,7 @@ namespace TWAUMM.Draw
         {
             DrawTopTribesMap(
                 world,
-                Tribes.Tribes.GetInstance().GetTopODATribes(),
+                Tribes.Tribes.Instance.GetTopODATribes(),
                 (Tribe tribe) => tribe.oda.ToString("N0") + " ODA",
                 (Tribe tribe) => tribe.villageCount.ToString("N0") + " villages",
                 "Top ODA Tribes Map",
@@ -107,7 +107,7 @@ namespace TWAUMM.Draw
         public static void DrawTopODDTribes(string world)
         {
             DrawTopTribesMap(world,
-                Tribes.Tribes.GetInstance().GetTopODDTribes(),
+                Tribes.Tribes.Instance.GetTopODDTribes(),
                 (Tribe tribe) => tribe.odd.ToString("N0") + " ODD",
                 (Tribe tribe) => tribe.villageCount.ToString("N0") + " villages",
                 "Top ODD Tribes Map",
@@ -120,13 +120,13 @@ namespace TWAUMM.Draw
             Image img = new Image<Rgba32>(1250, 1030);
             DrawTribesMap(
                 img,
-                Tribes.Tribes.GetInstance().GetTopConquerTribes(),
+                Tribes.Tribes.Instance.GetTopConquerTribes(),
                 Common.alphaCharcoalColor,
                 Common.alpha
             );
 
-            var configInfo = Config.GetInstance().GetConfigInfo();
-            var zoom = Villages.Villages.GetInstance().GetZoom();
+            var configInfo = Config.Instance.GetConfigInfo();
+            var zoom = Villages.Villages.Instance.GetZoom();
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
@@ -134,7 +134,7 @@ namespace TWAUMM.Draw
             UInt64 wholeKCount = worldLengthFloor - (worldLengthFloor % 2);
             float partialK = (worldLength - (float)wholeKCount) / 2.0f;
 
-            foreach (var tribe in Tribes.Tribes.GetInstance().GetTopConquerTribes())
+            foreach (var tribe in Tribes.Tribes.Instance.GetTopConquerTribes())
             {
                 var configColor = configInfo?.colors[(Int32)tribe.Key - 1];
                 Rgba32 color = new Rgba32(configColor[0], configColor[1], configColor[2]);
@@ -163,10 +163,10 @@ namespace TWAUMM.Draw
         public static void DrawTopLossTribes(string world, uint duration)
         {
             Image img = new Image<Rgba32>(1250, 1030);
-            DrawTribesMap(img, Tribes.Tribes.GetInstance().GetTopLossTribes(), Common.alphaCharcoalColor, Common.alpha);
+            DrawTribesMap(img, Tribes.Tribes.Instance.GetTopLossTribes(), Common.alphaCharcoalColor, Common.alpha);
 
-            var configInfo = Config.GetInstance().GetConfigInfo();
-            var zoom = Villages.Villages.GetInstance().GetZoom();
+            var configInfo = Config.Instance.GetConfigInfo();
+            var zoom = Villages.Villages.Instance.GetZoom();
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
@@ -174,7 +174,7 @@ namespace TWAUMM.Draw
             UInt64 wholeKCount = worldLengthFloor - (worldLengthFloor % 2);
             float partialK = (worldLength - (float)wholeKCount) / 2.0f;
 
-            foreach (var tribe in Tribes.Tribes.GetInstance().GetTopLossTribes())
+            foreach (var tribe in Tribes.Tribes.Instance.GetTopLossTribes())
             {
                 var configColor = configInfo?.colors[(Int32)tribe.Key - 1];
                 Rgba32 color = new Rgba32(configColor[0], configColor[1], configColor[2]);
@@ -206,8 +206,8 @@ namespace TWAUMM.Draw
         public static void DrawTopKontinentTribes(string world)
         {
             Image img = new Image<Rgba32>(1000, 1030);
-            var configInfo = Config.GetInstance().GetConfigInfo();
-            var zoom = Villages.Villages.GetInstance().GetZoom();
+            var configInfo = Config.Instance.GetConfigInfo();
+            var zoom = Villages.Villages.Instance.GetZoom();
 
             float worldLength = 10.0f / (float)zoom;
             UInt64 worldLengthFloor = (UInt64)Math.Floor(worldLength);
@@ -232,7 +232,7 @@ namespace TWAUMM.Draw
                 for (var xKontinentNumber = startKontinentNumber; xKontinentNumber < endKontinentNumber; xKontinentNumber++)
                 {
                     UInt64 kontinent = (UInt64)(yKontinentNumber * 10 + xKontinentNumber);
-                    var kontinentTopTribes = Tribes.Tribes.GetInstance().GetTopKTribes(kontinent);
+                    var kontinentTopTribes = Tribes.Tribes.Instance.GetTopKTribes(kontinent);
                     if (kontinentTopTribes.Count <= 0)
                     {
                         continue;
@@ -262,15 +262,15 @@ namespace TWAUMM.Draw
 
             // draw each kontinent's top two tribe percentage information after drawing villages
             // this avoids the possibility that a tribe's villages might overlap the details
-            var firstFont = Fonts.GetInstance().GetFont("Arial Unicode MS", 10 + zoom, FontStyle.Regular);
-            var secondFont = Fonts.GetInstance().GetFont("Arial Unicode MS", 8 + zoom, FontStyle.Regular);
+            var firstFont = Fonts.Instance.GetFont("Arial Unicode MS", 10 + zoom, FontStyle.Regular);
+            var secondFont = Fonts.Instance.GetFont("Arial Unicode MS", 8 + zoom, FontStyle.Regular);
             for (var yKontinentNumber = startKontinentNumber; yKontinentNumber < endKontinentNumber; yKontinentNumber++)
             {
                 for (var xKontinentNumber = startKontinentNumber; xKontinentNumber < endKontinentNumber; xKontinentNumber++)
                 {
                     UInt64 kontinent = (UInt64)(yKontinentNumber * 10 + xKontinentNumber);
-                    var kontinentTopTribes = Tribes.Tribes.GetInstance().GetTopKTribes(kontinent);
-                    var kontinentTotalPoints = Villages.Villages.GetInstance().GetKontinentTotalPoints(kontinent);
+                    var kontinentTopTribes = Tribes.Tribes.Instance.GetTopKTribes(kontinent);
+                    var kontinentTotalPoints = Villages.Villages.Instance.GetKontinentTotalPoints(kontinent);
                     if (kontinentTopTribes.Count <= 0)
                     {
                         continue;

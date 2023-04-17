@@ -1,4 +1,5 @@
-﻿using TWAUMM.Players;
+﻿using System.IO.Compression;
+using TWAUMM.Players;
 using TWAUMM.Utility;
 
 namespace TWAUMM.Villages
@@ -21,7 +22,7 @@ namespace TWAUMM.Villages
 
         private Villages() { }
 
-        public static Villages GetInstance() { return _singleton; }
+        public static Villages Instance { get { return _singleton; } }
 
         public SortedDictionary<Id, Village> GetVillages() { return _villages; }
 
@@ -54,17 +55,15 @@ namespace TWAUMM.Villages
         /// <param name="baseUrl"></param>
         public void ReadVillageBaseData(string baseUrl)
         {
-            var players = Players.Players.GetInstance().GetPlayers();
+            var task = Downloader.DownloadFile(baseUrl + "/map/village.txt.gz", "village.txt.gz");
+            task.Wait();
 
-            using Task<string> response = UrlRequest.GetWebResponse(baseUrl + "/map/village.txt");
-            response.Wait();
-            if (response.Result.Length <= 0)
-            {
-                return;
-            }
-
+            var players = Players.Players.Instance.GetPlayers();
             UInt64 lowestXCoordVillage = 500;
-            using (var reader = new StreamReader(StringToStream.GenerateStreamFromString(response.Result)))
+
+            using (var stream = File.OpenRead("village.txt.gz"))
+            using (var gzipStream = new GZipStream(stream, CompressionMode.Decompress))
+            using (var reader = new StreamReader(gzipStream))
             {
                 // $village_id, $name, $x, $y, $player_id, $points, $special
                 for (string? line = reader.ReadLine(); line != null && line.Length > 0; line = reader.ReadLine())
