@@ -43,9 +43,13 @@ namespace TWAUMM.Program
                 var worldPath = config.GetConfigInfo()?.outputDir + "/" + worldTag;
                 var worldUrl = WorldToUrl.GetUrl(world.world);
 
-                if (!Directory.Exists(worldPath))
+                if (!FileManager.WorldExistsOnDisk(worldPath))
                 {
-                    Directory.CreateDirectory(worldPath);
+                    FileManager.CreateDirectory(worldPath);
+                }
+                else
+                {
+                    FileManager.CopyExistingFilesToBackup(worldPath);
                 }
 
                 var tribes = Tribes.Tribes.Instance;
