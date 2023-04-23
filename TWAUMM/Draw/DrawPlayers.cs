@@ -249,16 +249,17 @@ namespace TWAUMM.Draw
                         continue;
                     }
 
-                    var firstPlayerPercentage = (float)kontinentTopPlayers[1].kontinentTotalPoints[kontinent] * 100.0f / (float)kontinentTotalPoints;
                     var HalfOffscreenKontinents = (10.0f - worldLength) / 2.0f;
+                    var firstPlayerPercentage = (float)kontinentTopPlayers[1].kontinentTotalPoints[kontinent] * 100.0f / (float)kontinentTotalPoints;
+                    var firstPlayerTextPoint = new PointF(
+                            ((xKontinentNumber - HalfOffscreenKontinents + 0.5f) * kLength),
+                            ((yKontinentNumber - HalfOffscreenKontinents + 0.125f) * kLength + 30)
+                        );
                     Common.DrawImageTextWithOutline(
                         img,
                         $"{kontinentTopPlayers[1].name}\n{firstPlayerPercentage.ToString("0.00")}%",
                         firstFont,
-                        new PointF(
-                            ((xKontinentNumber - HalfOffscreenKontinents + 0.5f) * kLength),
-                            ((yKontinentNumber - HalfOffscreenKontinents + 0.125f) * kLength + 30)
-                        ),
+                        firstPlayerTextPoint,
                         HorizontalAlignment.Center,
                         TextAlignment.Center,
                         Common.blackColor,
@@ -269,10 +270,7 @@ namespace TWAUMM.Draw
                         img,
                         $"{kontinentTopPlayers[1].name}\n{firstPlayerPercentage.ToString("0.00")}%",
                         firstFont,
-                        new PointF(
-                            ((xKontinentNumber - HalfOffscreenKontinents + 0.5f) * kLength),
-                            ((yKontinentNumber - HalfOffscreenKontinents + 0.125f) * kLength + 30)
-                        ),
+                        firstPlayerTextPoint,
                         HorizontalAlignment.Center,
                         TextAlignment.Center,
                         Common.whiteColor,
@@ -284,15 +282,16 @@ namespace TWAUMM.Draw
                     {
                         continue;
                     }
-                    float secondPlayerPercentage = (float)kontinentTopPlayers[2].kontinentTotalPoints[kontinent] * 100.0f / (float)kontinentTotalPoints;
+                    var secondPlayerPercentage = (float)kontinentTopPlayers[2].kontinentTotalPoints[kontinent] * 100.0f / (float)kontinentTotalPoints;
+                    var secondPlayerTextPoint = new PointF(
+                            ((xKontinentNumber - HalfOffscreenKontinents + 0.5f) * kLength),
+                            ((yKontinentNumber - HalfOffscreenKontinents + 0.125f) * kLength + (50 * zoom) + 30)
+                        );
                     Common.DrawImageTextWithOutline(
                         img,
                         $"{kontinentTopPlayers[2].name}\n{secondPlayerPercentage.ToString("0.00")}%",
                         secondFont,
-                        new PointF(
-                            ((xKontinentNumber - HalfOffscreenKontinents + 0.5f) * kLength),
-                            ((yKontinentNumber - HalfOffscreenKontinents + 0.125f) * kLength + (50 * zoom) + 30)
-                        ),
+                        secondPlayerTextPoint,
                         HorizontalAlignment.Center,
                         TextAlignment.Center,
                         Common.blackColor,
@@ -303,10 +302,7 @@ namespace TWAUMM.Draw
                         img,
                         $"{kontinentTopPlayers[2].name}\n{secondPlayerPercentage.ToString("0.00")}%",
                         secondFont,
-                        new PointF(
-                            ((xKontinentNumber - HalfOffscreenKontinents + 0.5f) * kLength),
-                            ((yKontinentNumber - HalfOffscreenKontinents + 0.125f) * kLength + (50 * zoom) + 30)
-                        ),
+                        secondPlayerTextPoint,
                         HorizontalAlignment.Center,
                         TextAlignment.Center,
                         Common.whiteColor,
